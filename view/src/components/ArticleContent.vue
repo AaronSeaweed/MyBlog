@@ -232,11 +232,11 @@ export default {
                     }
                 });
                 that.replycount=nowreplys.length;
-                if(nowreplys.length>3){
-                    return nowreplys.slice(0,2);
-                }else{
+                //if(nowreplys.length>2){//超过两条回复只显示两条
+                //    return nowreplys.slice(0,2);
+                //}else{
                     return nowreplys;
-                }
+                //}
             },getname(artid){
                 var that = this;
                 for(var i=0;i<that.replys[0].length;i++){
@@ -252,7 +252,7 @@ export default {
                     if(text!=undefined){
                         $(".comment-form-area").eq(index+1).css({"display":"block"}).end().not($(".comment-form-area").eq(index+1)).not($(".comment-form-area").eq(0)).css({"display":"none"})
                         $(".comment-form-area").eq(index+1).children(1).focus()
-                        this.$refs.child[index+1].ArtFromUser(index+1,text);
+                        this.$refs.child[0].ArtFromUser(index+1,text);
                     }else{
                         $(".comment-form-area").eq(index+1).css({"display":"none"})
                     }
