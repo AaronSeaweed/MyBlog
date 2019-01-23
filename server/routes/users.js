@@ -64,8 +64,8 @@ router.post("/add",function(req,res,next){
 *获取用户信息
 */
 router.post("/getuserinfo",function(req,res,next){
-    var name=req.body.name;
-    db.query("select *from user where username='"+name+"'",function(error,rows){
+    var id=req.body.id;
+    db.query("select *from user where id='"+id+"'",function(error,rows){
         if (error) {
             var result = {
                 "status": "500",
@@ -88,7 +88,7 @@ router.post("/getuserinfo",function(req,res,next){
  * 删除用户
  */
 router.get("/del/:id",function(req,res){
-    var id = req.params.id;
+    var id = req.body.id;
     db.query("delete from user where id = " + id,function(err,rows){
         if(err){
             res.send("删除失败"+err);
@@ -102,17 +102,16 @@ router.get("/del/:id",function(req,res){
  * 修改
  */
 router.post("/toUpdate",function(req,res,next){
-    var id = req.params.id;
-    var username = req.params.username;
-    var callname = req.params.callname;
-    var photo = req.params.photo;
-    var company = req.params.company;
-    var selfintroduction = req.params.selfintroduction;
-    var profes = req.params.profes;
-    var homepage = req.params.homepage;
-    var sql = "UPDATE user set username ='"+username+"',callname='"+callname+"',photo='"+photo+"',company='"+company+"',selfintroduction='"+selfintroduction+"',profes='"+profes+"',homepage='"+homepage+"' where id = "+id+"";
+    var id = req.body.id;
+    var username = req.body.username;
+    var callname = req.body.callname;
+    var company = req.body.company;
+    var selfintroduction = req.body.selfintroduction;
+    var profes = req.body.profes;
+    var homepage = req.body.homepage;
+    var sql = "UPDATE user set username ='"+username+"',callname='"+callname+"',company='"+company+"',selfintroduction='"+selfintroduction+"',profes='"+profes+"',homepage='"+homepage+"' where id = "+id+"";
     console.log(sql);
-    db.query(sql,function(err,rows){
+    db.query(sql,function(error,rows){
         if (error) {
             var result = {
                 "status": "500",

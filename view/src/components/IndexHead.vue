@@ -12,7 +12,7 @@
         <ul class="personalset">
            <div>
                <li>
-               <router-link :to="{ name: 'usct', params:{userid:this.username}}" class="contitle">个人中心</router-link>
+               <router-link :to="{ name: 'usct', params:{userid:this.userid}}" class="contitle">个人中心</router-link>
                </li>
                <li><a href="javascript:void(0)" @click="loginout()">退出</a></li>
            </div>
@@ -38,7 +38,7 @@ export default {
         data:function(){
           return{
             xslogin:false,
-            username:Gb.b64EncodeUnicode(localStorage.getItem('username'))
+            userid:Gb.b64EncodeUnicode(localStorage.getItem('userid'))
           }
         },
         components: {
@@ -56,7 +56,8 @@ export default {
           loginout(){
             localStorage.setItem("userstatus",0);
             localStorage.removeItem('username')
-            location.reload();
+            localStorage.removeItem("userid");
+            window.location.href="/"
           }
         },
         mounted:function(){
@@ -65,6 +66,7 @@ export default {
                 $("#loginbtn,#regbtn,.comment-form-panel").css("display","none");
                 $("#username").show().text(localStorage.getItem("username"));
                 $(".comment-form-area").show();
+                $(".userpic").css("background-image",localStorage.getItem("photo"))
              }
              $("#username").on("click",function(){
                 $(".personalset").show();

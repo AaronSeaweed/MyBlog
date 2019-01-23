@@ -260,7 +260,7 @@ body{background-color: #f4f5f5;}
 .comment-form .comment-form-panel{text-align: center;padding: 2.5rem 1rem;}
 .comment-form .comment-form-panel .comment-login{padding: .4rem 1rem;font-size: 1rem;  color: #3399CC;  background-color: transparent;  border: 1px solid currentColor;  border-radius: 3px;}
 .comment-form .comment-form-area{display: none;padding: 1.3rem 1.3rem 1.3rem 6rem; position: relative;}
-.comment-form .comment-form-area .userpic{position: absolute;width: 3.4rem;height: 3.4rem;border-radius: 50%;background-image:url("../img/user.png");display: inline-block;background-position: 50%;background-repeat: no-repeat;background-color: #eee; left: 1.4rem;}
+.comment-form .comment-form-area .userpic{position: absolute;width: 3rem;height: 3rem;border-radius: 50%;background-image:url("../img/user.png");display: inline-block;background-position: 50%;background-repeat: no-repeat;background-color: #eee; left: 1.4rem;}
 .comment-form .comment-form-area textarea{resize: none;outline: none;width: 100%;display: block;box-shadow: none;border: 1px solid #ddd;border-radius: 2px;transition: border .3s;background-color: #fff;box-sizing: border-box; height: 3.4rem;line-height: 1.9rem;border-radius: 4px;padding: .6rem;border: 1px solid #ddd;font-size: 1.3rem;overflow: hidden;word-wrap: break-word;height: 60px;}
 .comment-form .comment-form-area .subcomment{margin-top: 1rem;text-align: right;}
 .comment-form .comment-form-area .subcomment button{color:#ffffff}

@@ -1,6 +1,6 @@
 <template ref="child">
     <div class="comment-form-area">
-        <div class="userpic"></div>
+        <div class="userpic" :style="styleObject"></div>
         <textarea placeholder="说点什么吧！" class="usercomment"></textarea>
         <div class="subcomment" id="subcomment">
             <button @click="CommitComment($event)">评论</button>
@@ -11,7 +11,12 @@
 export default {
     data:function(){
         return{
-               
+            styleObject:{
+                'background-image':'url('+require('../../../view/src/assets/img/'+localStorage.getItem("photo")+'')+')',
+                'background-size':'3rem 3rem',
+                'background-repeat':'no-repeat',
+                'background-position': '50%'
+            }
         }
     },
     methods:{
@@ -24,7 +29,7 @@ export default {
         }
     },
     mounted:function(){
-           
+        
     }
 }
 </script>

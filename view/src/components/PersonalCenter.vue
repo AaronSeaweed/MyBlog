@@ -45,7 +45,8 @@ export default {
     data:function(){
         return{
             photo:"",
-            showinfo:[]
+            showinfo:[],
+            infoindex:""
         }
     },
     components:{
@@ -54,9 +55,10 @@ export default {
     methods: {
         getUserInfo:function(){
             var that = this;
-            return that.$axios.post("/users/getuserinfo",{name:Gb.b64DecodeUnicode(that.$route.params.userid)})
+            return that.$axios.post("/users/getuserinfo",{id:Gb.b64DecodeUnicode(that.$route.params.userid)})
             .then(function (response) {
                 that.photo=require('../../../view/src/assets/img/'+response.data.data.photo)
+                that.showinfo=[];
                 that.showinfo.push({
                     "title":"用户名","name":response.data.data.username,"placeholder":"填写你的用户名","u":1,"s":0,"c":0
                 },{
@@ -77,10 +79,10 @@ export default {
         },
         toUpdateInfo:function(){
             var that = this;
-            //var updateinfo={username:,callname:,photo:,company:,selfintroduction:,profes:,homepage:,id:}
-            that.$axios.post("/users/toUpdate",{})
+            var updateinfo={username:$(".infotext").eq(0).val(),callname:$(".infotext").eq(1).val(),company:$(".infotext").eq(3).val(),selfintroduction:$(".infotext").eq(4).val(),profes:$(".infotext").eq(2).val(),homepage:$(".infotext").eq(5).val(),id:Gb.b64DecodeUnicode(that.$route.params.userid)}
+            that.$axios.post("/users/toUpdate",updateinfo)
             .then(function (response) {
-                
+                that.getUserInfo();
             })
             .catch(function (error) {
                 alert(error);
@@ -88,24 +90,69 @@ export default {
         },
         settext:function(glyphicon){
             var that =this;
-            var infotext = document.getElementsByClassName("infotext")
+            var infotext = document.getElementsByClassName("infotext");
+            
             for (var i = 0; i < glyphicon.length; i++) {
                 var a = glyphicon[i];
                 var b = infotext[i];
-                a.index = b.index = i;//给每个className为child的元素添加index属性;
-                a.onclick = b.onclick = function () {
+                a.index = b.index =i;//给每个className为child的元素添加index属性;
+                document.onclick=function(e){
+                    // var savaupdate = document.getElementsByClassName("savaupdate");
+                    // savaupdate[0].onclick=function(){
+                    //     console.log(that.infoindex)
+                    // }
+                    if(e.target.className=="savaupdate"){
+                        that.toUpdateInfo()
+                    }
+
+
+                    // if(e.target.className=="infotext"||e.target.className=="glyphicon glyphicon-pencil"){
+                    //     that.infoindex=e.target.index
+                    //     that.showinfo[e.target.index]['u']=0;
+                    //     that.showinfo[e.target.index]['s']=1;
+                    //     that.showinfo[e.target.index]['c']=1;
+                    //     infotext[e.target.index].select();
+                    //     setTimeout(function(){
+                    //         var savaupdate = document.getElementsByClassName("savaupdate");
+                    //         savaupdate[0].onclick=function(){
+                    //             console.log(that.infoindex)
+                    //         }
+                    //     },100)
+                    // }else{
+                        // that.infoindex=e.target.index
+                        // that.showinfo[e.target.index]['u']=1;
+                        // that.showinfo[e.target.index]['s']=0;
+                        // that.showinfo[e.target.index]['c']=0;
+                        // setTimeout(function(){var _glyphicon = document.getElementsByClassName("glyphicon")
+                        // that.settext(_glyphicon)},100)
+                   // }
+                }
+                b.onfocus = a.onclick= function () {
+                    that.infoindex=this.index
                     that.showinfo[this.index]['u']=0;
                     that.showinfo[this.index]['s']=1;
                     that.showinfo[this.index]['c']=1;
-                    infotext[this.index].select()
+                    infotext[this.index].select();
+                    // setTimeout(function(){
+                    //     var savaupdate = document.getElementsByClassName("savaupdate");
+                    //     savaupdate[0].onclick=function(){
+                    //         console.log(that.infoindex)
+                    //     }
+                    // },100)
                 }
                 b.onblur = function(){
-                    that.showinfo[this.index]['u']=1;
-                    that.showinfo[this.index]['s']=0;
-                    that.showinfo[this.index]['c']=0;
-                    var _glyphicon = document.getElementsByClassName("glyphicon")
-                    that.settext(_glyphicon)
+                    var obj =this;
+                    setTimeout(function(){
+                        that.infoindex=obj.index
+                        that.showinfo[obj.index]['u']=1;
+                        that.showinfo[obj.index]['s']=0;
+                        that.showinfo[obj.index]['c']=0;
+                    },600);
+                    
+                    setTimeout(function(){var _glyphicon = document.getElementsByClassName("glyphicon")
+                    that.settext(_glyphicon)},750)
                 }
+                
             }
         }
 

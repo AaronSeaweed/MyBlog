@@ -132,6 +132,8 @@ export default {
                             }else{
                                 localStorage.setItem("userstatus",1);
                                 localStorage.setItem("username",res.data.data.username);
+                                localStorage.setItem("userid",res.data.data.id);
+                                localStorage.setItem("photo",res.data.data.photo);
                                 location.reload();
                             }
                         }else if(res.data.status==500){
