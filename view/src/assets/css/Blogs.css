@@ -328,7 +328,7 @@ body{background-color: #f4f5f5;}
 .body_left_psct ul li .psct_photobox{display: flex;}
 .body_left_psct ul li .psct_photobox .photo_show{-webkit-box-flex: 0;-ms-flex: 0 0 auto;flex: 0 0 auto;width: 6rem;height: 6rem;margin-right: 1rem;display: inline-block;position: relative;background-position: 50%;background-size: cover!important;background-repeat: no-repeat;background-color: #eee;}
 .body_left_psct ul li .psct_photobox .action-box .tips{color: #909090;font-size: 1rem;margin-bottom: 1.5rem;}
-
+/*.body_left_psct ul li .psct_photobox .action-box input{opacity:0}*/
 
 
 

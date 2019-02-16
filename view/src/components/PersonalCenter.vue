@@ -11,7 +11,7 @@
                             <div class="photo_show" :style="{background:'url('+`${this.photo||''}`+')'}"></div>
                             <div class="action-box">
                                 <div class="tips">支持 jpg、png 格式大小 5M 以内的图片</div>
-                                <button>点击上传</button>
+                                <input type="file" name="file" accept=".jpg, .jpeg, .png" @change=uploadAvatar />
                             </div>
                         </div>
                     </li>
@@ -97,35 +97,9 @@ export default {
                 var b = infotext[i];
                 a.index = b.index =i;//给每个className为child的元素添加index属性;
                 document.onclick=function(e){
-                    // var savaupdate = document.getElementsByClassName("savaupdate");
-                    // savaupdate[0].onclick=function(){
-                    //     console.log(that.infoindex)
-                    // }
                     if(e.target.className=="savaupdate"){
                         that.toUpdateInfo()
                     }
-
-
-                    // if(e.target.className=="infotext"||e.target.className=="glyphicon glyphicon-pencil"){
-                    //     that.infoindex=e.target.index
-                    //     that.showinfo[e.target.index]['u']=0;
-                    //     that.showinfo[e.target.index]['s']=1;
-                    //     that.showinfo[e.target.index]['c']=1;
-                    //     infotext[e.target.index].select();
-                    //     setTimeout(function(){
-                    //         var savaupdate = document.getElementsByClassName("savaupdate");
-                    //         savaupdate[0].onclick=function(){
-                    //             console.log(that.infoindex)
-                    //         }
-                    //     },100)
-                    // }else{
-                        // that.infoindex=e.target.index
-                        // that.showinfo[e.target.index]['u']=1;
-                        // that.showinfo[e.target.index]['s']=0;
-                        // that.showinfo[e.target.index]['c']=0;
-                        // setTimeout(function(){var _glyphicon = document.getElementsByClassName("glyphicon")
-                        // that.settext(_glyphicon)},100)
-                   // }
                 }
                 b.onfocus = a.onclick= function () {
                     that.infoindex=this.index
@@ -133,12 +107,6 @@ export default {
                     that.showinfo[this.index]['s']=1;
                     that.showinfo[this.index]['c']=1;
                     infotext[this.index].select();
-                    // setTimeout(function(){
-                    //     var savaupdate = document.getElementsByClassName("savaupdate");
-                    //     savaupdate[0].onclick=function(){
-                    //         console.log(that.infoindex)
-                    //     }
-                    // },100)
                 }
                 b.onblur = function(){
                     var obj =this;
@@ -154,6 +122,17 @@ export default {
                 }
                 
             }
+        },
+        uploadAvatar:function(avatar){
+            console.log(avatar.target.files[0])
+            let file = avatar.target.files[0]
+            let data = new FormData();
+            data.append("file", file, file.name);//很重要 data.append("file", file);不成功
+            data.append('data',112)
+            console.log(data.get('file'))
+            return that.$axios.post("/users/file", data, {
+                    headers: { "content-type": "multipart/form-data" }
+            });
         }
 
     },

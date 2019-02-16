@@ -1,6 +1,8 @@
 var express = require('express');
 var router = express.Router();
 var db = require("../config/db");
+var fs = require('fs');
+var multer  = require('multer')
 /**
  * 登录
  */
@@ -129,6 +131,60 @@ router.post("/toUpdate",function(req,res,next){
         }
     });
 });
+
+router.post("/file",upload.single('file'),function(){
+    let avatar = req.file
+    console.log(avatar)
+    console.log(req.body)
+    if (avatar) {
+        fs.unlink(avatar.path, (e) => {
+            if (e) {
+                console.log('文件操作失败')
+                throw e;
+            } else
+                console.log('文件:' + avatar.path + '删除成功！');
+        });
+    }
+    res.status(200).send('上传成功');
+})
+
+  //multer文件的硬盘存储模式
+  var storage = multer.diskStorage({
+    destination: function(req, file, cb) {
+        //先创建路径在保存
+        createFileDirectory(uploadPath);
+        //指定文件保存路径
+        cb(null, '/assets/img');
+    },
+    filename: function(req, file, cb) {
+        console.log(file)
+            // 将保存文件名设置为 时间戳 + 文件原始名，比如 151342376785-123.jpg
+        cb(null, Date.now() + '-' + file.originalname);
+
+    }
+})
+
+//创建文件夹
+var createFileDirectory = function(path) {
+    try {
+        //检测文件夹是否存在，不存在抛出错误
+        fs.accessSync(path);
+    } catch (error) {
+        //创建文件夹
+        fs.mkdirSync(path);
+    }
+}
+
+var upload = multer({
+    storage: storage
+});
+
+
+
+
+
+
+
 
 router.post("/update",function(req,res,next){
     var id = req.body.id;
