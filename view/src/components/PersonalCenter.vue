@@ -8,7 +8,7 @@
                         <span class="psct_title">头像</span>
                         <div class="psct_photobox">
                             <input type="file" class="input" style="display: none">
-                            <div class="photo_show" :style="{background:'url('+`${this.photo||''}`+')'}"></div>
+                            <div class="photo_show" :style="{background:'url('+`${this.photo}`+')'}"></div>
                             <div class="action-box">
                                 <div class="tips">支持 jpg、png 格式大小 5M 以内的图片</div>
                                 <input type="file" name="file" accept=".jpg, .jpeg, .png" @change=uploadAvatar />
@@ -57,8 +57,11 @@ export default {
             var that = this;
             return that.$axios.post("/users/getuserinfo",{id:Gb.b64DecodeUnicode(that.$route.params.userid)})
             .then(function (response) {
-                that.photo=require('../../../view/src/assets/img/'+response.data.data.photo)
+                that.photo=response.data.data.photo?require('../../../view/src/assets/img/'+response.data.data.photo):require('../../../view/src/assets/img/user.png');
                 that.showinfo=[];
+                localStorage.setItem("username",response.data.data.username);
+                localStorage.getItem("photo",response.data.data.photo)
+                $("#username").show().text(response.data.data.username)
                 that.showinfo.push({
                     "title":"用户名","name":response.data.data.username,"placeholder":"填写你的用户名","u":1,"s":0,"c":0
                 },{
@@ -124,15 +127,16 @@ export default {
             }
         },
         uploadAvatar:function(avatar){
-            console.log(avatar.target.files[0])
+            var that = this;
             let file = avatar.target.files[0]
             let data = new FormData();
             data.append("file", file, file.name);//很重要 data.append("file", file);不成功
-            data.append('data',112)
-            console.log(data.get('file'))
-            return that.$axios.post("/users/file", data, {
+            data.append('userid',Gb.b64DecodeUnicode(that.$route.params.userid))
+            that.$axios.post("/dataInpute", data, {
                     headers: { "content-type": "multipart/form-data" }
-            });
+            }).then(function (response) {
+                console.log(response)
+            })
         }
 
     },
