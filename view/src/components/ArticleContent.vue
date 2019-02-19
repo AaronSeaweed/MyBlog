@@ -273,18 +273,24 @@ export default {
             gcent().then(function(){
                 var child = document.getElementsByClassName("title");
                 var childcomment = document.getElementsByClassName("comment-form-area");
+                var timer=null;
+                var blurobj=null;
                 for (var i = 0; i < child.length; i++) {
                     childcomment[i+1].style.display="none"
                     var a = child[i];
                     a.index = childcomment[i+1].children[1].index = i;//给每个className为child的元素添加index属性;
                     a.onclick = function () {
+                        blurobj=this;//记录当前回复框对象
+                        clearTimeout(timer);
                         that.replysubmit=[]
                         that.replysubmit.replytype=child[this.index].getAttribute("replytype");
                         that.replysubmit.artid=child[this.index].getAttribute("artid");
                         that.ReplyArt(this.index,child[this.index].parentNode.parentNode.parentNode.children[0].children[0].children[0].innerText)
                     }
                     childcomment[i+1].children[1].onblur=function(){
-                        //that.ReplyArt(this.index)
+                        timer=setTimeout(function(){
+                            that.ReplyArt(blurobj.index)
+                        },120);
                     }
                 }
             })
