@@ -52,7 +52,7 @@
                                 </div>
                                 <div class="content-foot">
                                     <div class="like-btn"><i></i><span>{{comlist.up}}</span></div>
-                                    <span class="sub-comment-btn text-pointer">
+                                    <span :class='classObj(comlist.username)'>
                                         <span class="title" :replytype="0" :artid="comlist.id">回复</span>
                                     </span>
                                     <span class="date">{{changetime(comlist.date)}}</span>
@@ -78,7 +78,7 @@
                                                     </div>
                                                     <div class="content-foot">
                                                         <div class="like-btn"><i></i><span>{{replylist.replyup}}</span></div>
-                                                        <span class="sub-comment-btn text-pointer">
+                                                        <span :class='classObj(replylist.replyusername)'>
                                                             <span class="title" :replytype="1" :artid="replylist.replyid">回复</span>
                                                         </span>
                                                         <span class="date">{{changetime(replylist.replydate)}}</span>
@@ -120,7 +120,8 @@ export default {
                 AriDetail:[],
                 replys:[],
                 replysubmit:[],
-                replycount:0
+                replycount:0,
+                uname:localStorage.getItem("username")
             }
         },
         wacth:{
@@ -132,6 +133,13 @@ export default {
             CommentPanel
         },
         methods:{
+            classObj:function(name){
+                if(name==this.uname){
+                    return "displaynone sub-comment-btn text-pointer"
+                }else{
+                    return "sub-comment-btn text-pointer"
+                }
+            },
             changetime:function (time) {
                 var timearr=Gb.getTimediff(time);
                 switch (timearr[0]){
@@ -290,7 +298,7 @@ export default {
                     childcomment[i+1].children[1].onblur=function(){
                         timer=setTimeout(function(){
                             that.ReplyArt(blurobj.index)
-                        },120);
+                        },220);
                     }
                 }
             })
