@@ -207,7 +207,11 @@ export default {
                     }
                     that.$axios.post(posturl, submitdata)
                     .then(function (response) {
-                         $(".usercomment").eq(index).val("");
+                        if(index==undefined){
+                            $(".usercomment").eq(0).val("");
+                        }else{
+                            $(".usercomment").eq(index).val("");
+                        }
                          that.getcomment();
                     })
                     .catch(function (error) {
@@ -284,7 +288,7 @@ export default {
                 var timer=null;
                 var blurobj=null;
                 for (var i = 0; i < child.length; i++) {
-                    childcomment[i+1].style.display="none"
+                    //childcomment[i+1].style.display="none"
                     var a = child[i];
                     a.index = childcomment[i+1].children[1].index = i;//给每个className为child的元素添加index属性;
                     a.onclick = function () {

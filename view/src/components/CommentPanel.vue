@@ -1,5 +1,5 @@
 <template ref="child">
-    <div class="comment-form-area">
+    <div class="comment-form-area displaynone">
         <div class="userpic" :style="styleObject"></div>
         <textarea placeholder="说点什么吧！" class="usercomment"></textarea>
         <div class="subcomment" id="subcomment">
