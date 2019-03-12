@@ -10,6 +10,7 @@ var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var loginRouter = require('./routes/login');
 var articleRouter = require('./routes/article');
+var weixinRouter = require('./routes/weixin');
 var testController=require('./routes/testController');
 var app = express();
 
@@ -34,6 +35,7 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/login', loginRouter);
 app.use('/article', articleRouter);
+app.use('/weixin', weixinRouter);
 app.post('/dataInpute',testController.dataInput);
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

@@ -1,0 +1,30 @@
+
+var express = require('express');
+var router = express.Router();
+var db = require("../config/db");
+
+
+/**
+ * 获取全部食物类型
+ */
+router.post("/getfoodtype",function(req,res,next){
+    db.query("select *from menulist",function(error,rows){
+        if (error) {
+            var result = {
+                "status": "500",
+                "message": "服务器错误"
+            }
+            return res.jsonp(result);
+        }
+        else{
+            var result = {
+                "status": "200",
+                "message": "success",
+                data:rows
+            }
+            return res.jsonp(result);
+        }
+    });
+});
+
+module.exports = router

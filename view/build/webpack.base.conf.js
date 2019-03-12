@@ -16,7 +16,9 @@ module.exports = {
     app: './src/main.js'
   },
   output: {
+    // 编译输出的静态资源根路径
     path: config.build.assetsRoot,
+    // 编译输出的文件名
     filename: '[name].js',
     publicPath: process.env.NODE_ENV === 'production'
       ? config.build.assetsPublicPath
