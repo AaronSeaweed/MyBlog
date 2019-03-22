@@ -121,8 +121,7 @@ router.post("/commitreply",function(req,res){
 router.post("/getcommentlist",function(req,res,next){
     var contentid=req.body.contentid;
     var selsql=`select A.*,B.photo,B.callname from commentlist A Left outer join user B on A.username=B.username where contentid=`+contentid+` Order By date Desc`
-    db.query(selsql,
-        function(error,rows){
+    db.query(selsql,function(error,rows){
         if (error) {
             var result = {
                 "status": "500",

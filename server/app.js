@@ -14,7 +14,6 @@ var weixinRouter = require('./routes/weixin');
 var testController=require('./routes/testController');
 var app = express();
 
-
 app.use(cors({
 	origin:['http://localhost:8080'],  //允许这个域的访问
 	methods:['GET','POST'],			//只允许GET和POST请求

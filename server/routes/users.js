@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var db = require("../config/db");
+var token = require("./set_token");
 /**
  * 登录
  */
@@ -19,7 +20,8 @@ router.post("/login",function(req,res,next){
             var result = {
                 "status": "200",
                 "message": "success",
-                data:rows[0]
+                data:rows[0],
+                token:token
             }
             if(rows[0]==""||rows[0]==null){
                 result = {
