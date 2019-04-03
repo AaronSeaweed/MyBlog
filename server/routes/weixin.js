@@ -2,8 +2,7 @@
 var express = require('express');
 var router = express.Router();
 var db = require("../config/db");
-var common = require("./common");
-
+const chinaTime = require('china-time');
 /**
  * 获取全部食物类型
  */
@@ -112,7 +111,7 @@ router.post("/setuserinfo",function(req,res,next){
  * 修改收货人信息
  */
 router.post("/updateuserinfo",function(req,res,next){
-    var selsql="UPDATE useraddress set username='"+req.body.username+"',Telphone='"+req.body.Telphone+"',province='"+req.body.province+"',city='"+req.body.city+"',Area='"+req.body.Area+"',detailaddress='"+req.body.detailaddress+"',usestatus="+req.body.usestatus+" where id = "+req.body.id+"";
+    var selsql="UPDATE useraddress set username='"+req.body.username+"',Telphone='"+req.body.Telphone+"',province='"+req.body.province+"',city='"+req.body.city+"',Area='"+req.body.Area+"',detailaddress='"+req.body.detailaddress+"',usestatus="+req.body.usestatus+",addresstype='"+req.body.addresstype+"',doorplate='"+req.body.doorplate+"' where id = "+req.body.id+"";
     db.query(selsql,function(error,rows){
         if (error) {
             var result = {
@@ -298,5 +297,58 @@ router.post("/getOrderDateil",function(req,res,next){
             }
         });
     });
-
+    /**
+     * 新增订单
+     */
+    router.post("/addorder",function(req,res,next){
+        new Promise((resolve,reject)=>{
+           var selsql="INSERT into orderlist(ordernum,goodtolprice,payprice,deliveryprice,Reciinfo,orderdate,orderstatus) VALUES ('"+Date.parse(new Date())+"',"+req.body.goodtolprice+","+req.body.payprice+","+req.body.deliveryprice+","+req.body.Reciinfo+",'"+chinaTime('YYYY-MM-DD HH:mm:ss')+"',1)";
+           db.query(selsql,function(error,rows){
+                if (error) {
+                    var result = {
+                        "status": "500",
+                        "message": "服务器错误"
+                    }
+                    reject(res.jsonp(result))
+                }
+                else{
+                    var result = {
+                        "status": "200",
+                        "message": "success",
+                        "insertId":rows.insertId
+                    }
+                    resolve([req,result]);
+                }
+            });
+        }).then(([req,orderid])=>{
+                    var datasql="";
+                    for(let i=0;i< req.body.foodlist.length;i++){
+                        if(i==0){
+                            datasql="("+orderid.insertId+","+req.body.foodlist[i].foodid+","+req.body.foodlist[i].count+")"
+                        }else{
+                            datasql+=",("+orderid.insertId+","+req.body.foodlist[i].foodid+","+req.body.foodlist[i].count+")"
+                        }
+                    }
+                    var selsql ="INSERT into order_goodlist(orderid,foodid,count) values "+datasql+"";
+                    console.log("selsql:"+selsql)
+                    db.query(selsql,function(error,rows){
+                        if (error) {
+                            var result = {
+                                "status": "500",
+                                "message": "服务器错误"
+                            }
+                            return res.jsonp(result);
+                        }
+                        else{
+                            var result = {
+                                "status": "200",
+                                "message": "success",
+                                "orderid":orderid,
+                                data:rows
+                            }
+                            return res.jsonp(result);
+                        }
+                    });
+        },er=>er)
+     });
 module.exports = router
