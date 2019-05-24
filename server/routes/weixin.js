@@ -330,7 +330,6 @@ router.post("/getOrderDateil",function(req,res,next){
                         }
                     }
                     var selsql ="INSERT into order_goodlist(orderid,foodid,count) values "+datasql+"";
-                    console.log("selsql:"+selsql)
                     db.query(selsql,function(error,rows){
                         if (error) {
                             var result = {

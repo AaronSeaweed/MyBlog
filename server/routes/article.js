@@ -63,12 +63,12 @@ router.post("/getarticletype",function(req,res,next){
  * 提交评论
  */
 router.post("/commitcontent",function(req,res,next){
-    var username=req.body.username;
+    var username=req.body.userid;
     var content=req.body.content;
     var up=req.body.up;
     var date=req.body.date;
     var contentid=req.body.contentid;
-    db.query("insert into commentlist values (null,'"+username+"','"+content+"',"+up+",'"+date+"',"+contentid+")",function(error,rows){
+    db.query("insert into commentlist values (null,'"+userid+"','"+content+"',"+up+",'"+date+"',"+contentid+")",function(error,rows){
         if (error) {
             var result = {
                 "status": "500",
@@ -120,7 +120,7 @@ router.post("/commitreply",function(req,res){
  */
 router.post("/getcommentlist",function(req,res,next){
     var contentid=req.body.contentid;
-    var selsql=`select A.*,B.photo,B.callname from commentlist A Left outer join user B on A.username=B.username where contentid=`+contentid+` Order By date Desc`
+    var selsql=`select A.*,B.photo,B.callname,B.username as Uname from commentlist A Left outer join user B on A.username=B.id where contentid=`+contentid+` Order By date Desc`
     db.query(selsql,function(error,rows){
         if (error) {
             var result = {
@@ -144,7 +144,7 @@ router.post("/getcommentlist",function(req,res,next){
  * 获取评论回复列表
  */
 router.post("/getreplylist",function(req,res,next){
-    db.query("select A.*,B.photo,B.callname from replyart A Left outer join user B on A.replyusername=B.username Order By A.replydate Asc",function(error,rows){
+    db.query("select A.*,B.photo,B.callname,B.username from replyart A Left outer join user B on A.replyusername=B.id Order By A.replydate Asc",function(error,rows){
         if (error) {
             var result = {
                 "status": "500",

@@ -1,109 +1,118 @@
 <template>
-<div class="body_content container">
-        <div class="body_left col-md-8">
-            <div class="v_out v_out_p">
-                <div class="prev prev_next">
-                    <a href="javascript:void(0)"></a>
-                </div>
-                <div class="v_show">
-                    <div class="v_cont">
-                        <ul>
-                            <li index="0"><img src="../assets/img/banner_1.jpg"/></li>
-                            <li index="1"><img src="../assets/img/banner_2.jpg"/></li>
-                            <li index="2"><img src="../assets/img/banner_3.jpg"/></li>
-                        </ul>
+<el-row :gutter="20"  class="body_content container">
+    <el-col :span="16">
+        <div class="grid-content bg-purple body_left">
+            <el-carousel :interval="5000" arrow="always">
+                <el-carousel-item v-for="(item,index) in banner" :key="index">
+                <img :src="imgSrcFun(item.src)"/>
+                </el-carousel-item>
+            </el-carousel>
+            <!-- <div class="v_out v_out_p">
+                    <div class="prev prev_next">
+                        <a href="javascript:void(0)"></a>
                     </div>
-                </div>
-                <div class="next prev_next"><a href="javascript:void(0)"></a></div>
-                <ul class="circle">
-                    <li class="circle-cur"></li>
-                    <li></li>
-                    <li></li>
-                </ul>
-            </div>
-            <div class="recarti">
-                <!--<div class="recomtoday">
-                    <h2><span>【今日推荐】</span><a>{{title}}</a></h2>
-                    <p>{{message}}</p>
-                </div>-->
-                <div class="conttil">
-                    <!--<span>最新发布</span>-->
-                    <a href="javascript:void(0)" @click="sorting(1)">热度</a>
-                    <a href="javascript:void(0)" @click="sorting(3)">新鲜度</a>
-                </div>
-                <div class="bloglist">
-                    <div class="blogtypemenu">
-                        <div class="menulist">
+                    <div class="v_show">
+                        <div class="v_cont">
+                            <ul>
+                                <li index="0"><img src="../assets/img/banner_1.jpg"/></li>
+                                <li index="1"><img src="../assets/img/banner_2.jpg"/></li>
+                                <li index="2"><img src="../assets/img/banner_3.jpg"/></li>
+                            </ul>
                         </div>
-                        <ul class="contenttypemenu">
-                            <li v-for="(contype,index) in contenttype" :key="contype.typeid" @click="changecontent(index)">{{contype.typename}}</li>
-                        </ul>
                     </div>
-
-                    <template v-for="(blcont) in this.nblists">
-                        <div class="conlist"  :key="blcont.id">
-                            <div class="imgbg">
-                                <img src="../assets/img/contentimg.png"/>
+                    <div class="next prev_next"><a href="javascript:void(0)"></a></div>
+                    <ul class="circle">
+                        <li class="circle-cur"></li>
+                        <li></li>
+                        <li></li>
+                    </ul>
+            </div> -->
+                <div class="recarti">
+                    <!--<div class="recomtoday">
+                        <h2><span>【今日推荐】</span><a>{{title}}</a></h2>
+                        <p>{{message}}</p>
+                    </div>-->
+                    <div class="conttil">
+                        <!--<span>最新发布</span>-->
+                        <a href="javascript:void(0)" @click="sorting(1)">热度</a>
+                        <a href="javascript:void(0)" @click="sorting(3)">新鲜度</a>
+                    </div>
+                    <div class="bloglist">
+                        <div class="blogtypemenu">
+                            <div class="menulist">
                             </div>
-                            <div class="conbg">
-                                <header>
-                                    <a href="javascript:void(0)">{{blcont.typename}}</a>
-                                    <router-link :to="{ name: 'atct', params:{conid:blcont.article_id}}" class="contitle">{{blcont.article_title}}</router-link>
-                                </header>
-                                <span class="condatetime coninfo">{{reversedMessage(blcont.datetime)}}</span>
-                                <span class="conviews coninfo">有{{blcont.views}}人阅读</span>
-                                <a href="javascript:void(0)" class="coninfo concommentnum" @mouseover="changecolor($event)"
-                                   @mouseout="changecolor2($event)" @click="AContent(blcont.id)">{{blcont.commentnum}}条评论</a>
-                                <br/><br/>
+                            <ul class="contenttypemenu">
+                                <li v-for="(contype,index) in contenttype" :key="contype.typeid" @click="changecontent(index)">{{contype.typename}}</li>
+                            </ul>
+                        </div>
+
+                        <template v-for="(blcont) in this.nblists">
+                            <div class="conlist"  :key="blcont.id">
+                                <div class="imgbg">
+                                    <img src="../assets/img/contentimg.png"/>
+                                </div>
+                                <div class="conbg">
+                                    <header>
+                                        <a href="javascript:void(0)">{{blcont.typename}}</a>
+                                        <router-link :to="{ name: 'atct', params:{conid:blcont.article_id}}" class="contitle">{{blcont.article_title}}</router-link>
+                                    </header>
+                                    <span class="condatetime coninfo">{{reversedMessage(blcont.datetime)}}</span>
+                                    <span class="conviews coninfo">有{{blcont.views}}人阅读</span>
+                                    <a href="javascript:void(0)" class="coninfo concommentnum" @mouseover="changecolor($event)"
+                                    @mouseout="changecolor2($event)" @click="AContent(blcont.id)">{{blcont.commentnum}}条评论</a>
+                                    <br/><br/>
+                                </div>
+                            </div>
+                        </template>
+
+                        <div class="loadmore">
+                        </div>
+                    </div>
+                </div>
+        </div>
+    </el-col>
+    <el-col :span="8">
+        <div class="grid-content bg-purple body_right">
+            <WebBulletin></WebBulletin>
+            <!--每日一句-->
+            <div class="daysen">
+                <div class="ds_title">
+                    每日一句
+                </div>
+                <div class="ds_cont">
+                    <div>
+                        <p></p>
+                        <span>{{contdate[0].cont_en}}</span>
+                        <span>{{contdate[0].cont_zh}}({{contdate[0].author}})</span>
+                    </div>
+                </div>
+            </div>
+            <!--热门文章-->
+            <div class="hotcont">
+                <div class="hc_title" id="w">
+                    精华
+                </div>
+                <template v-for="hotcont in hotblcontlists">
+                    <div v-if="hotcont.hot==true" :key="hotcont.id">
+                        <div class="hc_cont">
+                            <div class="hc_imgbg"><img src="../assets/img/contentimg.png"/></div>
+                            <div class="hc_concont">
+                                <a href="javascript:void(0)">{{hotcont.article_title}}</a>
+                                <span>{{hotcont.datetime}}</span>　　<span class="views">{{hotcont.views}}</span>
                             </div>
                         </div>
-                    </template>
+                    </div>
+                </template>
+            </div>
+        </div>
+        </div>
+    </el-col>
+</el-row>
 
-                    <div class="loadmore">
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="body_right col-md-4 hidden-xs hidden-sm">
-        <WebBulletin></WebBulletin>
-        <!--每日一句-->
-        <div class="daysen">
-            <div class="ds_title">
-                每日一句
-            </div>
-            <div class="ds_cont">
-                <div>
-                    <p></p>
-                    <span>{{contdate[0].cont_en}}</span>
-                    <span>{{contdate[0].cont_zh}}({{contdate[0].author}})</span>
-                </div>
-            </div>
-        </div>
-        <!--热门文章-->
-        <div class="hotcont">
-            <div class="hc_title" id="w">
-                精华
-            </div>
-            <template v-for="hotcont in hotblcontlists">
-                <div v-if="hotcont.hot==true" :key="hotcont.id">
-                    <div class="hc_cont">
-                        <div class="hc_imgbg"><img src="../assets/img/contentimg.png"/></div>
-                        <div class="hc_concont">
-                            <a href="javascript:void(0)">{{hotcont.article_title}}</a>
-                            <span>{{hotcont.datetime}}</span>　　<span class="views">{{hotcont.views}}</span>
-                        </div>
-                    </div>
-                </div>
-            </template>
-        </div>
-    </div>
-</div>
 </template>
 <script>
 import WebBulletin from './WebBulletin.vue';
-import {Banner} from '../assets/js/banner.js'
 import {Gb} from '../assets/js/global.js'
-setInterval(Banner.nextscroll, 5000);//焦点图自动滚动
 export default {
     //绑定最新发布文章和事件
             data:function(){
@@ -122,18 +131,22 @@ export default {
                     isnsorting: 0,//默认不启用排序功能
                     contdate: [{datetime:"2017年01月13日星期五",cont_en:"Do not let what you cannot do interfere with what you can do.",cont_zh:"别让你不能做的事妨碍到你能做的事。",author:"John Wooden"}]
                     ,hotblcontlist:"",
-                    nblists:[]
+                    nblists:[],
+                    banner:[{ src:"banner_1.jpg"},{src:"banner_2.jpg"},{src:"banner_3.jpg"}]
                 }
             },
             components:{
                 WebBulletin
             },
             methods: {
+                imgSrcFun(value){
+                    return require('@/assets/img/'+value);
+                },
                 checkback_over: function (event) {
-                        $(event.currentTarget).css({"color": "#3399CC"});
+                    $(event.currentTarget).css({"color": "#3399CC"});
                 },
                 checkback_out: function (event) {
-                        $(event.currentTarget).css({"color": "#000"});
+                    $(event.currentTarget).css({"color": "#000"});
                 },
                 changecolor: function (evevt) {
                     $(event.currentTarget).addClass("concommentnum2").removeClass("concommentnum");
@@ -334,10 +347,6 @@ export default {
                         $(".contenttypemenu2").removeClass("contenttypemenu2").addClass("contenttypemenu");
                     }
                 })
-                $(".next a").click(function () {//手动滚动
-                    Banner.nextscroll()
-                });
-                Banner.blogtab();
                 this.blcontlist();
             },
             updated: function () {

@@ -60,8 +60,8 @@ export default {
                 that.photo=response.data.data.photo?require('../../../view/src/assets/img/'+response.data.data.photo):require('../../../view/src/assets/img/user.png');
                 that.showinfo=[];
                 localStorage.setItem("username",response.data.data.username);
-                localStorage.getItem("photo",response.data.data.photo)
-                $("#username").show().text(response.data.data.username)
+                localStorage.setItem("photo",response.data.data.photo);
+                $("#username").show().text(response.data.data.username);
                 that.showinfo.push({
                     "title":"用户名","name":response.data.data.username,"placeholder":"填写你的用户名","u":1,"s":0,"c":0
                 },{
@@ -85,6 +85,11 @@ export default {
             var updateinfo={username:$(".infotext").eq(0).val(),callname:$(".infotext").eq(1).val(),company:$(".infotext").eq(3).val(),selfintroduction:$(".infotext").eq(4).val(),profes:$(".infotext").eq(2).val(),homepage:$(".infotext").eq(5).val(),id:Gb.b64DecodeUnicode(that.$route.params.userid)}
             that.$axios.post("/users/toUpdate",updateinfo)
             .then(function (response) {
+                that.$message({
+                    message: '修改成功！',
+                    type: 'success',
+                    duration:1000
+                });
                 that.getUserInfo();
             })
             .catch(function (error) {

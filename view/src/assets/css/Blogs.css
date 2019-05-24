@@ -90,7 +90,7 @@ h2 {font-size:18px}
 .body_left .recarti div h2 a:hover{color:#3399CC;text-decoration:none}
 .body_left .recarti div p{text-indent: 35px;margin: 10px;font-size: 14px;}
 .body_left .recarti .recomtoday{width:100%;height:auto;border:1px #EAEAEA solid;background-color: #ffffff;}
-.body_left .recarti .conttil{margin: 20px 0 5px 0;font-size:20px;display:block;}
+.body_left .recarti .conttil{font-size:20px;display:block;}
 .body_left .recarti .conttil a{font-size:12px;margin: 12px 10px 0 0;text-decoration:none;color:black;cursor:pointer}
 .body_left .recarti .conttil a:hover {color:black;text-decoration:underline}
 .body_left .recarti .bloglist {width:100%;height:100%;}
@@ -173,12 +173,15 @@ h2 {font-size:18px}
 .body_right {border:0px black solid;padding-right: 0!important;}/*width:389px;width:33.2%;margin-left:20px;*/
 
 /************************博客页焦点图***********************/
-.v_out{overflow:hidden;}
-.v_show{width:100%;overflow:hidden;position:relative;height:280px;float:left}/*width:785px;*/
+/* .v_out{overflow:hidden;}
+.v_show{width:100%;overflow:hidden;position:relative;height:280px;float:left}
 .v_cont{ width:6650px;position:absolute;left:0px;top:0px;}
 .v_cont ul{float:left;text-align:center;line-height:50px;}
 .v_cont ul li{width:785px;height:250px;background:#f8f8f8;float:left;}
-.v_cont ul li img{width:785px;height:250px}
+.v_cont ul li img{width:785px;height:250px} */
+
+.el-carousel__item img {width:785px;height:300px}
+
 /*---圆圈---*/
 .v_out_p{position:relative;overflow:visible;z-index:99;}
 .circle{position:absolute;right: 50px;top: 230px;}
@@ -193,9 +196,9 @@ h2 {font-size:18px}
 .prev,.prev a,.next,.next a{width:21px;height:28px; display:block}
 
 /******************************博客页选项卡**************************/
-#Scro_Fixed{ margin-top: -10px;}
+/* #Scro_Fixed{ margin-top: -10px;}
 #tab .tabList ul li{float:left;background:#fefefe;background:-moz-linear-gradient(top, #fefefe, #ededed);background:-o-linear-gradient(left top,left bottom, from(#fefefe), to(#ededed));background:-webkit-gradient(linear,left top,left bottom, from(#fefefe), to(#ededed));background:-ms-linear-gradient(top, #fefefe, #ededed);border:1px solid #EAEAEA;padding:5px 0;width:25.2%;text-align:center;margin-left:-1px;position:relative;cursor:pointer;height:39px;font-size:14px;line-height:30px}
-#tab .tabCon{margin-left:-1px;border:1px solid #EAEAEA;border-top:none;width:100%;height:155px;background-color:#ffffff;position: relative;}/*width:388px*/
+#tab .tabCon{margin-left:-1px;border:1px solid #EAEAEA;border-top:none;width:100%;height:155px;background-color:#ffffff;position: relative;}
 #tab .tabCon div{padding:10px;position:absolute;opacity:0;filter:alpha(opacity=0);}
 #tab .tabList{height:39px}
 #tab .tabList li.cur{border-bottom:none;background:#fff;color:#38393B;}
@@ -205,12 +208,15 @@ h2 {font-size:18px}
 #tab .tabCon div ul li span {    margin-left: 10px;float:right}
 #tab .tabCon div ul li a{color:black;cursor:pointer;max-width: 70%;display: inline-block;text-overflow: ellipsis;overflow: hidden;height: 20px;white-space: nowrap;}
 #tab .tabCon div ul li a:hover{color: #337ab7;text-decoration: none}
-#tab .tabCon #ContactWeb span {line-height:30px}
+#tab .tabCon #ContactWeb span {line-height:30px} */
 
-
-
+.el-tabs .el-tabs__content div ul li{font-size:12px;line-height:28px}
+.el-tabs .el-tabs__content div ul li .morebull{float:right;color: #337ab7;}
+.el-tabs .el-tabs__content div ul li span {    margin-left: 10px;float:right}
+.el-tabs .el-tabs__content div ul li a{color:black;cursor:pointer;max-width: 70%;display: inline-block;text-overflow: ellipsis;overflow: hidden;height: 20px;white-space: nowrap;}
+.el-tabs .el-tabs__content div ul li a:hover{color: #337ab7;text-decoration: none}
 /*//////////////////////////////////////////////////////////////////////////////*/
-.body_right .scro_fixed{position:fixed;width: 29%}
+.body_right .scro_fixed{position:fixed;width: 17%}
 /*********************************博客页搜索框************************************/
 .body_right .search {width:100%;height:51px;border:1px #EAEAEA solid;margin-top:15px; margin-left: -1px;background-color:#FFF}
 .body_right .search .inpout_container{width:95%;margin:10px auto;border:1px #EAEAEA solid;height:30px;    border-right: 0px;}

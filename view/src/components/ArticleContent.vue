@@ -43,7 +43,7 @@
                             <div class="content-box">
                                 <div class="content-header">
                                     <div class="user-info">
-                                        <div class="user-Avatar-box"><a class="username">{{comlist.username}}</a></div>
+                                        <div class="user-Avatar-box"><a class="username">{{comlist.Uname}}</a></div>
                                         <div class="position">{{comlist.callname || ""}}</div>
                                     </div>
                                 </div>
@@ -52,7 +52,7 @@
                                 </div>
                                 <div class="content-foot">
                                     <div class="like-btn"><i></i><span>{{comlist.up}}</span></div>
-                                    <span :class='classObj(comlist.username)'>
+                                    <span :class='classObj(comlist.Uname)'>
                                         <span class="title" :replytype="0" :artid="comlist.id">回复</span>
                                     </span>
                                     <span class="date">{{changetime(comlist.date)}}</span>
@@ -69,7 +69,7 @@
                                                 <div class="content-box">
                                                     <div class="content-header">
                                                         <div class="user-info">
-                                                            <div class="user-Avatar-box"><a class="username">{{replylist.replyusername}}</a></div>
+                                                            <div class="user-Avatar-box"><a class="username">{{replylist.username}}</a></div>
                                                             <div class="position">{{replylist.callname || ""}}</div>
                                                         </div>
                                                     </div>
@@ -78,7 +78,7 @@
                                                     </div>
                                                     <div class="content-foot">
                                                         <div class="like-btn"><i></i><span>{{replylist.replyup}}</span></div>
-                                                        <span :class='classObj(replylist.replyusername)'>
+                                                        <span :class='classObj(replylist.username)'>
                                                             <span class="title" :replytype="1" :artid="replylist.replyid">回复</span>
                                                         </span>
                                                         <span class="date">{{changetime(replylist.replydate)}}</span>
@@ -197,12 +197,12 @@ export default {
                 var commentcontent=$(".usercomment").eq(index).val()||$(".usercomment").eq(0).val();
                 if(commentcontent.trim()==""){alert("你输入评论！")}else{
                     var nowdate=Gb.getDate();//获取当前时间
-                    var username=localStorage.getItem("username");
-                    var submitdata={artid:that.replysubmit.artid,replyusername:username,replycontent:commentcontent,replyup:0,replydate:nowdate,replytype:that.replysubmit.replytype}
+                    var userid=localStorage.getItem("userid");
+                    var submitdata={artid:that.replysubmit.artid,replyusername:userid,replycontent:commentcontent,replyup:0,replydate:nowdate,replytype:that.replysubmit.replytype}
                     var posturl='/article/commitreply';
                     if(index==undefined){
                         commentcontent=$(".usercomment").eq(0).val();
-                        submitdata={username:username,content:commentcontent,up:0,date:nowdate,contentid:that.$route.params.conid}
+                        submitdata={username:userid,content:commentcontent,up:0,date:nowdate,contentid:that.$route.params.conid}
                         posturl='/article/commitcontent';
                     }
                     that.$axios.post(posturl, submitdata)
