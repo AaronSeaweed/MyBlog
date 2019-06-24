@@ -30,7 +30,7 @@ export default {
         }
     },
     mounted:function(){
-         console.log(localStorage.getItem("photo"))
+         //console.log(localStorage.getItem("photo"))
     }
 }
 </script>

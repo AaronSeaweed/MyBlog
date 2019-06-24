@@ -7,26 +7,6 @@
                 <img :src="imgSrcFun(item.src)"/>
                 </el-carousel-item>
             </el-carousel>
-            <!-- <div class="v_out v_out_p">
-                    <div class="prev prev_next">
-                        <a href="javascript:void(0)"></a>
-                    </div>
-                    <div class="v_show">
-                        <div class="v_cont">
-                            <ul>
-                                <li index="0"><img src="../assets/img/banner_1.jpg"/></li>
-                                <li index="1"><img src="../assets/img/banner_2.jpg"/></li>
-                                <li index="2"><img src="../assets/img/banner_3.jpg"/></li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="next prev_next"><a href="javascript:void(0)"></a></div>
-                    <ul class="circle">
-                        <li class="circle-cur"></li>
-                        <li></li>
-                        <li></li>
-                    </ul>
-            </div> -->
                 <div class="recarti">
                     <!--<div class="recomtoday">
                         <h2><span>【今日推荐】</span><a>{{title}}</a></h2>

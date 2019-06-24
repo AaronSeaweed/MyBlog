@@ -44,7 +44,6 @@ router.post("/add",function(req,res,next){
     var password=req.body.password;
     db.query("insert into user(username,password) values('"+name+"','"+ password +"')",function(error,rows){
         if (error) {
-            console.log(error);
             var result = {
                 "status": "500",
                 "message": "服务器错误"
@@ -137,7 +136,6 @@ router.post("/update",function(req,res,next){
     var name = req.body.name;
     var age = req.body.age;
     var sql = "update user set name = '"+ name +"',age = '"+ age +"' where id = " + id;
-    console.log(sql);
     db.query(sql,function(err,rows){
         if(err){
             res.send("修改失败 " + err);

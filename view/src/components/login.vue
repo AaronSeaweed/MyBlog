@@ -134,6 +134,7 @@ export default {
                                 localStorage.setItem("username",res.data.data.username);
                                 localStorage.setItem("userid",res.data.data.id);
                                 localStorage.setItem("photo",res.data.data.photo);
+                                localStorage.setItem("token",res.data.token);
                                 location.reload();
                             }
                         }else if(res.data.status==500){

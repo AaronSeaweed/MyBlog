@@ -93,7 +93,11 @@ export default {
                 that.getUserInfo();
             })
             .catch(function (error) {
-                alert(error);
+                that.$message({
+                    message: error,
+                    type: 'error',
+                    duration:1000
+                });
             });
         },
         settext:function(glyphicon){

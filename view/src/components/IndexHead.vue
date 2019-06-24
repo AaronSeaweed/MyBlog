@@ -21,7 +21,7 @@
             <ul>
                 <li><a href="../page/HomePage.html">首页</a></li>
                 <li><a href="../">博客</a></li>
-                <li><a href="../page/HomePage.html">相册</a></li>
+                <li><router-link :to="{ name: 'wrae', params:{userid:this.userid}}" class="contitle">写文章</router-link></li>
                 <li><a href="../page/HomePage.html">联系我</a></li>
                 <li><a href="../page/HomePage.html">关于</a></li>
             </ul>

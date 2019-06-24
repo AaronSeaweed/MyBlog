@@ -74,7 +74,7 @@
                                                         </div>
                                                     </div>
                                                     <div class="content">
-                                                        <span class="content-html">回复&nbsp;{{replylist.replytype==0?comlist.username:getname(replylist.artid)}}：{{replylist.replycontent}}</span>
+                                                        <span class="content-html">回复&nbsp;{{getname(replylist.artid)}}：{{replylist.replycontent}}</span>
                                                     </div>
                                                     <div class="content-foot">
                                                         <div class="like-btn"><i></i><span>{{replylist.replyup}}</span></div>
@@ -253,9 +253,15 @@ export default {
                 var that = this;
                 for(var i=0;i<that.replys[0].length;i++){
                     if(that.replys[0][i]["replyid"]==artid){
-                        return that.replys[0][i]["replyusername"]
+                        return that.replys[0][i]["username"]
                     }
                 }
+                for(var y=0;y<that.comments[0].length;y++){
+                    if(that.comments[0][y]["id"]==artid){
+                        return that.comments[0][y]["Uname"]
+                    }
+                }
+                
             },ReplyArt(index,text){
                 var userstatus = localStorage.getItem("userstatus");
                 if(userstatus!=1){

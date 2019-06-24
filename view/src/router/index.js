@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import HomePage from '../components/HomePage.vue'
 import ArticleContent from '../components/ArticleContent.vue'
 import PersonalCenter from '../components/PersonalCenter.vue'
+import WriteEssay from '../components/WriteEssay.vue'
 Vue.use(Router)
 
 export default new Router({
@@ -20,6 +21,10 @@ export default new Router({
       path:'/user/:userid',
       name: 'usct',
       component: PersonalCenter
+    },{
+      path:'/Essay/:userid',
+      name: 'wrae',
+      component: WriteEssay
     }
   ]
 })
