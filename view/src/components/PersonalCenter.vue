@@ -11,7 +11,7 @@
                             <div class="photo_show" :style="{background:'url('+`${this.photo}`+')'}"></div>
                             <div class="action-box">
                                 <div class="tips">支持 jpg、png 格式大小 5M 以内的图片</div>
-                                <input type="file" name="file" accept=".jpg, .jpeg, .png" @change=uploadAvatar />
+                                <input type="file" name="editormd-image-file" accept=".jpg, .jpeg, .png" @change=uploadAvatar />
                             </div>
                         </div>
                     </li>

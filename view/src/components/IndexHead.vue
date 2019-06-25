@@ -3,7 +3,7 @@
     <div class="menu">
     </div>
     <div class="head_menu">
-        <span>豆豆豆的博客</span>
+        <span>老鼠会上树</span>
         <span></span>
         <span @click="showlogin()" id="loginbtn">登录 |</span>
         <span @click="showreg()" id="regbtn">注册</span>

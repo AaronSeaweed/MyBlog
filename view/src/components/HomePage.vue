@@ -25,7 +25,6 @@
                                 <li v-for="(contype,index) in contenttype" :key="contype.typeid" @click="changecontent(index)">{{contype.typename}}</li>
                             </ul>
                         </div>
-
                         <template v-for="(blcont) in this.nblists">
                             <div class="conlist"  :key="blcont.id">
                                 <div class="imgbg">

@@ -162,4 +162,31 @@ router.post("/getreplylist",function(req,res,next){
         }
     });
 });
+/**
+*新增文章
+*/
+router.post("/addArticle",function(req,res){
+    var title=req.body.title;
+    var content=req.body.content;
+    var datetime=chinaTime('YYYY-MM-DD HH:mm:ss');
+    var contenttype=req.body.contenttype;
+    var userid=req.body.userid;
+    db.query("INSERT into articlelist (article_title,content,datetime,views,commentnum,hot,contenttype,recommend,userid) values ('"+title+"','"+content+"','"+datetime+"',0,0,0,"+contenttype+",0,"+userid+")",function(error,rows){
+        if (error) {
+            var result = {
+                "status": "500",
+                "message": "服务器错误"
+            }
+            return res.jsonp(result);
+        }
+        else{
+            var result = {
+                "status": "200",
+                "message": "success",
+                data:rows
+            }
+            return res.jsonp(result);
+        }
+    });
+});
 module.exports = router

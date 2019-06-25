@@ -54,7 +54,7 @@ h2 {font-size:18px}
 .head_menu .personalset div li a{display: -webkit-box;display: -ms-flexbox;display: flex;-webkit-box-align: center;-ms-flex-align: center;align-items: center;padding: .5rem 1rem;}
 .bloglist .contenttypemenu{height: 30px;border: 0px red solid;float: right;}
 .bloglist .contenttypemenu2{height: 30px;line-height: 40px;margin-left: 20px;display: block;margin-right: 20px;}
-.bloglist .contenttypemenu li{float: left;width: 90px;text-align: center;cursor: pointer}
+.bloglist .contenttypemenu li{float: left;margin: 0 15px;text-align: center;cursor: pointer}
 .bloglist .contenttypemenu2 li{width: 90px;cursor: pointer}
 .bloglist .contenttypemenu li:hover{color:#3399CC}
 .bloglist .contenttypemenu2 li:hover{color:#3399CC}
@@ -339,7 +339,7 @@ body{background-color: #f4f5f5;}
 
 /*文章编写页面*/
 .release{width: 80%;margin: 0 auto;text-align: right;}
-
+.artucle_title{width: 80%;margin: 10px auto;text-align: right;}
 
 
 

@@ -6,7 +6,7 @@
                 <h3>{{aridetail.title}}</h3>
                 <p>{{reversedMessage(aridetail.datetime)}}，{{aridetail.views}}次阅读，归类于<a href="javascript:void(0)"> {{aridetail.typename}}</a></p>
                 <p>本文可全文转载，但需要同时保留原作者和出处。</p><br/>
-                <p class="aricon">{{aridetail.content}}</p>
+                <p class="aricon" id="aridetailCon"><textarea style="display:none;" name="test-editormd-markdown-doc">{{aridetail.content}}</textarea> </p>
         </article>
         </template>
         <div class="comment-foot">
@@ -121,7 +121,8 @@ export default {
                 replys:[],
                 replysubmit:[],
                 replycount:0,
-                uname:localStorage.getItem("username")
+                uname:localStorage.getItem("username"),
+				aridetailContent:""
             }
         },
         wacth:{
@@ -140,6 +141,16 @@ export default {
                     return "sub-comment-btn text-pointer"
                 }
             },
+			toHtml:function(){
+				var testEditormdView2 = editormd.markdownToHTML("aridetailCon", {
+					htmlDecode      : "style,script,iframe",  // you can filter tags decode
+					emoji           : true,
+					taskList        : true,
+					tex             : true,  // 默认不解析
+					flowChart       : true,  // 默认不解析
+					sequenceDiagram : true,  // 默认不解析
+				});
+			},
             changetime:function (time) {
                 var timearr=Gb.getTimediff(time);
                 switch (timearr[0]){
@@ -213,6 +224,7 @@ export default {
                             $(".usercomment").eq(index).val("");
                         }
                          that.getcomment();
+						 that.toHtml();
                     })
                     .catch(function (error) {
                         alert(error);
@@ -311,6 +323,7 @@ export default {
                         },220);
                     }
                 }
+				that.toHtml();
             })
         }
 }
