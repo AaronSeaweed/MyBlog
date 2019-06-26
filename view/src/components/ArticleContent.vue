@@ -224,7 +224,7 @@ export default {
                             $(".usercomment").eq(index).val("");
                         }
                          that.getcomment();
-						 that.toHtml();
+						 //that.toHtml();
                     })
                     .catch(function (error) {
                         alert(error);

@@ -63,12 +63,12 @@ router.post("/getarticletype",function(req,res,next){
  * 提交评论
  */
 router.post("/commitcontent",function(req,res,next){
-    var username=req.body.userid;
+    var username=req.body.username;
     var content=req.body.content;
     var up=req.body.up;
     var date=req.body.date;
     var contentid=req.body.contentid;
-    db.query("insert into commentlist values (null,'"+userid+"','"+content+"',"+up+",'"+date+"',"+contentid+")",function(error,rows){
+    db.query("insert into commentlist values (null,'"+username+"','"+content+"',"+up+",'"+date+"',"+contentid+")",function(error,rows){
         if (error) {
             var result = {
                 "status": "500",
