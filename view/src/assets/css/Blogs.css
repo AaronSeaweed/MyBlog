@@ -94,11 +94,11 @@ h2 {font-size:18px}
 .body_left .recarti .conttil a{font-size:12px;margin: 12px 10px 0 0;text-decoration:none;color:black;cursor:pointer}
 .body_left .recarti .conttil a:hover {color:black;text-decoration:underline}
 .body_left .recarti .bloglist {width:100%;height:100%;}
-.body_left .recarti .bloglist .conlist{width:100%;height:100px;border-bottom:1px #EAEAEA solid;background-color: #ffffff;}
-.body_left .recarti .bloglist .conlist .imgbg{width:135px;height:100%;float: left;}
+.body_left .recarti .bloglist .conlist{width:100%;height:120px;border-bottom:1px #EAEAEA solid;background-color: #ffffff;}
+.body_left .recarti .bloglist .conlist .imgbg{width:135px;line-height:120px;float: left;}
 .body_left .recarti .bloglist .conlist .imgbg img{width:90px;height:90px;margin-left: 20px;}
-.body_left .recarti .bloglist .conlist .conbg{float: left;height: 100%;width: 75%;}/*width:auto*/
-.body_left .recarti .bloglist .conlist .conbg header a:first-child{display:inline-block;width:70px;height:28px;line-height: 28px;text-align:center;background-color:#3399CC;color:#FFF;padding-top: 1px;}
+.body_left .recarti .bloglist .conlist .conbg{float: left;height: 100%;width: 75%;margin-left:15px}/*width:auto*/
+.body_left .recarti .bloglist .conlist .conbg header a:first-child{display:inline-block;width:90px;height:20px;line-height: 20px;text-align:center;background-color:#3399CC;color:#FFF;font-size: 10px;}
 .body_left .recarti .bloglist .conlist .conbg header{margin:17px 0}
 .body_left .recarti .bloglist .conlist .conbg header a:hover{text-decoration:none}
 .body_left .recarti .bloglist .conlist .conbg header li{display: inline-block;vertical-align: middle;border-left: 5px solid #3399CC;border-top: 5px solid transparent;border-bottom: 4px solid transparent;margin-top: -3.5px;margin-left: -4px;}
@@ -236,9 +236,9 @@ h2 {font-size:18px}
 .hotcont{width:100%;border: 1px #EAEAEA solid;margin-top:15px;margin-left: -1px;background-color: #ffffff;border-bottom: 0px;}
 .hotcont .hc_title{width: 100%;height:40px;border-bottom: 1px #EAEAEA solid;line-height: 40px;text-indent:25px;font-weight: bold; font-size: 16px;}
 .hotcont .hc_cont{width: 100%;height:130px;cursor: pointer;  user-select: none; border-bottom: 1px #EAEAEA solid;}
-.hotcont .hc_cont .hc_imgbg{width: 130px;height:130px;float: left}
-.hotcont .hc_cont .hc_imgbg img{width: 100%;height:130px;}
-.hotcont .hc_cont .hc_concont{width: 52%;height:130px;float: left}
+.hotcont .hc_cont .hc_imgbg{width: 90px;height:90px;float: left;margin:18px}
+.hotcont .hc_cont .hc_imgbg img{width: 100%;height:90px;}
+.hotcont .hc_cont .hc_concont{width: 52%;height:130px;float: left;margin-left:10px}
 .hotcont .hc_cont .hc_concont a{margin-top:10px;display:inline-block;margin-bottom: 10px;color:black;    height: 60px;width: 105%;}
 .hotcont .hc_cont .hc_concont a:hover{color:#337ab7;text-decoration: none}
 .hotcont .hc_cont .hc_concont span{font-size: 12px;display: block;color: #999;background: url(../img/clock.png) -3px -3px no-repeat;text-indent: 21px;background-size: 25px 23px;float:left}
@@ -249,7 +249,6 @@ h2 {font-size:18px}
 body{background-color: #f4f5f5;}
 
 .art_style{background-color: #ffffff}
-.aricon{text-indent: 2em;}
 #zuj{position:absolute;top:100px}
 #sss{position:absolute;top:150px}
 .emptyPlace{height:150px}
@@ -289,9 +288,9 @@ body{background-color: #f4f5f5;}
 .content .content-html{margin-right: .5em;  white-space: pre-wrap;}
 .content-foot{ display: flex;-webkit-box-align: baseline; align-items:baseline;color: #909090;}
 .content-foot .like-btn{padding: .3rem 0rem;color: #909090;font-size: 1rem;margin-right: 1rem;  border-radius: 2px;width: 55px;}
-.content-foot .like-btn i{background-image: url("../img/zan.png");display: inline-block;height: 16px;width: 16px;cursor: pointer}
-.content-foot .like-btn i:hover{background-image: url("../img/zan2.png");display: inline-block;height: 16px;width: 16px;cursor: pointer}
-.content-foot .like-btn span{margin-left: 25px;display: block;margin-top: -19px;}
+.content-foot .like-btn i{background-image: url("../img/zan.png");display: inline-block;height: 20px;width: 20px;cursor: pointer}
+.content-foot .like-btn i:hover{background-image: url("../img/zan2.png");display: inline-block;height: 20px;width: 20px;cursor: pointer}
+.content-foot .like-btn span{margin-left: 25px;display: block;margin-top: -18px;}
 .content-foot .sub-comment-btn{position: relative;margin-right: 15px;font-size: 20px;height: 30px;color: #909090;}
 .content-foot .text-pointer{cursor: pointer;}
 .content-foot .sub-comment-btn .title{ font-size: 13px;padding-left: 20px;background: url(../img/reply.png) no-repeat}
@@ -338,8 +337,38 @@ body{background-color: #f4f5f5;}
 
 
 /*文章编写页面*/
-.release{width: 80%;margin: 0 auto;text-align: right;}
+.release{width: 80%;margin: 0 auto;display:flex;line-height:2.5}
+.release p{color:#999999;font-size:12px}
+.release label{margin-right:10px}
+.release .sel-aritype{margin-top:2px}
 .artucle_title{width: 80%;margin: 10px auto;text-align: right;}
+.el-tag + .el-tag {margin-left: 10px;}
+.button-new-tag {margin-left: 10px;height: 32px;line-height: 30px;padding-top: 0;padding-bottom: 0;}
+.input-new-tag {width: 90px!important;margin-left: 10px;vertical-align: bottom;}
+.avatar-uploader .el-upload {
+    border: 1px dashed #d9d9d9;
+    border-radius: 6px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+}
+.avatar-uploader .el-upload:hover {
+    border-color: #409EFF;
+}
+.avatar-uploader .el-upload__input{display:none}
+.avatar-uploader-icon {
+    font-size: 28px;
+    color: #8c939d;
+    width: 100px;
+    height: 100px;
+    line-height: 100px!important;
+    text-align: center;
+}
+.avatar {
+    width: 100px;
+    height: 100px;
+    display: block;
+}
 
 
 

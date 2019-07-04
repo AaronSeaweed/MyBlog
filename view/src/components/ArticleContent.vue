@@ -2,26 +2,24 @@
 <div class="body_content container">
     <div class="body_left col-md-8 art_style">
         <template v-for="(aridetail) in this.AriDetail">
-        <article id="artContent" :key="aridetail.article_id">
-                <h3>{{aridetail.title}}</h3>
-                <p>{{reversedMessage(aridetail.datetime)}}，{{aridetail.views}}次阅读，归类于<a href="javascript:void(0)"> {{aridetail.typename}}</a></p>
-                <p>本文可全文转载，但需要同时保留原作者和出处。</p><br/>
-                <p class="aricon" id="aridetailCon"><textarea style="display:none;" name="test-editormd-markdown-doc">{{aridetail.content}}</textarea> </p>
-        </article>
+		<div>
+			<article id="artContent" :key="aridetail.article_id">
+					<h3>{{aridetail.title}}</h3>
+					<p>{{reversedMessage(aridetail.datetime)}}，{{aridetail.views}}次阅读，归类于<a href="javascript:void(0)"> {{aridetail.typename}}</a></p>
+					<p>本文可全文转载，但需要同时保留原作者和出处。</p><br/>
+					<p class="aricon" id="aridetailCon"><img :src="imgSrcFun(aridetail.coverimage)"><br><br><br><textarea style="display:none;" name="test-editormd-markdown-doc">{{aridetail.content}}</textarea> </p>
+			</article>
+			<div class="comment-foot">
+				<ul>
+					<template v-for="(tag,index) in aridetail.arttag?aridetail.arttag.split(','):[]">
+					<li :key="index">
+						<a>{{tag}}</a>
+					</li>
+					</template>
+				</ul>
+			</div>
+		</div>
         </template>
-        <div class="comment-foot">
-            <ul>
-                <li>
-                    <a>微信</a>
-                </li>
-                <li>
-                    <a>Node.js</a>
-                </li>
-                <li>
-                    <a>webpack</a>
-                </li>
-            </ul>
-        </div>
         <div class="comment-box">
             <div class="comment-title">
                 评论
@@ -134,6 +132,13 @@ export default {
             CommentPanel
         },
         methods:{
+			imgSrcFun(value){
+				if(value){
+					return require('@/assets/img/'+value);
+				}else{
+					return ""
+				}
+			},
             classObj:function(name){
                 if(name==this.uname){
                     return "displaynone sub-comment-btn text-pointer"

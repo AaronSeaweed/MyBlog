@@ -27,9 +27,6 @@
                         </div>
                         <template v-for="(blcont) in this.nblists">
                             <div class="conlist"  :key="blcont.id">
-                                <div class="imgbg">
-                                    <img src="../assets/img/contentimg.png"/>
-                                </div>
                                 <div class="conbg">
                                     <header>
                                         <a href="javascript:void(0)">{{blcont.typename}}</a>
@@ -41,6 +38,9 @@
                                     @mouseout="changecolor2($event)" @click="AContent(blcont.id)">{{blcont.commentnum}}条评论</a>
                                     <br/><br/>
                                 </div>
+								<div class="imgbg"  v-if="imgSrcFun(blcont.coverimage)">
+								    <img :src="imgSrcFun(blcont.coverimage)"/>
+								</div>
                             </div>
                         </template>
 
@@ -74,11 +74,11 @@
                 <template v-for="hotcont in hotblcontlists">
                     <div v-if="hotcont.hot==true" :key="hotcont.id">
                         <div class="hc_cont">
-                            <div class="hc_imgbg"><img src="../assets/img/contentimg.png"/></div>
                             <div class="hc_concont">
                                 <a href="javascript:void(0)">{{hotcont.article_title}}</a>
                                 <span>{{hotcont.datetime}}</span>　　<span class="views">{{hotcont.views}}</span>
                             </div>
+							<div class="hc_imgbg"><img :src="imgSrcFun(hotcont.coverimage)"   v-if="imgSrcFun(hotcont.coverimage)"/></div>
                         </div>
                     </div>
                 </template>
@@ -119,7 +119,11 @@ export default {
             },
             methods: {
                 imgSrcFun(value){
-                    return require('@/assets/img/'+value);
+					if(value){
+						return require('@/assets/img/'+value);
+					}else{
+						return ""
+					}
                 },
                 checkback_over: function (event) {
                     $(event.currentTarget).css({"color": "#3399CC"});

@@ -21,7 +21,6 @@ export default {
     },
     methods:{
         CommitComment:function(e){//调用父组件中的评论方法
-           
             this.$parent.CommitComment($("#subcomment button").eq($(e.target).attr("index")).attr("index"));
         },
         ArtFromUser:function(index,text){

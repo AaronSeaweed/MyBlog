@@ -171,7 +171,9 @@ router.post("/addArticle",function(req,res){
     var datetime=chinaTime('YYYY-MM-DD HH:mm:ss');
     var contenttype=req.body.contenttype;
     var userid=req.body.userid;
-    db.query("INSERT into articlelist (article_title,content,datetime,views,commentnum,hot,contenttype,recommend,userid) values ('"+title+"','"+content+"','"+datetime+"',0,0,0,"+contenttype+",0,"+userid+")",function(error,rows){
+	var coverimage=req.body.coverimage;
+	var arttag=req.body.arttag;
+    db.query("INSERT into articlelist (article_title,content,datetime,views,commentnum,hot,contenttype,recommend,userid,coverimage,arttag) values ('"+title+"','"+content+"','"+datetime+"',0,0,0,"+contenttype+",0,"+userid+",'"+coverimage+"','"+arttag+"')",function(error,rows){
         if (error) {
             var result = {
                 "status": "500",
