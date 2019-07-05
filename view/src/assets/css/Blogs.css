@@ -94,14 +94,15 @@ h2 {font-size:18px}
 .body_left .recarti .conttil a{font-size:12px;margin: 12px 10px 0 0;text-decoration:none;color:black;cursor:pointer}
 .body_left .recarti .conttil a:hover {color:black;text-decoration:underline}
 .body_left .recarti .bloglist {width:100%;height:100%;}
-.body_left .recarti .bloglist .conlist{width:100%;height:120px;border-bottom:1px #EAEAEA solid;background-color: #ffffff;}
-.body_left .recarti .bloglist .conlist .imgbg{width:135px;line-height:120px;float: left;}
-.body_left .recarti .bloglist .conlist .imgbg img{width:90px;height:90px;margin-left: 20px;}
-.body_left .recarti .bloglist .conlist .conbg{float: left;height: 100%;width: 75%;margin-left:15px}/*width:auto*/
+.body_left .recarti .bloglist .conlist{width:100%;height:120px;border-bottom:1px #EAEAEA solid;background-color: #ffffff;display: flex;}
+.body_left .recarti .bloglist .conlist .imgbg{width: 60px;height: 60px;line-height: 60px;margin: 30px;}
+.body_left .recarti .bloglist .conlist .imgbg img{width:60px;height:60px;}
+.body_left .recarti .bloglist .conlist .conbg{float: left;height: 100%;width: 80%;margin-left:15px;position: relative;}/*width:auto*/
 .body_left .recarti .bloglist .conlist .conbg header a:first-child{display:inline-block;width:90px;height:20px;line-height: 20px;text-align:center;background-color:#3399CC;color:#FFF;font-size: 10px;}
-.body_left .recarti .bloglist .conlist .conbg header{margin:17px 0}
+.body_left .recarti .bloglist .conlist .conbg header{margin:17px 0;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;}
 .body_left .recarti .bloglist .conlist .conbg header a:hover{text-decoration:none}
 .body_left .recarti .bloglist .conlist .conbg header li{display: inline-block;vertical-align: middle;border-left: 5px solid #3399CC;border-top: 5px solid transparent;border-bottom: 4px solid transparent;margin-top: -3.5px;margin-left: -4px;}
+.body_left .recarti .bloglist .conlist .conbg .artinfo{display:flex;position: absolute;bottom: 10px;}
 .body_left .recarti .bloglist .conlist .conbg .contitle{margin:10px 0px;font-weight: bold;font-size: 18px;cursor:pointer; color: black;text-decoration:none}
 .body_left .recarti .bloglist .loadmore{width:100%;text-align: center;height:60px;margin-top: 20px;}
 .body_left .recarti .bloglist .loadmore img{width: 50px;height:50px;
@@ -161,11 +162,11 @@ h2 {font-size:18px}
     .body_left .recarti .bloglist .conlist .conbg .contitle{display:inherit}
     /*.body_left .recarti .bloglist .conlist .conbg .coninfo{margin-top:-15px!important;}*/
 }
-.body_left .recarti .bloglist .conlist .conbg .coninfo{margin-top: 5px;display: block;font-size:12px;float:left;text-decoration:none}
+.body_left .recarti .bloglist .conlist .conbg .coninfo{margin-top: 5px;display: block;font-size:12px;text-decoration:none}
 .body_left .recarti .bloglist .conlist .conbg .condatetime{color:#999;background: url(../img/clock.png) -3px -3px no-repeat;text-indent: 20px;    background-size: 25px 23px;}
 .body_left .recarti .bloglist .conlist .conbg .conviews{margin-left:30px;color:#999;background: url(../img/yan.jpg) 0px -2px no-repeat;width: 80px;text-indent: 22px;}
-.body_left .recarti .bloglist .conlist .conbg .concommentnum{margin-left:30px;color:#999;background: url(../img/comment.png) 2px 1px no-repeat;text-indent: 22px;    background-size: 26% 110%;}
-.body_left .recarti .bloglist .conlist .conbg .concommentnum2{margin-left:30px;color:#999;background: url(../img/comment2.png) 2px 1px no-repeat;text-indent: 22px;    background-size: 26% 110%;color:black}
+.body_left .recarti .bloglist .conlist .conbg .concommentnum{margin-left:30px;color:#999;background: url(../img/comment.png) 2px 0px no-repeat;text-indent: 22px;    background-size: 26% 110%;}
+.body_left .recarti .bloglist .conlist .conbg .concommentnum2{margin-left:30px;color:#999;background: url(../img/comment2.png) 2px 0px no-repeat;text-indent: 22px;    background-size: 26% 110%;color:black}
 
 .body_left .recarti .bloglist .conlist .conbg a i {width:15px;height:15px}
 .body_left .recarti .bloglist .conlist .conbg .concon{display:block; width:auto;font-size:14px}
@@ -209,7 +210,8 @@ h2 {font-size:18px}
 #tab .tabCon div ul li a{color:black;cursor:pointer;max-width: 70%;display: inline-block;text-overflow: ellipsis;overflow: hidden;height: 20px;white-space: nowrap;}
 #tab .tabCon div ul li a:hover{color: #337ab7;text-decoration: none}
 #tab .tabCon #ContactWeb span {line-height:30px} */
-
+.webtab{border: 1px #EAEAEA solid;background-color: #ffffff;padding: 0 10px;}
+.el-tabs .el-tabs__content {margin-bottom: 10px;}
 .el-tabs .el-tabs__content div ul li{font-size:12px;line-height:28px}
 .el-tabs .el-tabs__content div ul li .morebull{float:right;color: #337ab7;}
 .el-tabs .el-tabs__content div ul li span {    margin-left: 10px;float:right}
@@ -235,10 +237,10 @@ h2 {font-size:18px}
 /*********************************博客页热门文章*********************************/
 .hotcont{width:100%;border: 1px #EAEAEA solid;margin-top:15px;margin-left: -1px;background-color: #ffffff;border-bottom: 0px;}
 .hotcont .hc_title{width: 100%;height:40px;border-bottom: 1px #EAEAEA solid;line-height: 40px;text-indent:25px;font-weight: bold; font-size: 16px;}
-.hotcont .hc_cont{width: 100%;height:130px;cursor: pointer;  user-select: none; border-bottom: 1px #EAEAEA solid;}
-.hotcont .hc_cont .hc_imgbg{width: 90px;height:90px;float: left;margin:18px}
-.hotcont .hc_cont .hc_imgbg img{width: 100%;height:90px;}
-.hotcont .hc_cont .hc_concont{width: 52%;height:130px;float: left;margin-left:10px}
+.hotcont .hc_cont{width: 100%;height:120px;cursor: pointer;  user-select: none; border-bottom: 1px #EAEAEA solid;display: flex;}
+.hotcont .hc_cont .hc_imgbg{width: 60px;height:60px;margin:30px}
+.hotcont .hc_cont .hc_imgbg img{width: 100%;height:60px;}
+.hotcont .hc_cont .hc_concont{width: 60%;margin-left:10px}
 .hotcont .hc_cont .hc_concont a{margin-top:10px;display:inline-block;margin-bottom: 10px;color:black;    height: 60px;width: 105%;}
 .hotcont .hc_cont .hc_concont a:hover{color:#337ab7;text-decoration: none}
 .hotcont .hc_cont .hc_concont span{font-size: 12px;display: block;color: #999;background: url(../img/clock.png) -3px -3px no-repeat;text-indent: 21px;background-size: 25px 23px;float:left}

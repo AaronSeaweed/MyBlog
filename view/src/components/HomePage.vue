@@ -32,10 +32,12 @@
                                         <a href="javascript:void(0)">{{blcont.typename}}</a>
                                         <router-link :to="{ name: 'atct', params:{conid:blcont.article_id}}" class="contitle">{{blcont.article_title}}</router-link>
                                     </header>
-                                    <span class="condatetime coninfo">{{reversedMessage(blcont.datetime)}}</span>
-                                    <span class="conviews coninfo">有{{blcont.views}}人阅读</span>
-                                    <a href="javascript:void(0)" class="coninfo concommentnum" @mouseover="changecolor($event)"
-                                    @mouseout="changecolor2($event)" @click="AContent(blcont.id)">{{blcont.commentnum}}条评论</a>
+									<div class="artinfo">
+										<span class="condatetime coninfo">{{reversedMessage(blcont.datetime)}}</span>
+										<span class="conviews coninfo">有{{blcont.views}}人阅读</span>
+										<a href="javascript:void(0)" class="coninfo concommentnum" @mouseover="changecolor($event)"
+										@mouseout="changecolor2($event)" @click="AContent(blcont.id)">{{blcont.commentnum}}条评论</a>
+									</div>
                                     <br/><br/>
                                 </div>
 								<div class="imgbg"  v-if="imgSrcFun(blcont.coverimage)">
