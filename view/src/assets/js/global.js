@@ -54,6 +54,32 @@ var Gb = {
            }
        }
     },
+    changetime:function (time) {
+        var timearr=this.getTimediff(time);
+        switch (timearr[0]){
+            case "s":
+                return "刚刚"
+                break;
+            case "m":
+                return Math.floor(timearr[1])+"分钟前"
+                break;
+            case "h":
+                return Math.floor(timearr[1])+"小时前"
+                break;
+            case "d":
+                return Math.floor(timearr[1])+"天前"
+                break;
+            case "M":
+                return Math.floor(timearr[1])+"个月前"
+                break;
+            case "y":
+                return Math.floor(timearr[1])+"年前"
+                break;
+            case "l":
+                return Math.floor(timearr[1])+"很久前"
+                break;
+        }
+    },
     getDate:function () {
         Date.prototype.Format = function (fmt) { // author: meizz
             var o = {

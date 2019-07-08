@@ -30,13 +30,14 @@
                                 <div class="conbg">
                                     <header>
                                         <a href="javascript:void(0)">{{blcont.typename}}</a>
-                                        <router-link :to="{ name: 'atct', params:{conid:blcont.article_id}}" class="contitle">{{blcont.article_title}}</router-link>
-                                    </header>
-									<div class="artinfo">
 										<span class="condatetime coninfo">{{reversedMessage(blcont.datetime)}}</span>
-										<span class="conviews coninfo">有{{blcont.views}}人阅读</span>
-										<a href="javascript:void(0)" class="coninfo concommentnum" @mouseover="changecolor($event)"
-										@mouseout="changecolor2($event)" @click="AContent(blcont.id)">{{blcont.commentnum}}条评论</a>
+										<span class="conviews coninfo">{{blcont.views}}次</span>
+                                    </header>
+									<div>
+										<router-link :to="{ name: 'atct', params:{conid:blcont.article_id}}" class="contitle">{{blcont.article_title}}</router-link>
+									</div>
+									<div class="artinfo">
+										<a href="javascript:void(0)" class="coninfo concommentnum" @click="AGood(blcont.id)">{{blcont.commentnum}}赞</a>
 									</div>
                                     <br/><br/>
                                 </div>
@@ -78,7 +79,8 @@
                         <div class="hc_cont">
                             <div class="hc_concont">
                                 <a href="javascript:void(0)">{{hotcont.article_title}}</a>
-                                <span>{{hotcont.datetime}}</span>　　<span class="views">{{hotcont.views}}</span>
+                                <span>{{hotcont.datetime}}</span>
+								<span class="views">{{hotcont.views}}</span>
                             </div>
 							<div class="hc_imgbg"><img :src="imgSrcFun(hotcont.coverimage)"   v-if="imgSrcFun(hotcont.coverimage)"/></div>
                         </div>
@@ -127,18 +129,6 @@ export default {
 						return ""
 					}
                 },
-                checkback_over: function (event) {
-                    $(event.currentTarget).css({"color": "#3399CC"});
-                },
-                checkback_out: function (event) {
-                    $(event.currentTarget).css({"color": "#000"});
-                },
-                changecolor: function (evevt) {
-                    $(event.currentTarget).addClass("concommentnum2").removeClass("concommentnum");
-                },
-                changecolor2: function (evevt) {
-                    $(event.currentTarget).addClass("concommentnum").removeClass("concommentnum2");
-                },
                 loadmoredata: function () {//加载更多数据
                     if ($(document).scrollTop() >= ($(document).height() - $(window).height())) {//判断浏览器滚动条靠近到底部
                         this.whetherscr = 1;
@@ -181,11 +171,8 @@ export default {
                         }
                     }
                 },
-                AContent:function (id) {
-                    this.$router.push({
-                        name: 'atct',
-                        params:{conid:id}
-                    })
+                AGood:function (id) {
+                    
                 },
                 changecontent: function (index) {
                     this.contenttypeid = index;
@@ -300,7 +287,7 @@ export default {
                     };
                 },
                 reversedMessage:function(datetime){
-                    return Gb.getDate(datetime);
+				      return Gb.changetime(datetime);
                 }
             },
             computed: {
@@ -321,7 +308,7 @@ export default {
                 });
                 $(".contenttypemenu li").eq(5).css("color", "#3399CC");
                 //菜单收缩事件
-                $(".menulist").on('click', function () {
+                /* $(".menulist").on('click', function () {
                     if ($(".blogtypemenu div").hasClass("menulist")) {
                         $(".blogtypemenu").animate({height: "250px"}, 300);
                         $(".blogtypemenu div").removeClass("menulist").addClass("menulist2");
@@ -331,7 +318,7 @@ export default {
                         $(".blogtypemenu div").addClass("menulist").removeClass("menulist2");
                         $(".contenttypemenu2").removeClass("contenttypemenu2").addClass("contenttypemenu");
                     }
-                })
+                }) */
                 this.blcontlist();
             },
             updated: function () {

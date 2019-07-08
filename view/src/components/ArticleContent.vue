@@ -5,7 +5,7 @@
 		<div>
 			<article id="artContent" :key="aridetail.article_id">
 					<h3>{{aridetail.title}}</h3>
-					<p>{{reversedMessage(aridetail.datetime)}}，{{aridetail.views}}次阅读，归类于<a href="javascript:void(0)"> {{aridetail.typename}}</a></p>
+					<p>{{reversedMessage(aridetail.datetime)}}发布，{{aridetail.views}}次阅读，归类于<a href="javascript:void(0)"> {{aridetail.typename}}</a></p>
 					<p>本文可全文转载，但需要同时保留原作者和出处。</p><br/>
 					<p class="aricon" id="aridetailCon"><img :src="imgSrcFun(aridetail.coverimage)"><br><br><br><textarea style="display:none;" name="test-editormd-markdown-doc">{{aridetail.content}}</textarea> </p>
 			</article>
@@ -49,11 +49,9 @@
                                     <span class="content-html">{{comlist.content}}</span>
                                 </div>
                                 <div class="content-foot">
-                                    <div class="like-btn"><i></i><span>{{comlist.up}}</span></div>
-                                    <span :class='classObj(comlist.Uname)'>
-                                        <span class="title" :replytype="0" :artid="comlist.id">回复</span>
-                                    </span>
-                                    <span class="date">{{changetime(comlist.date)}}</span>
+                                    <div class="like-btn"><span>{{comlist.up}}</span></div>
+                                    <span class="title" :class='classObj(comlist.Uname)' :replytype="0" :artid="comlist.id">回复</span>
+                                    <span class="replydate">{{reversedMessage(comlist.date)}}</span>
                                 </div>
                                 <CommentPanel ref="child"></CommentPanel>
                                 <div class="replylist">
@@ -72,14 +70,12 @@
                                                         </div>
                                                     </div>
                                                     <div class="content">
-                                                        <span class="content-html">回复&nbsp;{{getname(replylist.artid)}}：{{replylist.replycontent}}</span>
+                                                        <span class="content-html">回复&nbsp;<a class="content-user" href="javascript:void(0)">{{getname(replylist.artid)}}</a>：{{replylist.replycontent}}</span>
                                                     </div>
                                                     <div class="content-foot">
-                                                        <div class="like-btn"><i></i><span>{{replylist.replyup}}</span></div>
-                                                        <span :class='classObj(replylist.username)'>
-                                                            <span class="title" :replytype="1" :artid="replylist.replyid">回复</span>
-                                                        </span>
-                                                        <span class="date">{{changetime(replylist.replydate)}}</span>
+                                                        <div class="like-btn"><span>{{replylist.replyup}}</span></div>
+                                                        <span class="title" :class='classObj(replylist.username)' :replytype="1" :artid="replylist.replyid">回复</span>
+                                                        <span class="replydate">{{reversedMessage(replylist.replydate)}}</span>
                                                     </div>
                                                     <CommentPanel ref="child"></CommentPanel>
                                                 </div>
@@ -141,9 +137,9 @@ export default {
 			},
             classObj:function(name){
                 if(name==this.uname){
-                    return "displaynone sub-comment-btn text-pointer"
+                    return "displaynone text-pointer"
                 }else{
-                    return "sub-comment-btn text-pointer"
+                    return "text-pointer"
                 }
             },
 			toHtml:function(){
@@ -155,33 +151,7 @@ export default {
 					flowChart       : true,  // 默认不解析
 					sequenceDiagram : true,  // 默认不解析
 				});
-			},
-            changetime:function (time) {
-                var timearr=Gb.getTimediff(time);
-                switch (timearr[0]){
-                    case "s":
-                        return "刚刚"
-                        break;
-                    case "m":
-                        return Math.floor(timearr[1])+"分钟前"
-                        break;
-                    case "h":
-                        return Math.floor(timearr[1])+"小时前"
-                        break;
-                    case "d":
-                        return Math.floor(timearr[1])+"天前"
-                        break;
-                    case "M":
-                        return Math.floor(timearr[1])+"个月前"
-                        break;
-                    case "y":
-                        return Math.floor(timearr[1])+"年前"
-                        break;
-                    case "l":
-                        return Math.floor(timearr[1])+"很久前"
-                        break;
-                }
-            },getcomment:function(){//获取文章详情、评论列表、回复列表
+			},getcomment:function(){//获取文章详情、评论列表、回复列表
                 var that = this;
                 function getArticleList() {
                     return that.$axios.post('/article/getarticlelist',{contentid:that.$route.params.conid});
@@ -206,8 +176,8 @@ export default {
             },showlogin:function () {//与兄弟（IndexHead）组件通讯，通过eventbus.js文件让IndexHead组件执行函数
                 bus.$emit("login","")
             },
-            reversedMessage:function(datetime){//转换json的时间格式
-                return Gb.getDate(datetime);
+            reversedMessage:function(datetime){
+               return Gb.changetime(datetime);
             },CommitComment:function (index) {//新增评论
                 var that = this;
                 var commentcontent=$(".usercomment").eq(index).val()||$(".usercomment").eq(0).val();

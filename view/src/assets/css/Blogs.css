@@ -64,7 +64,7 @@ h2 {font-size:18px}
 .mbbody {background-color:#F4F5F5;}/*min-width:1200px*/
 .body_content {margin:10px auto;min-height:500px;position: relative;zoom:1;max-width: 1020px}/*width:1200px;*/
 .body_left {border:0px black solid;}/*width:785px;width:65%;*/
-.body_left .recarti{width:100%;height:auto;}/*width:786px;*/
+.body_left .recarti{width:100%;height:auto;margin-top:15px}/*width:786px;*/
 .body_left .recarti div h2{font-family:"Microsoft YaHei";font-size:18px;margin-left: 10px;    margin-top: 10px;}
 
 @media screen and (max-width: 640px) {
@@ -86,20 +86,21 @@ h2 {font-size:18px}
 }
 
 .body_left .recarti div h2 span{color:red;cursor:pointer; margin-left: -8px;}
-.body_left .recarti div h2 a {cursor:pointer;color:black;    line-height: 25px;}
+.body_left .recarti div h2 a {cursor:pointer;color:black;line-height: 25px;}
 .body_left .recarti div h2 a:hover{color:#3399CC;text-decoration:none}
 .body_left .recarti div p{text-indent: 35px;margin: 10px;font-size: 14px;}
 .body_left .recarti .recomtoday{width:100%;height:auto;border:1px #EAEAEA solid;background-color: #ffffff;}
-.body_left .recarti .conttil{font-size:20px;display:block;}
-.body_left .recarti .conttil a{font-size:12px;margin: 12px 10px 0 0;text-decoration:none;color:black;cursor:pointer}
+.body_left .recarti .conttil{font-size: 20px;display: block;border-bottom: 1px #EAEAEA solid;background-color: #ffffff;height: 30px;line-height: 25px;}
+.body_left .recarti .conttil a{font-size:12px;margin:12px;text-decoration:none;color:black;cursor:pointer}
 .body_left .recarti .conttil a:hover {color:black;text-decoration:underline}
 .body_left .recarti .bloglist {width:100%;height:100%;}
 .body_left .recarti .bloglist .conlist{width:100%;height:120px;border-bottom:1px #EAEAEA solid;background-color: #ffffff;display: flex;}
 .body_left .recarti .bloglist .conlist .imgbg{width: 60px;height: 60px;line-height: 60px;margin: 30px;}
 .body_left .recarti .bloglist .conlist .imgbg img{width:60px;height:60px;}
 .body_left .recarti .bloglist .conlist .conbg{float: left;height: 100%;width: 80%;margin-left:15px;position: relative;}/*width:auto*/
-.body_left .recarti .bloglist .conlist .conbg header a:first-child{display:inline-block;width:90px;height:20px;line-height: 20px;text-align:center;background-color:#3399CC;color:#FFF;font-size: 10px;}
-.body_left .recarti .bloglist .conlist .conbg header{margin:17px 0;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;}
+.body_left .recarti .bloglist .conlist .conbg header a:first-child{width:90px;height:20px;color:#007fff;font-size: 10px;}
+.body_left .recarti .bloglist .conlist .conbg header a::after{content: "·";color: #999999;margin: 0px 0.4em;}
+.body_left .recarti .bloglist .conlist .conbg header{margin:17px 0 5px;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;}
 .body_left .recarti .bloglist .conlist .conbg header a:hover{text-decoration:none}
 .body_left .recarti .bloglist .conlist .conbg header li{display: inline-block;vertical-align: middle;border-left: 5px solid #3399CC;border-top: 5px solid transparent;border-bottom: 4px solid transparent;margin-top: -3.5px;margin-left: -4px;}
 .body_left .recarti .bloglist .conlist .conbg .artinfo{display:flex;position: absolute;bottom: 10px;}
@@ -162,11 +163,12 @@ h2 {font-size:18px}
     .body_left .recarti .bloglist .conlist .conbg .contitle{display:inherit}
     /*.body_left .recarti .bloglist .conlist .conbg .coninfo{margin-top:-15px!important;}*/
 }
-.body_left .recarti .bloglist .conlist .conbg .coninfo{margin-top: 5px;display: block;font-size:12px;text-decoration:none}
-.body_left .recarti .bloglist .conlist .conbg .condatetime{color:#999;background: url(../img/clock.png) -3px -3px no-repeat;text-indent: 20px;    background-size: 25px 23px;}
-.body_left .recarti .bloglist .conlist .conbg .conviews{margin-left:30px;color:#999;background: url(../img/yan.jpg) 0px -2px no-repeat;width: 80px;text-indent: 22px;}
-.body_left .recarti .bloglist .conlist .conbg .concommentnum{margin-left:30px;color:#999;background: url(../img/comment.png) 2px 0px no-repeat;text-indent: 22px;    background-size: 26% 110%;}
-.body_left .recarti .bloglist .conlist .conbg .concommentnum2{margin-left:30px;color:#999;background: url(../img/comment2.png) 2px 0px no-repeat;text-indent: 22px;    background-size: 26% 110%;color:black}
+.body_left .recarti .bloglist .conlist .conbg .coninfo{margin-top: 5px;font-size:12px;text-decoration:none}
+.body_left .recarti .bloglist .conlist .conbg .condatetime{color:#999999;background: url(../img/clock.png) -3px -4px no-repeat;text-indent: 20px;display: inline-block;background-size: 24px 24px;}
+.body_left .recarti .bloglist .conlist .conbg .condatetime::after{content: "·";color: #999999;margin: 0px 0.4em;}
+.body_left .recarti .bloglist .conlist .conbg .conviews{display: inline-block;color:#999999;background: url(../img/yan.jpg) 0px -2px no-repeat;text-indent: 22px;}
+.body_left .recarti .bloglist .conlist .conbg .concommentnum{color:#999999;background: url(../img/zan.png) -4px -4px no-repeat;text-indent: 22px;background-size: 24px 24px;}
+.body_left .recarti .bloglist .conlist .conbg .concommentnum:hover{color:#409EFF;background: url(../img/zan2.png) -4px -4px no-repeat;text-indent: 22px;background-size: 24px 24px;}
 
 .body_left .recarti .bloglist .conlist .conbg a i {width:15px;height:15px}
 .body_left .recarti .bloglist .conlist .conbg .concon{display:block; width:auto;font-size:14px}
@@ -288,14 +290,15 @@ body{background-color: #f4f5f5;}
 .user-info .position{font-size: 1rem; color: #909090;  max-width: 220px;  white-space: nowrap;  overflow: hidden;  text-overflow: ellipsis;}
 .content{ margin: .3rem 0 .5rem;font-size: 1.2rem; line-height: 1.7; color: #333;}
 .content .content-html{margin-right: .5em;  white-space: pre-wrap;}
+.content .content-user{color:#007fff}
 .content-foot{ display: flex;-webkit-box-align: baseline; align-items:baseline;color: #909090;}
-.content-foot .like-btn{padding: .3rem 0rem;color: #909090;font-size: 1rem;margin-right: 1rem;  border-radius: 2px;width: 55px;}
-.content-foot .like-btn i{background-image: url("../img/zan.png");display: inline-block;height: 20px;width: 20px;cursor: pointer}
-.content-foot .like-btn i:hover{background-image: url("../img/zan2.png");display: inline-block;height: 20px;width: 20px;cursor: pointer}
-.content-foot .like-btn span{margin-left: 25px;display: block;margin-top: -18px;}
-.content-foot .sub-comment-btn{position: relative;margin-right: 15px;font-size: 20px;height: 30px;color: #909090;}
+.content-foot .like-btn{padding: .3rem 0rem;color: #909090;font-size: 1rem; border-radius: 2px;width: 55px;}
+.content-foot .like-btn span{color:#999999;background: url(../img/zan.png) -4px -4px no-repeat;text-indent: 22px;background-size: 24px 24px;display: inline-block;font-weight: bold;font-size: 13px;cursor: pointer;}
+.content-foot .like-btn span:hover{color:#999999;background: url(../img/zan2.png) -4px -4px no-repeat;text-indent: 22px;background-size: 24px 24px;display: inline-block;font-weight: bold;font-size: 13px;cursor: pointer;}
 .content-foot .text-pointer{cursor: pointer;}
-.content-foot .sub-comment-btn .title{ font-size: 13px;padding-left: 20px;background: url(../img/reply.png) no-repeat}
+.content-foot .title{color:#999999;background: url(../img/reply.png) -2px -1px no-repeat;text-indent: 22px;background-size: 20px 20px;display: inline-block;cursor: pointer;font-size: 10px;}
+.content-foot .title:hover{color:#007fff;background: url(../img/reply2.png) -2px -1px no-repeat;text-indent: 22px;background-size: 20px 20px;display: inline-block;cursor: pointer;font-size: 10px;}
+.content-foot .replydate{color:#999999;background: url(../img/clock.png) -2px -3px no-repeat;text-indent: 20px;display: inline-block;background-size: 23px 23px;margin-left:20px;font-size:10px}
 .load-box{display: -webkit-box;display: -ms-flexbox;display: flex;-webkit-box-align: center;-ms-flex-align: center;align-items: center;-webkit-box-pack: center;-ms-flex-pack: center;justify-content: center;position: fixed;top: 0;left: 0;right: 0;bottom: 0;background-color: rgba(0,0,0,.3);z-index: 500;}
 .load-box .load-form{position: relative;padding: 2rem;width: 26.5rem;max-width: 100%;font-size: 1.167rem;background-color: #fff;border-radius: 2px;box-sizing: border-box;}
 
@@ -355,7 +358,7 @@ body{background-color: #f4f5f5;}
     overflow: hidden;
 }
 .avatar-uploader .el-upload:hover {
-    border-color: #409EFF;
+    border-color: #007fff;
 }
 .avatar-uploader .el-upload__input{display:none}
 .avatar-uploader-icon {
