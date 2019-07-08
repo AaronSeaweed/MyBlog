@@ -50,7 +50,9 @@
                                 </div>
                                 <div class="content-foot">
                                     <div class="like-btn"><span>{{comlist.up}}</span></div>
-                                    <span class="title" :class='classObj(comlist.Uname)' :replytype="0" :artid="comlist.id">回复</span>
+									<div :class='classObj(comlist.Uname)' >
+                                    <span class="title" :replytype="0" :artid="comlist.id">回复</span>
+									</div>
                                     <span class="replydate">{{reversedMessage(comlist.date)}}</span>
                                 </div>
                                 <CommentPanel ref="child"></CommentPanel>
@@ -74,8 +76,10 @@
                                                     </div>
                                                     <div class="content-foot">
                                                         <div class="like-btn"><span>{{replylist.replyup}}</span></div>
-                                                        <span class="title" :class='classObj(replylist.username)' :replytype="1" :artid="replylist.replyid">回复</span>
-                                                        <span class="replydate">{{reversedMessage(replylist.replydate)}}</span>
+														<div :class='classObj(replylist.username)'>
+                                                        <span class="title" :replytype="1" :artid="replylist.replyid">回复</span>
+                                                        </div>
+														<span class="replydate">{{reversedMessage(replylist.replydate)}}</span>
                                                     </div>
                                                     <CommentPanel ref="child"></CommentPanel>
                                                 </div>
@@ -137,9 +141,9 @@ export default {
 			},
             classObj:function(name){
                 if(name==this.uname){
-                    return "displaynone text-pointer"
+                    return "displaynone sub-comment-btn text-pointer"
                 }else{
-                    return "text-pointer"
+                    return "sub-comment-btn text-pointer"
                 }
             },
 			toHtml:function(){

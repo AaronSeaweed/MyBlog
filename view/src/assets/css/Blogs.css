@@ -320,8 +320,8 @@ body{background-color: #f4f5f5;}
 .load-form .oauth .oauth-bg-weixin{background: url("../img/weixin.png") no-repeat}
 .load-form .oauth .oauth-bg-weibo{background: url("../img/weibo.png") no-repeat}
 .load-form .oauth .oauth-bg-qq{background: url("../img/qq.png") no-repeat}
-.displaynone{display: none!important}
-.displayblock{display:block!important}
+.displaynone{display: none}
+.displayblock{display:block}
 .loadgif{background: url("../img/loading.gif") no-repeat;width: 40px;height: 40px;margin-left: 50%;background-size: 40px;}
 
 
