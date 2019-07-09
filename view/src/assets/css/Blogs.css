@@ -168,8 +168,8 @@ h2 {font-size:18px}
 .body_left .recarti .bloglist .conlist .conbg .condatetime::after{content: "·";color: #999999;margin: 0px 0.4em;}
 .body_left .recarti .bloglist .conlist .conbg .conviews{display: inline-block;color:#999999;background: url(../img/yan.jpg) 0px -2px no-repeat;text-indent: 22px;}
 .body_left .recarti .bloglist .conlist .conbg .concommentnum{color:#999999;background: url(../img/zan.png) -4px -4px no-repeat;text-indent: 22px;background-size: 24px 24px;}
-.body_left .recarti .bloglist .conlist .conbg .concommentnum:hover{color:#409EFF;background: url(../img/zan2.png) -4px -4px no-repeat;text-indent: 22px;background-size: 24px 24px;}
-
+.body_left .recarti .bloglist .conlist .conbg .concommentnum2{color:#409EFF;background: url(../img/zan2.png) -4px -4px no-repeat;text-indent: 22px;background-size: 24px 24px;}
+.body_left .recarti .bloglist .conlist .conbg .like-up{color:#999999;background: url(../img/zan3.png) -4px -4px no-repeat;text-indent: 22px;background-size: 24px 24px;}
 .body_left .recarti .bloglist .conlist .conbg a i {width:15px;height:15px}
 .body_left .recarti .bloglist .conlist .conbg .concon{display:block; width:auto;font-size:14px}
 .body_left .recarti .blogtypemenu{width:100%;height:50px;line-height:50px;border-bottom:1px #EAEAEA solid;background-color: #ffffff}

@@ -25,7 +25,7 @@
                                 <li v-for="(contype,index) in contenttype" :key="contype.typeid" @click="changecontent(index)">{{contype.typename}}</li>
                             </ul>
                         </div>
-                        <template v-for="(blcont) in this.nblists">
+                        <template v-for="(blcont,index) in this.nblists">
                             <div class="conlist"  :key="blcont.id">
                                 <div class="conbg">
                                     <header>
@@ -37,7 +37,15 @@
 										<router-link :to="{ name: 'atct', params:{conid:blcont.article_id}}" class="contitle">{{blcont.article_title}}</router-link>
 									</div>
 									<div class="artinfo">
-										<a href="javascript:void(0)" class="coninfo concommentnum" @click="AGood(blcont.id)">{{blcont.commentnum}}赞</a>
+										<a 
+										href="javascript:void(0)" 
+										class="coninfo concommentnum" 
+										:class="{'like-up':blcont.likeuserid&&blcont.likeuserid.split(',').indexOf(userid)>-1,'concommentnum2':wantlike===index}" 
+										@click="aGood(blcont.article_id,blcont.commentnum,index,blcont.likeuserid)"
+										@mouseover="changecolor1(index)"
+										@mouseout="changecolor2(index)"
+										>{{blcont.commentnum}}赞</a>
+										
 									</div>
                                     <br/><br/>
                                 </div>
@@ -82,7 +90,7 @@
                                 <span>{{hotcont.datetime}}</span>
 								<span class="views">{{hotcont.views}}</span>
                             </div>
-							<div class="hc_imgbg"><img :src="imgSrcFun(hotcont.coverimage)"   v-if="imgSrcFun(hotcont.coverimage)"/></div>
+							<div class="hc_imgbg"><img :src="imgSrcFun(hotcont.coverimage)" v-if="imgSrcFun(hotcont.coverimage)"/></div>
                         </div>
                     </div>
                 </template>
@@ -115,7 +123,9 @@ export default {
                     contdate: [{datetime:"2017年01月13日星期五",cont_en:"Do not let what you cannot do interfere with what you can do.",cont_zh:"别让你不能做的事妨碍到你能做的事。",author:"John Wooden"}]
                     ,hotblcontlist:"",
                     nblists:[],
-                    banner:[{ src:"banner_1.jpg"},{src:"banner_2.jpg"},{src:"banner_3.jpg"}]
+                    banner:[{ src:"banner_1.jpg"},{src:"banner_2.jpg"},{src:"banner_3.jpg"}],
+					wantlike:"",
+					userid:localStorage.getItem("userid")
                 }
             },
             components:{
@@ -171,9 +181,55 @@ export default {
                         }
                     }
                 },
-                AGood:function (id) {
-                    
+                aGood:function (id,num,index,likeuserid) {
+					var that = this;
+                    var userstatus = localStorage.getItem("userstatus");
+					var likedown;
+					var poturl;
+					var Haslike=likeuserid&&likeuserid.split(',').indexOf(that.userid)>-1
+                    if(userstatus!=1){
+                        this.showlogin();
+                    }else{
+						if(Haslike){
+							likedown=true;
+							poturl = "/article/cancelLikeRecording"
+							const h = this.$createElement;
+							this.$msgbox({
+								title: '消息',
+								message: h('p', {style:'display: flex'}, [
+									h('span', null, '谁让你取消的，你给我点回去。'),
+									h('a', {style:'background:url('+this.imgSrcFun("cutyou.png")+');height:100px;width:122px;display:block' })
+								])
+							});
+						}else{
+							likedown=false
+							poturl = "/article/likeRecording"
+						}
+                        this.$axios.post("/article/thumb-Up", {"article_id":id,"commentnum":num,"likedown":likedown})
+                        .then((response)=>{
+                            
+                        }).catch(function (error) {
+                            alert(error);
+                        });
+                        this.$axios.post(poturl, {"articleid":id,"likeuserid":this.userid})
+                        .then((response)=>{
+                            that.blcontlist();
+							
+                        }).catch(function (error) {
+                            alert(error);
+                        });
+                    }
                 },
+				changecolor1:function(index){
+					if(this.like===""||this.like!==index){
+						this.wantlike=index;
+					}
+				},
+				changecolor2:function(index){
+					if(this.like===""||this.like!==index){
+						this.wantlike="";
+					}
+				},
                 changecontent: function (index) {
                     this.contenttypeid = index;
                     this.fristload = 0;

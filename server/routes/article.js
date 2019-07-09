@@ -10,9 +10,9 @@ const chinaTime = require('china-time');
  */
 router.post("/getarticlelist",function(req,res,next){
     var contentid=req.body.contentid;
-    var sqlyj="select A.*,C.typename from articlelist A LEFT OUTER JOIN contenttype C ON A.contenttype=C.typeid"
+    var sqlyj="select A.*,B.typename,GROUP_CONCAT(C.likeuserid) as likeuserid from articlelist A LEFT OUTER JOIN contenttype B ON A.contenttype=B.typeid LEFT OUTER JOIN likes C ON A.article_id=C.articleid GROUP BY article_id"
     if(contentid!=undefined){
-        sqlyj="select A.*,C.typename from articlelist A LEFT OUTER JOIN contenttype C ON A.contenttype=C.typeid where article_id = "+contentid;
+        sqlyj="select A.*,B.typename,GROUP_CONCAT(C.likeuserid) as likeuserid from articlelist A LEFT OUTER JOIN contenttype B ON A.contenttype=B.typeid LEFT OUTER JOIN likes C ON A.article_id=C.articleid where A.article_id = "+contentid+" GROUP BY article_id";
     }
     var week = "日一二三四五六".charAt(new Date().getDay());
     db.query(sqlyj,function(error,rows){
@@ -174,6 +174,86 @@ router.post("/addArticle",function(req,res){
 	var coverimage=req.body.coverimage;
 	var arttag=req.body.arttag;
     db.query("INSERT into articlelist (article_title,content,datetime,views,commentnum,hot,contenttype,recommend,userid,coverimage,arttag) values ('"+title+"','"+content+"','"+datetime+"',0,0,0,"+contenttype+",0,"+userid+",'"+coverimage+"','"+arttag+"')",function(error,rows){
+        if (error) {
+            var result = {
+                "status": "500",
+                "message": "服务器错误"
+            }
+            return res.jsonp(result);
+        }
+        else{
+            var result = {
+                "status": "200",
+                "message": "success",
+                data:rows
+            }
+            return res.jsonp(result);
+        }
+    });
+});
+/**
+ * 文章点赞次数修改
+ */
+router.post("/thumb-Up",function(req,res,next){
+    var article_id = req.body.article_id;
+    var commentnum = req.body.commentnum;
+	var likedown = req.body.likedown;
+	var sql = "";
+	if(likedown){
+		sql = "update articlelist set commentnum = "+Number(commentnum-1)+" where article_id="+article_id;
+	}else{
+		sql = "update articlelist set commentnum = "+Number(commentnum+1)+" where article_id="+article_id;
+	}
+	console.log(sql)
+    db.query(sql,function(error,rows){
+        if (error) {
+            var result = {
+                "status": "500",
+                "message": "服务器错误"
+            }
+            return res.jsonp(result);
+        }
+        else{
+            var result = {
+                "status": "200",
+                "message": "success",
+                data:rows[0]
+            }
+            return res.jsonp(result);
+        }
+    });
+});
+/**
+*记录用户点赞的文章
+*/
+router.post("/likeRecording",function(req,res){
+    var articleid=req.body.articleid;
+    var likeuserid=req.body.likeuserid;
+    db.query("INSERT into likes (articleid,likeuserid) values ("+articleid+","+likeuserid+")",function(error,rows){
+        if (error) {
+            var result = {
+                "status": "500",
+                "message": "服务器错误"
+            }
+            return res.jsonp(result);
+        }
+        else{
+            var result = {
+                "status": "200",
+                "message": "success",
+                data:rows
+            }
+            return res.jsonp(result);
+        }
+    });
+});
+/**
+*用户取消点赞的文章
+*/
+router.post("/cancelLikeRecording",function(req,res){
+    var articleid=req.body.articleid;
+    var likeuserid=req.body.likeuserid;
+    db.query("delete from likes where articleid="+articleid+" and likeuserid="+likeuserid+"",function(error,rows){
         if (error) {
             var result = {
                 "status": "500",
