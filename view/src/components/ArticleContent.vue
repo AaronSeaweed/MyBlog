@@ -51,7 +51,10 @@
                                 <div class="content-foot">
                                     <div class="like-btn"><span>{{comlist.up}}</span></div>
 									<div :class='classObj(comlist.Uname)' >
-                                    <span class="title" :replytype="0" :artid="comlist.id">回复</span>
+										<span class="title" :replytype="0" :artid="comlist.id">回复</span>
+									</div>
+									<div :class='classObj(comlist.Uname,"del")' >
+										<span class="del-title" @click="delcom(comlist.id,0)" :replytype="0" :artid="comlist.id">删除</span>
 									</div>
                                     <span class="replydate">{{reversedMessage(comlist.date)}}</span>
                                 </div>
@@ -77,8 +80,11 @@
                                                     <div class="content-foot">
                                                         <div class="like-btn"><span>{{replylist.replyup}}</span></div>
 														<div :class='classObj(replylist.username)'>
-                                                        <span class="title" :replytype="1" :artid="replylist.replyid">回复</span>
+															<span class="title" :replytype="1" :artid="replylist.replyid">回复</span>
                                                         </div>
+														<div :class='classObj(replylist.username,"del")' >
+															<span class="del-title" @click="delcom(replylist.replyid,1)" :replytype="1" :artid="replylist.replyid">删除</span>
+														</div>
 														<span class="replydate">{{reversedMessage(replylist.replydate)}}</span>
                                                     </div>
                                                     <CommentPanel ref="child"></CommentPanel>
@@ -132,20 +138,49 @@ export default {
             CommentPanel
         },
         methods:{
-			imgSrcFun(value){
+			imgSrcFun:function(value){
 				if(value){
 					return require('@/assets/img/'+value);
 				}else{
 					return ""
 				}
 			},
-            classObj:function(name){
+            classObj:function(name,op){
                 if(name==this.uname){
-                    return "displaynone sub-comment-btn text-pointer"
+                    return op?"sub-comment-btn text-pointer":"displaynone sub-comment-btn text-pointer"
                 }else{
-                    return "sub-comment-btn text-pointer"
+                    return op?"displaynone sub-comment-btn text-pointer":"sub-comment-btn text-pointer"
                 }
             },
+			delcom:function(id,replytype){//删除评论/回复
+				var that = this;
+				that.$confirm('你确定要删除这条评论吗?', '提示', {
+				  confirmButtonText: '确定',
+				  cancelButtonText: '取消',
+				  type: 'warning'
+				}).then(() => {
+					that.$axios.post("/article/delDiscuss", {"id":id,"replytype":replytype})
+					.then((response)=>{
+					    if(response.data.status==200){
+							that.$message({
+								type: 'success',
+								message: '删除成功!'
+							});
+							that.getcomment();
+						}else{
+							that.$message({
+								type: 'error',
+								message: response.data.message
+							});
+						}
+					}).catch(function (error) {
+					    that.$message({
+					    	type: 'error',
+					    	message: error
+					    });
+					});
+				})
+			},
 			toHtml:function(){
 				var testEditormdView2 = editormd.markdownToHTML("aridetailCon", {
 					htmlDecode      : "style,script,iframe",  // you can filter tags decode

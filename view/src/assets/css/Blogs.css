@@ -43,12 +43,11 @@ h2 {font-size:18px}
 .head_menu div ul li a{color:black}
 .head_menu div ul li a:hover{color:#3399CC}
 .head_menu span:nth-of-type(1) {font-size:32px;color:#38393B;margin: 20px 0 0 20px;display: inline-block;}
-.head_menu span:nth-of-type(2){position:absolute;right:100px;top: 5px;display: block;color:black;width:24px;height:24px; background: url(../img/draw.png) 0px 0px no-repeat;cursor: pointer}
-.head_menu #loginbtn{position:absolute;right: 53px;top: 6px;display: block;color:black;cursor: pointer}
-.head_menu #regbtn{position:absolute;right: 20px;top: 6px;display: block;color:black;cursor: pointer}
-.head_menu #username{position:absolute;right: 45px;top: 6px;display: block;color:black;display: none;cursor: pointer}
+.head_menu .loginbtn{position:absolute;right: 53px;top: 6px;color:black;cursor: pointer}
+.head_menu .regbtn{position:absolute;right: 20px;top: 6px;color:black;cursor: pointer}
+.head_menu #username{position:absolute;right: 45px;top: 16px;display: block;color:black;display: none;cursor: pointer}
 .head_menu a:hover {text-decoration:none}
-.head_menu .personalset{width: 8rem;right: -5px;left: auto;-webkit-transform: translateX(0);transform: translateX(0);position: absolute;top: 30px;-webkit-transform: translateX(-50%);transform: translateX(-50%);margin: 0;padding: 0;list-style: none;background-color: #fff;box-shadow: 0 1px 2px 0 rgba(0,0,0,.1);border: 1px solid hsla(217,5%,71%,.45);font-size: 1.2rem;display: none}
+.head_menu .personalset{width: 8rem;right: -25px;left: auto;-webkit-transform: translateX(0);transform: translateX(0);position: absolute;top: 45px;-webkit-transform: translateX(-50%);transform: translateX(-50%);margin: 0;padding: 0;list-style: none;background-color: #fff;box-shadow: 0 1px 2px 0 rgba(0,0,0,.1);border: 1px solid hsla(217,5%,71%,.45);font-size: 1.2rem;}
 .head_menu .personalset div li{font-size: 1.3rem;cursor: pointer;}
 .head_menu .personalset div li:hover{background-color: hsla(0,0%,95%,.5);}
 .head_menu .personalset div li a{display: -webkit-box;display: -ms-flexbox;display: flex;-webkit-box-align: center;-ms-flex-align: center;align-items: center;padding: .5rem 1rem;}
@@ -298,6 +297,9 @@ body{background-color: #f4f5f5;}
 .content-foot .text-pointer{cursor: pointer;}
 .content-foot .title{color:#999999;background: url(../img/reply.png) -2px -1px no-repeat;text-indent: 22px;background-size: 20px 20px;display: inline-block;cursor: pointer;font-size: 10px;}
 .content-foot .title:hover{color:#007fff;background: url(../img/reply2.png) -2px -1px no-repeat;text-indent: 22px;background-size: 20px 20px;display: inline-block;cursor: pointer;font-size: 10px;}
+.content-foot .del-title{color:#999999;background: url(../img/del.png) -2px -1px no-repeat;text-indent: 20px;background-size: 20px 20px;display: inline-block;cursor: pointer;font-size: 10px;}
+.content-foot .del-title:hover{color:#007fff;background: url(../img/del2.png) -2px -1px no-repeat;text-indent: 20px;background-size: 20px 20px;display: inline-block;cursor: pointer;font-size: 10px;}
+
 .content-foot .replydate{color:#999999;background: url(../img/clock.png) -2px -3px no-repeat;text-indent: 20px;display: inline-block;background-size: 23px 23px;margin-left:20px;font-size:10px}
 .load-box{display: -webkit-box;display: -ms-flexbox;display: flex;-webkit-box-align: center;-ms-flex-align: center;align-items: center;-webkit-box-pack: center;-ms-flex-pack: center;justify-content: center;position: fixed;top: 0;left: 0;right: 0;bottom: 0;background-color: rgba(0,0,0,.3);z-index: 500;}
 .load-box .load-form{position: relative;padding: 2rem;width: 26.5rem;max-width: 100%;font-size: 1.167rem;background-color: #fff;border-radius: 2px;box-sizing: border-box;}

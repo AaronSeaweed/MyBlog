@@ -12,7 +12,7 @@ export default {
     data:function(){
         return{
             styleObject:{
-                'background-image':localStorage.getItem("userstatus")?'url('+require('../../../view/src/assets/img/'+localStorage.getItem("photo")+'')+')':'url('+require('../../../view/src/assets/img/user.png')+')',
+                'background-image':localStorage.getItem("userstatus")==1?'url('+require('../../../view/src/assets/img/'+localStorage.getItem("photo")+'')+')':'url('+require('../../../view/src/assets/img/user.png')+')',
                 'background-size':'3rem 3rem',
                 'background-repeat':'no-repeat',
                 'background-position': '50%'

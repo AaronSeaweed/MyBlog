@@ -4,12 +4,10 @@
     </div>
     <div class="head_menu">
         <span>老鼠会上树</span>
-        <span></span>
-        <span @click="showlogin()" id="loginbtn">登录 |</span>
-        <span @click="showreg()" id="regbtn">注册</span>
-        <i></i>
-        <span id="username"></span>
-        <ul class="personalset">
+        <span @click="showlogin()" :class="{'displaynone':userstatus==1}" class="loginbtn" id="loginbtn">登录 |</span>
+        <span @click="showreg()" :class="{'displaynone':userstatus==1}" class="regbtn" id="regbtn">注册</span>
+        <div :style='styleObject' :class="{'displaynone':userstatus==0}" @click="openuserinfo()" id="user"></div>
+        <ul class="personalset" :class="{displaynone:persset==true}">
            <div>
                <li>
                <router-link :to="{ name: 'usct', params:{userid:this.userid}}" class="contitle">个人中心</router-link>
@@ -37,48 +35,65 @@ export default {
         data:function(){
           return{
             xslogin:false,
-            userid:Gb.b64EncodeUnicode(localStorage.getItem('userid'))
+            userid:Gb.b64EncodeUnicode(localStorage.getItem('userid')),
+			userstatus:localStorage.getItem("userstatus"),
+			persset:true,
+			styleObject:{
+			    'background-image':localStorage.getItem("userstatus")==1?'url('+require('../../../view/src/assets/img/'+localStorage.getItem("photo")+'')+')':'url('+require('../../../view/src/assets/img/user.png')+')',
+			    'background-size':'3rem 3rem',
+			    'background-repeat':'no-repeat',
+			    'background-position': '50%',
+				'position':'absolute',
+				'width': '3rem',
+				'height': '3rem',
+				'border-radius':'50%',
+				'right': '25px',
+				'top': '8px',
+				'cursor': 'pointer'
+			}
           }
         },
-        components: {
-             login
-        },
+        components: {login},
         methods:{
-          showlogin() {
-            this.$refs.child.clicklogin=true
-            this.$refs.child.loginmode();//调用子组件的方法
-          },
-          showreg(){
-           this.$refs.child.clicklogin=true
-           this.$refs.child.registeredmode();//调用子组件的方法
-          },
-          loginout(){
-            localStorage.setItem("userstatus",0);
-            localStorage.removeItem('username')
-            localStorage.removeItem("userid");
-            window.location.href="/"
-          }
+			imgSrcFun:function(value){
+				if(value){
+					return require('@/assets/img/'+value);
+				}else{
+					return ""
+				}
+			},
+			showlogin:function() {
+				this.$refs.child.clicklogin=true
+				this.$refs.child.loginmode();//调用子组件的方法
+			},
+			showreg:function(){
+				this.$refs.child.clicklogin=true
+				this.$refs.child.registeredmode();//调用子组件的方法
+			},
+			loginout:function(){
+				localStorage.setItem("userstatus",0);
+				localStorage.removeItem('username')
+				localStorage.removeItem("userid");
+				localStorage.removeItem("photo");
+				if(location.href.indexOf("user")>-1){
+					window.location.href="/"
+				}else{
+					location.reload();
+				}
+			},
+			openuserinfo:function(){
+				this.persset=false;
+			}
         },
         mounted:function(){
-             var userstatus = localStorage.getItem("userstatus");
-             if(userstatus==1){
-                $("#loginbtn,#regbtn,.comment-form-panel").css("display","none");
-                $("#username").show().text(localStorage.getItem("username"));
-                $(".comment-form-area").show();
-                $(".userpic").css("background-image",localStorage.getItem("photo"))
-             }
-             $("#username").on("click",function(){
-                $(".personalset").show();
-             });
-             $(document).on("click",function(event){
-                if(event.target.id!="username"){
-                    $(".personalset").hide();
+             $(document).on("click",(event)=>{
+                if(event.target.id!="user"){
+                    this.persset=true;
                 }
              });
-             var that=this;
-             bus.$on("login",function(){
-                 that.$refs.child.clicklogin=true
-                 that.$refs.child.loginmode();//调用子组件的方法
+             bus.$on("login",()=>{
+                 this.$refs.child.clicklogin=true
+                 this.$refs.child.loginmode();//调用子组件的方法
              })
         }
 }

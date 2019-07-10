@@ -271,4 +271,33 @@ router.post("/cancelLikeRecording",function(req,res){
         }
     });
 });
+/**
+*删除评论
+*/
+router.post("/delDiscuss",function(req,res){
+    var id=req.body.id;
+    var replytype=req.body.replytype;
+	if(replytype==0){
+		sql = "delete from commentlist where id = "+id;
+	}else{
+		sql = "delete from replyart where replyid = "+id;
+	}
+    db.query(sql,function(error,rows){
+        if (error) {
+            var result = {
+                "status": "500",
+                "message": "服务器错误"
+            }
+            return res.jsonp(result);
+        }
+        else{
+            var result = {
+                "status": "200",
+                "message": "success",
+                data:rows
+            }
+            return res.jsonp(result);
+        }
+    });
+});
 module.exports = router
