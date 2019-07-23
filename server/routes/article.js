@@ -10,9 +10,9 @@ const chinaTime = require('china-time');
  */
 router.post("/getarticlelist",function(req,res,next){
     var contentid=req.body.contentid;
-    var sqlyj="select A.*,B.typename,GROUP_CONCAT(C.likeuserid) as likeuserid from articlelist A LEFT OUTER JOIN contenttype B ON A.contenttype=B.typeid LEFT OUTER JOIN likes C ON A.article_id=C.articleid GROUP BY article_id"
+    var sqlyj="select A.*,B.typename,GROUP_CONCAT(C.likeuserid) as likeuserid from articlelist A LEFT OUTER JOIN contenttype B ON A.contenttype=B.typeid LEFT OUTER JOIN art_likes C ON A.article_id=C.articleid GROUP BY article_id"
     if(contentid!=undefined){
-        sqlyj="select A.*,B.typename,GROUP_CONCAT(C.likeuserid) as likeuserid from articlelist A LEFT OUTER JOIN contenttype B ON A.contenttype=B.typeid LEFT OUTER JOIN likes C ON A.article_id=C.articleid where A.article_id = "+contentid+" GROUP BY article_id";
+        sqlyj="select A.*,B.typename,GROUP_CONCAT(C.likeuserid) as likeuserid from articlelist A LEFT OUTER JOIN contenttype B ON A.contenttype=B.typeid LEFT OUTER JOIN art_likes C ON A.article_id=C.articleid where A.article_id = "+contentid+" GROUP BY article_id";
     }
     var week = "日一二三四五六".charAt(new Date().getDay());
     db.query(sqlyj,function(error,rows){
@@ -120,8 +120,13 @@ router.post("/commitreply",function(req,res){
  */
 router.post("/getcommentlist",function(req,res,next){
     var contentid=req.body.contentid;
-    var selsql=`select A.*,B.photo,B.callname,B.username as Uname from commentlist A Left outer join user B on A.username=B.id where contentid=`+contentid+` Order By date Desc`
-    db.query(selsql,function(error,rows){
+    //var selsql=`select A.*,B.photo,B.callname,B.username as Uname from commentlist A Left outer join user B on A.username=B.id where contentid=`+contentid+` Order By date Desc`
+    var selsql=`select A.*,B.photo,B.callname,B.username as Uname,GROUP_CONCAT(C.likeuserid) as likeuserid from commentlist A 
+				Left join user B on A.username=B.id 
+				Left join comm_likes C on C.commentid=A.id 
+				where contentid=`+contentid+` 
+				GROUP BY A.id Order By date Desc`
+	db.query(selsql,function(error,rows){
         if (error) {
             var result = {
                 "status": "500",
@@ -144,7 +149,13 @@ router.post("/getcommentlist",function(req,res,next){
  * 获取评论回复列表
  */
 router.post("/getreplylist",function(req,res,next){
-    db.query("select A.*,B.photo,B.callname,B.username from replyart A Left outer join user B on A.replyusername=B.id Order By A.replydate Asc",function(error,rows){
+	//select A.*,B.photo,B.callname,B.username from replyart A Left outer join user B on A.replyusername=B.id Order By A.replydate Asc
+    db.query(`select A.*,B.photo,B.callname,B.username,GROUP_CONCAT(C.likeuserid) as likeuserid from replyart A 
+			Left join user B on A.replyusername=B.id 
+			Left join rep_likes C on C.replyid=A.replyid
+			GROUP BY A.replyid
+			Order By A.replydate Asc`
+	,function(error,rows){
         if (error) {
             var result = {
                 "status": "500",
@@ -204,7 +215,6 @@ router.post("/thumb-Up",function(req,res,next){
 	}else{
 		sql = "update articlelist set commentnum = "+Number(commentnum+1)+" where article_id="+article_id;
 	}
-	console.log(sql)
     db.query(sql,function(error,rows){
         if (error) {
             var result = {
@@ -229,7 +239,7 @@ router.post("/thumb-Up",function(req,res,next){
 router.post("/likeRecording",function(req,res){
     var articleid=req.body.articleid;
     var likeuserid=req.body.likeuserid;
-    db.query("INSERT into likes (articleid,likeuserid) values ("+articleid+","+likeuserid+")",function(error,rows){
+    db.query("INSERT into art_likes (articleid,likeuserid) values ("+articleid+","+likeuserid+")",function(error,rows){
         if (error) {
             var result = {
                 "status": "500",
@@ -253,7 +263,7 @@ router.post("/likeRecording",function(req,res){
 router.post("/cancelLikeRecording",function(req,res){
     var articleid=req.body.articleid;
     var likeuserid=req.body.likeuserid;
-    db.query("delete from likes where articleid="+articleid+" and likeuserid="+likeuserid+"",function(error,rows){
+    db.query("delete from art_likes where articleid="+articleid+" and likeuserid="+likeuserid+"",function(error,rows){
         if (error) {
             var result = {
                 "status": "500",
@@ -281,6 +291,110 @@ router.post("/delDiscuss",function(req,res){
 		sql = "delete from commentlist where id = "+id;
 	}else{
 		sql = "delete from replyart where replyid = "+id;
+	}
+    db.query(sql,function(error,rows){
+        if (error) {
+            var result = {
+                "status": "500",
+                "message": "服务器错误"
+            }
+            return res.jsonp(result);
+        }
+        else{
+            var result = {
+                "status": "200",
+                "message": "success",
+                data:rows
+            }
+            return res.jsonp(result);
+        }
+    });
+});
+
+/**
+ * 文章评论/回复点赞次数修改
+ */
+router.post("/thumb-CommUp",function(req,res,next){
+    var id = req.body.id;
+    var commentnum = req.body.commentnum;
+	var likedown = req.body.likedown;
+	var replytype = req.body.replytype;
+	var sql = "";
+	if(likedown){
+		if(replytype==0){
+			sql = "update commentlist set up = "+ Number(commentnum-1)+" where id ="+id ;
+		}else{
+			sql = "update replyart set replyup = "+Number(commentnum-1)+" where replyid="+id;
+		}
+	}else{
+		if(replytype==0){
+			sql = "update commentlist set up = "+Number(commentnum+1)+" where id="+id;
+		}else{
+			sql = "update replyart set replyup = "+Number(commentnum+1)+" where replyid="+id;
+		}
+	}
+	console.log(sql)
+    db.query(sql,function(error,rows){
+        if (error) {
+            var result = {
+                "status": "500",
+                "message": "服务器错误"
+            }
+            return res.jsonp(result);
+        }
+        else{
+            var result = {
+                "status": "200",
+                "message": "success",
+                data:rows[0]
+            }
+            return res.jsonp(result);
+        }
+    });
+});
+/**
+*记录用户点赞的评论/回复
+*/
+router.post("/like_CommRecording",function(req,res){
+    var id=req.body.id;
+    var likeuserid=req.body.likeuserid;
+	var replytype = req.body.replytype;
+	var sql = "";
+	if(replytype==0){
+		sql = "INSERT into comm_likes (commentid,likeuserid) values ("+id+","+likeuserid+")"
+	}else{
+		sql = "INSERT into rep_likes (replyid,likeuserid) values ("+id+","+likeuserid+")"
+	}
+    db.query(sql,function(error,rows){
+        if (error) {
+            var result = {
+                "status": "500",
+                "message": "服务器错误"
+            }
+            return res.jsonp(result);
+        }
+        else{
+            var result = {
+                "status": "200",
+                "message": "success",
+                data:rows
+            }
+            return res.jsonp(result);
+        }
+    });
+});
+/**
+*用户取消点赞的评论/回复
+*/
+router.post("/cancel_CommLikeRecording",function(req,res){
+    var id=req.body.id;
+    var likeuserid=req.body.likeuserid;
+	var replytype = req.body.replytype;
+	var sql = "";
+	if(replytype==0){
+		sql = "delete from comm_likes where commentid="+id+" and likeuserid="+likeuserid+""
+	}else{
+		sql = "delete from rep_likes where replyid="+id+" and likeuserid="+likeuserid+""
 	}
     db.query(sql,function(error,rows){
         if (error) {

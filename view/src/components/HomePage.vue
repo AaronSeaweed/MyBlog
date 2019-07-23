@@ -33,7 +33,7 @@
 										<span class="condatetime coninfo">{{reversedMessage(blcont.datetime)}}</span>
 										<span class="conviews coninfo">{{blcont.views}}次</span>
                                     </header>
-									<div>
+									<div class="contitle-box">
 										<router-link :to="{ name: 'atct', params:{conid:blcont.article_id}}" class="contitle">{{blcont.article_title}}</router-link>
 									</div>
 									<div class="artinfo">
@@ -104,6 +104,7 @@
 <script>
 import WebBulletin from './WebBulletin.vue';
 import {Gb} from '../assets/js/global.js'
+import bus from '../assets/js/eventbus.js';
 export default {
     //绑定最新发布文章和事件
             data:function(){
@@ -132,7 +133,7 @@ export default {
                 WebBulletin
             },
             methods: {
-                imgSrcFun(value){
+                imgSrcFun: function(value){
 					if(value){
 						return require('@/assets/img/'+value);
 					}else{
@@ -188,7 +189,7 @@ export default {
 					var poturl;
 					var Haslike=likeuserid&&likeuserid.split(',').indexOf(that.userid)>-1
                     if(userstatus!=1){
-                        this.showlogin();
+                        bus.$emit("login","");
                     }else{
 						if(Haslike){
 							likedown=true;
@@ -314,13 +315,14 @@ export default {
                         }
                     }
                 },sethead: function () {
+					var overheight = document.getElementsByClassName("hotcont")[0].offsetTop+document.getElementsByClassName("hotcont")[0].offsetHeight
                     if (___getPageScroll() > 100) {
                         $(".head_menu").addClass("fixd");
-                        if (___getPageScroll() > 1154) {
+                        if (___getPageScroll() > overheight) {
                             $("#Scro_Fixed").addClass("scro_fixed");
                         }
                     }
-                    if (___getPageScroll() < 1154) {
+                    if (___getPageScroll() < overheight) {
                         $("#Scro_Fixed").removeClass("scro_fixed");
                         if (___getPageScroll() < 100) {
                             $(".head_menu").removeClass("fixd");
@@ -364,7 +366,7 @@ export default {
                 });
                 $(".contenttypemenu li").eq(5).css("color", "#3399CC");
                 //菜单收缩事件
-                /* $(".menulist").on('click', function () {
+                $(".menulist").on('click', function () {
                     if ($(".blogtypemenu div").hasClass("menulist")) {
                         $(".blogtypemenu").animate({height: "250px"}, 300);
                         $(".blogtypemenu div").removeClass("menulist").addClass("menulist2");
@@ -374,11 +376,12 @@ export default {
                         $(".blogtypemenu div").addClass("menulist").removeClass("menulist2");
                         $(".contenttypemenu2").removeClass("contenttypemenu2").addClass("contenttypemenu");
                     }
-                }) */
+                })
                 this.blcontlist();
             },
             updated: function () {
                // PageMb.Skinning();
+			  // alert(document.getElementsByClassName("hotcont")[0].offsetTop)
             }
 }
 </script>

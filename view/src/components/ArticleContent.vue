@@ -49,8 +49,15 @@
                                     <span class="content-html">{{comlist.content}}</span>
                                 </div>
                                 <div class="content-foot">
-                                    <div class="like-btn"><span>{{comlist.up}}</span></div>
-									<div :class='classObj(comlist.Uname)' >
+                                    <div class="like-btn" @click="aGood(0,comlist.id,comlist.up,comlist.likeuserid)">
+										<span
+										:class="{'like-up':comlist.likeuserid&&comlist.likeuserid.split(',').indexOf(userid)>-1,'rephover':wantlike===index}"
+										@mouseover="changecolor1(index)"
+										@mouseout="changecolor2(index)">
+										{{comlist.up}}
+										</span>
+									</div>
+									<div :class='classObj(comlist.Uname)'>
 										<span class="title" :replytype="0" :artid="comlist.id">回复</span>
 									</div>
 									<div :class='classObj(comlist.Uname,"del")' >
@@ -78,7 +85,14 @@
                                                         <span class="content-html">回复&nbsp;<a class="content-user" href="javascript:void(0)">{{getname(replylist.artid)}}</a>：{{replylist.replycontent}}</span>
                                                     </div>
                                                     <div class="content-foot">
-                                                        <div class="like-btn"><span>{{replylist.replyup}}</span></div>
+                                                        <div class="like-btn" @click="aGood(1,replylist.replyid,replylist.replyup,replylist.likeuserid)">
+															<span
+															:class="{'like-up':replylist.likeuserid&&replylist.likeuserid.split(',').indexOf(userid)>-1,'rephover':wantlike===index}"
+															@mouseover="changecolor1(index)"
+															@mouseout="changecolor2(index)">
+															{{replylist.replyup}}
+															</span>
+														</div>
 														<div :class='classObj(replylist.username)'>
 															<span class="title" :replytype="1" :artid="replylist.replyid">回复</span>
                                                         </div>
@@ -126,7 +140,10 @@ export default {
                 replysubmit:[],
                 replycount:0,
                 uname:localStorage.getItem("username"),
-				aridetailContent:""
+				aridetailContent:"",
+				userstatus:localStorage.getItem("userstatus"),
+				userid:localStorage.getItem("userid"),
+				wantlike:""
             }
         },
         wacth:{
@@ -179,7 +196,7 @@ export default {
 					    	message: error
 					    });
 					});
-				})
+				}).catch(()=>{})
 			},
 			toHtml:function(){
 				var testEditormdView2 = editormd.markdownToHTML("aridetailCon", {
@@ -245,7 +262,7 @@ export default {
                     });
 
                 }
-            },getReplysList(id){
+            },getReplysList:function(id){
                 var that = this;
                 var nowreplys=[]
                 for(var i=0;i<that.replys[0].length;i++){
@@ -275,7 +292,7 @@ export default {
                 //}else{
                     return nowreplys;
                 //}
-            },getname(artid){
+            },getname:function(artid){
                 var that = this;
                 for(var i=0;i<that.replys[0].length;i++){
                     if(that.replys[0][i]["replyid"]==artid){
@@ -288,9 +305,8 @@ export default {
                     }
                 }
                 
-            },ReplyArt(index,text){
-                var userstatus = localStorage.getItem("userstatus");
-                if(userstatus!=1){
+            },ReplyArt:function(index,text){
+                if(this.userstatus!=1){
                     this.showlogin();
                 }else{
                     if(text!=undefined){
@@ -302,12 +318,51 @@ export default {
                     }
                     
                 }
-            }
+            },
+			changecolor1:function(index){
+				if(this.like===""||this.like!==index){
+					this.wantlike=index;
+				}
+			},
+			changecolor2:function(index){
+				if(this.like===""||this.like!==index){
+					this.wantlike="";
+				}
+			},
+			aGood:function(replytype,id,num,likeuserid){
+				var that = this;
+				var likedown;
+				var poturl;
+				var Haslike=likeuserid&&likeuserid.split(',').indexOf(that.userid)>-1
+				if(this.userstatus!=1){
+				    this.showlogin();
+				}else{
+					if(Haslike){
+						likedown=true;
+						poturl = "/article/cancel_CommLikeRecording"
+					}else{
+						likedown=false
+						poturl = "/article/like_CommRecording"
+					}
+					
+					this.$axios.post("/article/thumb-CommUp", {"id":id,"commentnum":num,"likedown":likedown,"replytype":replytype})
+					.then((response)=>{
+					    
+					}).catch(function (error) {
+					    alert(error);
+					});
+					this.$axios.post(poturl, {"id":id,"likeuserid":this.userid,"replytype":replytype})
+					.then((response)=>{
+					    that.getcomment();
+					}).catch(function (error) {
+					    alert(error);
+					});
+				}
+			}
         },
         mounted:function () {
             var that = this;
-            var userstatus = localStorage.getItem("userstatus");
-            if(userstatus==1){
+            if(that.userstatus==1){
                 $(".comment-form-panel").css("display","none");
                 $(".comment-form-area").eq(0).show();
             }

@@ -6,11 +6,11 @@
         <span>老鼠会上树</span>
         <span @click="showlogin()" :class="{'displaynone':userstatus==1}" class="loginbtn" id="loginbtn">登录 |</span>
         <span @click="showreg()" :class="{'displaynone':userstatus==1}" class="regbtn" id="regbtn">注册</span>
-        <div :style='styleObject' :class="{'displaynone':userstatus==0}" @click="openuserinfo()" id="user"></div>
+        <div :style='styleObject' :class="{'displaynone':userstatus==0||userstatus==null}" @click="openuserinfo()" id="user"></div>
         <ul class="personalset" :class="{displaynone:persset==true}">
            <div>
                <li>
-               <router-link :to="{ name: 'usct', params:{userid:this.userid}}" class="contitle">个人中心</router-link>
+               <router-link :to="{name:'usct',params:{userid:this.userid}}" class="contitle">个人中心</router-link>
                </li>
                <li><a href="javascript:void(0)" @click="loginout()">退出</a></li>
            </div>
