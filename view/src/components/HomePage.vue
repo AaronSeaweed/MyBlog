@@ -19,9 +19,9 @@
                     </div>
                     <div class="bloglist">
                         <div class="blogtypemenu">
-                            <div class="menulist">
+                            <div :class="{'menulist':!foldmenu,'menulist2':foldmenu}" @click="changemenu()">
                             </div>
-                            <ul class="contenttypemenu">
+                            <ul :class="{'contenttypemenu':!foldmenu,'contenttypemenu2':foldmenu}">
                                 <li v-for="(contype,index) in contenttype" :key="contype.typeid" @click="changecontent(index)">{{contype.typename}}</li>
                             </ul>
                         </div>
@@ -63,7 +63,7 @@
     </el-col>
     <el-col :span="8">
         <div class="grid-content bg-purple body_right">
-            <WebBulletin></WebBulletin>
+            <WebBulletin :scro_fixed="scro_fixed"></WebBulletin>
             <!--每日一句-->
             <div class="daysen">
                 <div class="ds_title">
@@ -126,7 +126,9 @@ export default {
                     nblists:[],
                     banner:[{ src:"banner_1.jpg"},{src:"banner_2.jpg"},{src:"banner_3.jpg"}],
 					wantlike:"",
-					userid:localStorage.getItem("userid")
+					userid:localStorage.getItem("userid"),
+					scro_fixed:false,
+					foldmenu:false
                 }
             },
             components:{
@@ -315,38 +317,56 @@ export default {
                         }
                     }
                 },sethead: function () {
-					var overheight = document.getElementsByClassName("hotcont")[0].offsetTop+document.getElementsByClassName("hotcont")[0].offsetHeight
-                    if (___getPageScroll() > 100) {
+					var overheight = document.getElementsByClassName("hotcont")[0].offsetTop+document.getElementsByClassName("hotcont")[0].offsetHeight;
+                    if (this.___getPageScroll() > 100) {
                         $(".head_menu").addClass("fixd");
-                        if (___getPageScroll() > overheight) {
-                            $("#Scro_Fixed").addClass("scro_fixed");
+                        if (this.___getPageScroll() > overheight) {
+							this.scro_fixed=true;
                         }
                     }
-                    if (___getPageScroll() < overheight) {
-                        $("#Scro_Fixed").removeClass("scro_fixed");
-                        if (___getPageScroll() < 100) {
+                    if (this.___getPageScroll() < overheight) {
+						this.scro_fixed=false;
+                        if (this.___getPageScroll() < 100) {
                             $(".head_menu").removeClass("fixd");
                         }
                     }
-
-                    function ___getPageScroll() {
-                        var xScroll, yScroll;
-                        if (self.pageYOffset) {
-                            yScroll = self.pageYOffset;
-                            xScroll = self.pageXOffset;
-                        } else if (document.documentElement && document.documentElement.scrollTop) { // Explorer 6 Strict
-                            yScroll = document.documentElement.scrollTop;
-                            xScroll = document.documentElement.scrollLeft;
-                        } else if (document.body) {// all other Explorers
-                            yScroll = document.body.scrollTop;
-                            xScroll = document.body.scrollLeft;
-                        }
-                        return yScroll;
-                    };
                 },
+				___getPageScroll:function() {
+				    var xScroll, yScroll;
+				    if (self.pageYOffset) {
+				        yScroll = self.pageYOffset;
+				        xScroll = self.pageXOffset;
+				    } else if (document.documentElement && document.documentElement.scrollTop) { // Explorer 6 Strict
+				        yScroll = document.documentElement.scrollTop;
+				        xScroll = document.documentElement.scrollLeft;
+				    } else if (document.body) {// all other Explorers
+				        yScroll = document.body.scrollTop;
+				        xScroll = document.body.scrollLeft;
+				    }
+				    return yScroll;
+				},
                 reversedMessage:function(datetime){
 				      return Gb.changetime(datetime);
-                }
+                },
+				changeDivHeight:function(){
+					var overheight = document.getElementsByClassName("hotcont")[0].offsetTop+document.getElementsByClassName("hotcont")[0].offsetHeight;
+					if(window.innerWidth>1020){
+						if (this.___getPageScroll() > overheight) {
+							this.scro_fixed=true;
+						}else{
+							this.scro_fixed=false;
+						}
+					}
+				},
+				changemenu:function(){
+					if ($(".blogtypemenu div").hasClass("menulist")) {
+					    $(".blogtypemenu").animate({height: "250px"}, 300);
+						this.foldmenu=true;
+					} else {
+					    $(".blogtypemenu").animate({height: "50px"}, 300);
+						this.foldmenu=false;
+					}
+				}
             },
             computed: {
                 hotblcontlists: function () {
@@ -364,19 +384,10 @@ export default {
                 $(window).scroll(function () {
                     that.sethead();
                 });
+				$(window).resize(function(){
+					that.changeDivHeight();
+				})
                 $(".contenttypemenu li").eq(5).css("color", "#3399CC");
-                //菜单收缩事件
-                $(".menulist").on('click', function () {
-                    if ($(".blogtypemenu div").hasClass("menulist")) {
-                        $(".blogtypemenu").animate({height: "250px"}, 300);
-                        $(".blogtypemenu div").removeClass("menulist").addClass("menulist2");
-                        $(".contenttypemenu").removeClass("contenttypemenu").addClass("contenttypemenu2");
-                    } else {
-                        $(".blogtypemenu").animate({height: "50px"}, 300);
-                        $(".blogtypemenu div").addClass("menulist").removeClass("menulist2");
-                        $(".contenttypemenu2").removeClass("contenttypemenu2").addClass("contenttypemenu");
-                    }
-                })
                 this.blcontlist();
             },
             updated: function () {
