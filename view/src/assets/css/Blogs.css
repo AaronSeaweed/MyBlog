@@ -1,5 +1,4 @@
 /**********************首页********************/
-
 * {margin: 0; padding: 0;list-style-type:none;font-family: -apple-system,PingFang SC,Hiragino Sans GB,Microsoft YaHei,Helvetica Neue,Arial,sans-serif;}
 a{text-decoration: none;cursor: pointer;}
 h2 {font-size:18px}
@@ -237,7 +236,7 @@ h2 {font-size:18px}
 .body_right .search .inpout_container select option{background-color: #616161;color:#A6A6A6}
 .body_right .search .el-input{width:75%}
 .body_right .search div input{margin:5px;border-radius: 0;}
-.body_right .search button{border-radius: 0;}
+.body_right .search button{border-radius: 0;width:22%}
 .body_right .search .inpout_container button{height: 30px;border: 0px;width: 23%;background-color: #38393B;color: #ffffff;    margin-top: -1px;cursor:pointer}
 /*********************************博客页每日一句************************************/
 .daysen{width:100%;border: 1px #EAEAEA solid;margin-top:15px;margin-left: -1px;background-color: #ffffff}
@@ -294,14 +293,14 @@ body{background-color: #f4f5f5;}
 .content-box .replylist .fetch-more{text-align: center;margin-top: 10px;}
 .content-box .replylist .fetch-more a{text-decoration: none}
 .content-box .replylist .reply .comment{background-color: #fafbfc;margin-top: 10px;}
-
+.content-opt{overflow: hidden;}
 .user-info{display: flex;-webkit-box-align: baseline;align-items: baseline;flex-wrap: wrap;}
 .user-info .username{font-size: 1.3rem;  font-weight: 600;  color: #333;  margin-right: .6rem;text-decoration: none;  cursor: pointer;}
 .user-info .position{font-size: 1rem; color: #909090;  max-width: 220px;  white-space: nowrap;  overflow: hidden;  text-overflow: ellipsis;}
 .content{ margin: .3rem 0 .5rem;font-size: 1.2rem; line-height: 1.7; color: #333;}
 .content .content-html{margin-right: .5em;  white-space: pre-wrap;}
 .content .content-user{color:#007fff}
-.content-foot{ display: flex;-webkit-box-align: baseline; align-items:baseline;color: #909090;padding-left:60%}
+.content-foot{ display: flex;-webkit-box-align: baseline; align-items:baseline;color: #909090;float: right;margin-right: 10px;}
 .content-foot .like-btn{padding: .3rem 0rem;color: #909090;font-size: 1rem; border-radius: 2px;}
 .content-foot .like-btn span{color:#999999;background: url(../img/zan.png) -4px -4px no-repeat;text-indent: 22px;background-size: 24px 24px;display: inline-block;font-size: 13px;cursor: pointer;}
 .content-foot .like-btn span.rephover{color:#007fff;background: url(../img/zan2.png) -4px -4px no-repeat;text-indent: 22px;background-size: 24px 24px;display: inline-block;font-size: 13px;cursor: pointer;}
@@ -354,7 +353,7 @@ body{background-color: #f4f5f5;}
 .body_left_psct ul li .psct_photobox .photo_show{-webkit-box-flex: 0;-ms-flex: 0 0 auto;flex: 0 0 auto;width: 6rem;height: 6rem;margin-right: 1rem;display: inline-block;position: relative;background-position: 50%;background-size: cover!important;background-repeat: no-repeat;background-color: #eee;}
 .body_left_psct ul li .psct_photobox .action-box .tips{color: #909090;font-size: 1rem;margin-bottom: 1.5rem;}
 /*.body_left_psct ul li .psct_photobox .action-box input{opacity:0}*/
-
+#artContent{display: inline-block;}
 
 /*文章编写页面*/
 .release{width: 80%;margin: 0 auto;display:flex;line-height:2.5}

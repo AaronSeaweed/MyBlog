@@ -317,7 +317,7 @@ export default {
                         }
                     }
                 },sethead: function () {
-					var overheight = document.getElementsByClassName("hotcont")[0].offsetTop+document.getElementsByClassName("hotcont")[0].offsetHeight;
+					var overheight = document.getElementsByClassName("hotcont")[0]&&document.getElementsByClassName("hotcont")[0].offsetTop+document.getElementsByClassName("hotcont")[0].offsetHeight;
                     if (this.___getPageScroll() > 100) {
                         $(".head_menu").addClass("fixd");
                         if (this.___getPageScroll() > overheight) {
@@ -349,7 +349,7 @@ export default {
 				      return Gb.changetime(datetime);
                 },
 				changeDivHeight:function(){
-					var overheight = document.getElementsByClassName("hotcont")[0].offsetTop+document.getElementsByClassName("hotcont")[0].offsetHeight;
+					var overheight = document.getElementsByClassName("hotcont")[0]&&document.getElementsByClassName("hotcont")[0].offsetTop+document.getElementsByClassName("hotcont")[0].offsetHeight;
 					if(window.innerWidth>1020){
 						if (this.___getPageScroll() > overheight) {
 							this.scro_fixed=true;
