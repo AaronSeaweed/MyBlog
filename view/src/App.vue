@@ -1,8 +1,8 @@
 <template>
 <div>
-  <IndexHead></IndexHead>
+  <IndexHead :fixd="fixd"></IndexHead>
   <div id="app">
-      <router-view/>
+      <router-view @update="fixEle" />
   </div>
   <IndexFoot></IndexFoot>
 </div>
@@ -11,10 +11,20 @@
 import IndexHead from './components/IndexHead.vue'
 import IndexFoot from './components/IndexFoot.vue'
 export default {
+  data:function(){
+	  return{
+		  fixd:false
+	  }
+  },
   name: 'App',
   components:{
     IndexHead,IndexFoot
-  }
+  },
+  methods: {//接受子组件修改的新值
+  	fixEle(val) {
+  		this.fixd=val;
+  	}
+  },
 }
 </script>
 

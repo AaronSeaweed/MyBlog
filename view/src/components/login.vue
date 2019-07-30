@@ -4,7 +4,7 @@
         <i class="load-close" @click="closelogin()"></i>
         <div>
             <h1 class="load-title">{{title}}</h1>
-            <span class="logintip" v-if="logintip">用户名或密码错误</span>
+            <span class="logintip" v-if="logintip">{{tiptext}}</span>
             <div class="load-form-box">
                 <div class="load-input-box" :class="{displaynone:isreg}" >
                     <input type="text" name="username" v-model="load_username" placeholder="请输入邮箱或手机号码" class="load_username"/>
@@ -19,8 +19,11 @@
                     <input type='text' name='phonenoemail' v-model="reg_phoneemail" placeholder='请输入邮箱或手机号码' class='reg_phoneemail'/>
                 </div>
                 <div class='load-input-box' :class="{displaynone:islogin}">
-                    <input type='text' name='password' v-model="reg_password" placeholder='请输入密码' class='reg_password'/>
+                    <input type='password' name='password' v-model="reg_password" placeholder='请输入密码' class='reg_password'/>
                 </div>
+				<div class='load-input-box' :class="{displaynone:islogin}">
+				    <input type='password' name='password' v-model="reg_password2" placeholder='请确认密码' class='reg_password2'/>
+				</div>
             </div>
             <button class="load-btn" @click="login();">{{button}}</button>
             <div class="prompt-box" :class="{displaynone:isreg}">没有帐号？
@@ -56,77 +59,84 @@ export default {
                 load_password:null,
                 reg_username:null,
                 reg_phoneemail:null,
-                reg_password:null
+                reg_password:null,
+				reg_password2:null,
+				tiptext:"用户名或密码错误",
+				style_border:false
             }
         },
         methods:{
-          closelogin:function() {
-             this.logintip=this.clicklogin=false;
-             this.load_password=this.load_username=this.reg_username=this.reg_phoneemail=this.reg_password="";
-             $(".load-password").css("border","1px #e9e9e9 solid");
-             this.isreg=false;
-             this.islogin=true;
-             this.title=this.button="登录";
-          },
-          loginmode:function(){
-               this.isreg=false;
-               this.islogin=true;
-               this.logintip=false;
-               this.title=this.button="登录";
-          },
-          registeredmode:function(){
-             this.isreg=true;
-             this.islogin=false;
-             this.logintip=false;
-             this.title=this.button="注册";
-          },
-          login:function(){
-              var regsec=0;
-             if(!this.isreg){
-                if(this.load_username==""||this.load_username==null){
-                    $(".logintip").text("请输入用户名").show();
-                    $(".load_username").focus();
-                    return false;
-                }
-                if(this.load_password==""||this.load_password==null){
-                    $(".logintip").text("请输入密码").show();
-                    $(".load_password").focus();
-                    return false;
-                }
-                
-                var submitdata={name:this.load_username,password:this.load_password}
-                var tip="登录中...";
-                var top2="登录";
-                var url="/users/login";
-             }else{
-                 if(this.reg_username==""||this.reg_username==null){
-                    $(".logintip").text("请输入用户名").show();
-                    $(".reg_username").focus();
-                    return false;
-                }
-                if(this.reg_phoneemail==""||this.reg_phoneemail==null){
-                    $(".logintip").text("请输入邮箱或手机号码").show();
-                    $(".reg_phoneemail").focus();
-                    return false;
-                }
-                if(this.reg_password==""||this.reg_password==null){
-                    $(".logintip").text("请输入密码").show();
-                    $(".reg_password").focus();
-                    return false;
-                }
-                 this.logintip=false;
-                 tip = "注册中...";
-                 top2 = "注册";
-                 submitdata={name:this.reg_username,password:this.reg_password,phonenoemail:this.reg_phoneemail}
-                 url="/users/add"
-             }
+			closelogin:function() {
+				this.logintip=this.clicklogin=false;
+				this.load_password=this.load_username=this.reg_username=this.reg_phoneemail=this.reg_password="";
+				this.isreg=false;
+				this.islogin=true;
+				this.title=this.button="登录";
+			},
+			loginmode:function(){
+				this.isreg=false;
+				this.islogin=true;
+				this.logintip=false;
+				this.title=this.button="登录";
+			},
+			registeredmode:function(){
+				this.isreg=true;
+				this.islogin=false;
+				this.logintip=false;
+				this.title=this.button="注册";
+			},
+			login:function(){
+				this.logintip=false;
+				var regsec=0;
+				if(!this.isreg){
+					if(this.load_username==""||this.load_username==null){
+						return this.showtop("请输入用户名",'load_username');
+					}
+					if(this.load_password==""||this.load_password==null){
+						return this.showtop("请输入密码",'load_password');
+					}
+					var submitdata={name:this.load_username,password:this.load_password}
+					var tip="登录中...";
+					var top2="登录";
+					var url="/users/login";
+				}else{
+					if(this.reg_username==""||this.reg_username==null){
+						 return this.showtop("请输入用户名",'reg_username');
+					}
+					if(this.reg_phoneemail==""||this.reg_phoneemail==null){
+						return this.showtop("请输入邮箱或手机号码",'reg_phoneemail');
+					}else{
+						var phonereg = new RegExp(/^1[34578]\d{9}$/);
+						var EmailReg = new RegExp(/^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z0-9]+$/);
+						if(!phonereg.test(this.reg_phoneemail)&&!EmailReg.test(this.reg_phoneemail)){
+							return this.showtop("邮箱或手机号码格式不正确",'reg_phoneemail');
+						}
+					}
+					if(this.reg_password==""||this.reg_password==null){
+						return this.showtop("请输入密码",'reg_password');
+					}
+					if(this.reg_password2==""||this.reg_password2==null){
+						return this.showtop("请确认密码",'reg_password2');
+					}else{
+						if(this.reg_password2!=this.reg_password){
+							return this.showtop("两次密码不一致",'reg_password2');
+						}
+					}
+					 this.logintip=false;
+					 tip = "注册中...";
+					 top2 = "注册";
+					 submitdata={name:this.reg_username,password:this.reg_password,phonenoemail:this.reg_phoneemail}
+					 url="/users/add"
+				 }
              loginandreg(url,submitdata,this);
              function loginandreg(url,submitdata,that)
              {
                     that.$axios.post(url,submitdata).then(res=>{
                         if(res.data.status==200&&res.data.message=="success"){
                             if(that.isreg&&regsec==0){
-                                $(".logintip").text("注册成功，自动登录中...").css("color","black").show();
+								this.logintip=true;
+								this.tiptext="注册成功，自动登录中...";
+                                $(".logintip").css("color","black");
                                 regsec=1;
                                 setTimeout(function(){loginandreg("/users/login",{name:res.data.data.name,password:res.data.data.password},that)},2000)
                             }else{
@@ -138,28 +148,29 @@ export default {
                                 location.reload();
                             }
                         }else if(res.data.status==500){
-                            that.logintip=true;
-                            $(".logintip").text("服务异常，请稍后重试！").show();
-                            $(".load_password").css("border","1px red solid");
-                            $(".load-btn").text(top2).attr('disabled',false);
+							$(".load-btn").text(top2).attr('disabled',false);
+							return that.showtop("服务异常，请稍后重试！");
                         }else{
-                            that.logintip=true;
-                            $(".logintip").text(res.data.message).show();
-                            $(".load_password").css("border","1px red solid");
-                            $(".load-btn").text(top2).attr('disabled',false);
+							return that.showtop(res.data.message);
                         }
                     }).catch(err=>{
-                        console.log(err)
+                        alert(err)
                     })
              }
-          }
+          },
+		  showtop:function(text,classname){
+			  this.logintip=true;
+			  this.tiptext=text;
+			  classname&&document.getElementsByClassName(classname)[0].focus();
+			  return false;
+		  }
         },
         mounted:function(){
-            $(".load_password").on("focus",function () {
-                $(".load_password").css("border","1px #e9e9e9 solid");
-            }).on("blur",function () {
-                $(".load_password").css("border","1px #e9e9e9 solid");
-            });
+            // $(".load_password").on("focus",function () {
+            //     $(".load_password").css("border","1px #e9e9e9 solid");
+            // }).on("blur",function () {
+            //     $(".load_password").css("border","1px #e9e9e9 solid");
+            // });
         }
 }
 </script>

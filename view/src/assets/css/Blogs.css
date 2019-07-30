@@ -326,7 +326,7 @@ body{background-color: #f4f5f5;}
 .load-form .load-input-box input{padding: 10px;width:100%;border: 1px solid #e9e9e9;}
 .load-form .load-btn{width: 100%;height: 40px;color: #ffffff;cursor: pointer}
 .load-form .load-title{font-size: 2rem;margin: 0 0 2rem;}
-.load-form .logintip{color: red;display: block;margin-bottom: 5px;display: none}
+.load-form .logintip{color: red;display: block;margin-bottom: 5px;}
 .load-form .otherloginmode{margin-top: 1.2rem;line-height: 1.9rem;}
 .load-form .hint{color: #8b9196;}
 .load-form .oauth{margin-top: 15px;display:flex;-webkit-box-align:center;align-items:center;justify-content: space-around;}
@@ -354,7 +354,7 @@ body{background-color: #f4f5f5;}
 .body_left_psct ul li .psct_photobox .action-box .tips{color: #909090;font-size: 1rem;margin-bottom: 1.5rem;}
 /*.body_left_psct ul li .psct_photobox .action-box input{opacity:0}*/
 #artContent{display: inline-block;}
-
+#pane-third{text-align: center;}
 /*文章编写页面*/
 .release{width: 80%;margin: 0 auto;display:flex;line-height:2.5}
 .release p{color:#999999;font-size:12px}

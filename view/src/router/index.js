@@ -18,6 +18,10 @@ export default new Router({
       name: 'atct',
       component: ArticleContent
     },{
+      path:'/ArticleContent/:conid',
+      name: 'atct2',
+      component: ArticleContent
+    },{
       path:'/user/:userid',
       name: 'usct',
       component: PersonalCenter

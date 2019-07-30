@@ -12,6 +12,8 @@ var loginRouter = require('./routes/login');
 var articleRouter = require('./routes/article');
 var weixinRouter = require('./routes/weixin');
 var testController=require('./routes/testController');
+var anumentRouter=require('./routes/anument');
+
 var app = express();
 
 app.use(cors({
@@ -36,6 +38,7 @@ app.use('/login', loginRouter);
 app.use('/article', articleRouter);
 app.use('/weixin', weixinRouter);
 app.post('/dataInpute',testController.dataInput);
+app.use('/anument', anumentRouter);
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));

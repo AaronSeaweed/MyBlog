@@ -2,12 +2,12 @@
 <div class="header">
     <div class="menu">
     </div>
-    <div class="head_menu">
+    <div :class="{head_menu:1,fixd:head_menu}">
         <span>老鼠会上树</span>
-        <span @click="showlogin()" :class="{'displaynone':userstatus==1}" class="loginbtn" id="loginbtn">登录 |</span>
-        <span @click="showreg()" :class="{'displaynone':userstatus==1}" class="regbtn" id="regbtn">注册</span>
-        <div :style='styleObject' :class="{'displaynone':userstatus==0||userstatus==null}" @click="openuserinfo()" id="user"></div>
-        <ul class="personalset" :class="{displaynone:persset==true}">
+        <span @click="showlogin()" :class="{'displaynone':ustatus==1}" class="loginbtn" id="loginbtn">登录 |</span>
+        <span @click="showreg()" :class="{'displaynone':ustatus==1}" class="regbtn" id="regbtn">注册</span>
+        <div :style='styleObject' :class="{'displaynone':ustatus==0||ustatus==null}" @click="openuserinfo()" id="user"></div>
+        <ul class="personalset" :class="{displaynone:persset}">
            <div>
                <li>
                <router-link :to="{name:'usct',params:{userid:this.userid}}" class="contitle">个人中心</router-link>
@@ -24,7 +24,7 @@
             </ul>
         </div>
     </div>
-    <login ref="child"></login>
+    <login ref="child" :clicklogin="clicklogin"></login>
    </div>
 </template>
 <script>
@@ -36,10 +36,12 @@ export default {
           return{
             xslogin:false,
             userid:Gb.b64EncodeUnicode(localStorage.getItem('userid')),
-			userstatus:localStorage.getItem("userstatus"),
+			ustatus:localStorage.getItem("userstatus"),
 			persset:true,
+			clicklogin:false,
+			head_menu:true,
 			styleObject:{
-			    'background-image':localStorage.getItem("userstatus")==1?'url('+require('../../../view/src/assets/img/'+localStorage.getItem("photo")+'')+')':'url('+require('../../../view/src/assets/img/user.png')+')',
+			    'background-image':(localStorage.getItem("userstatus")==1&&localStorage.getItem("photo")!="null")?'url('+require('../../../view/src/assets/img/'+localStorage.getItem("photo")+'')+')':'url('+require('../../../view/src/assets/img/user.png')+')',
 			    'background-size':'3rem 3rem',
 			    'background-repeat':'no-repeat',
 			    'background-position': '50%',
@@ -49,7 +51,7 @@ export default {
 				'border-radius':'50%',
 				'right': '25px',
 				'top': '8px',
-				'cursor': 'pointer'
+				'cursor': 'pointer',
 			}
           }
         },
@@ -95,6 +97,18 @@ export default {
                  this.$refs.child.clicklogin=true
                  this.$refs.child.loginmode();//调用子组件的方法
              })
-        }
+        },
+		props : {
+			fixd:{
+				type:Boolean
+			}
+		},
+		watch:{
+			fixd: {//监听父组件数据变化更新子组件数据
+			  handler (newValue, oldValue) {
+				  this.head_menu=newValue;
+			  }
+			}
+		}
 }
 </script>
