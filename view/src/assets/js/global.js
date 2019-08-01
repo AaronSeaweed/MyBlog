@@ -108,6 +108,19 @@ var Gb = {
         return decodeURIComponent(atob(str).split('').map(function(c) {
             return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
         }).join(''));
-    }
+    },
+	getClientHeight:function()
+	{
+		var clientHeight=0;
+		if(document.body.clientHeight&&document.documentElement.clientHeight)
+		{
+		var clientHeight = (document.body.clientHeight<document.documentElement.clientHeight)?document.body.clientHeight:document.documentElement.clientHeight;
+		}
+		else
+		{
+		var clientHeight = (document.body.clientHeight>document.documentElement.clientHeight)?document.body.clientHeight:document.documentElement.clientHeight;
+		}
+		return clientHeight;
+	}
 }
 export {Gb}

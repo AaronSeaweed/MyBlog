@@ -8,10 +8,6 @@
 					</el-carousel-item>
 				</el-carousel>
 				<div class="recarti">
-					<!--<div class="recomtoday">
-                        <h2><span>【今日推荐】</span><a>{{title}}</a></h2>
-                        <p>{{message}}</p>
-                    </div>-->
 					<div class="conttil">
 						<!--<span>最新发布</span>-->
 						<a href="javascript:void(0)" @click="sorting(1)">热度</a>
@@ -40,7 +36,6 @@
 										<a href="javascript:void(0)" class="coninfo concommentnum" :class="{'like-up':blcont.likeuserid&&blcont.likeuserid.split(',').indexOf(userid)>-1,'concommentnum2':wantlike===index}"
 										 @click="aGood(blcont.article_id,blcont.commentnum,index,blcont.likeuserid)" @mouseover="changecolor1(index)"
 										 @mouseout="changecolor2(index)">{{blcont.commentnum}}赞</a>
-
 									</div>
 									<br /><br />
 								</div>
@@ -94,13 +89,10 @@
 			</div>
 		</el-col>
 	</el-row>
-
 </template>
 <script>
 	import WebBulletin from './WebBulletin.vue';
-	import {
-		Gb
-	} from '../assets/js/global.js'
+	import {Gb} from '../assets/js/global.js'
 	import bus from '../assets/js/eventbus.js';
 	export default {
 		//绑定最新发布文章和事件

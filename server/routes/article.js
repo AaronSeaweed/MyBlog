@@ -414,4 +414,27 @@ router.post("/cancel_CommLikeRecording",function(req,res){
         }
     });
 });
+/**
+ * 搜索文章
+ */
+router.post("/getsearchContent",function(req,res,next){
+	var keyword=req.body.keyword; 
+    db.query("select A.*,B.typename,GROUP_CONCAT(C.likeuserid) as likeuserid from articlelist A LEFT OUTER JOIN contenttype B ON A.contenttype=B.typeid LEFT OUTER JOIN art_likes C ON A.article_id=C.articleid  where article_title like '%"+keyword+"%' or content like '%"+keyword+"%' GROUP BY article_id",function(error,rows){
+        if (error) {
+            var result = {
+                "status": "500",
+                "message": "服务器错误"
+            }
+            return res.jsonp(result);
+        }
+        else{
+            var result = {
+                "status": "200",
+                "message": "success",
+                data:rows
+            }
+            return res.jsonp(result);
+        }
+    });
+});
 module.exports = router

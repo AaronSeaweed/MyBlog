@@ -4,6 +4,8 @@ import HomePage from '../components/HomePage.vue'
 import ArticleContent from '../components/ArticleContent.vue'
 import PersonalCenter from '../components/PersonalCenter.vue'
 import WriteEssay from '../components/WriteEssay.vue'
+import Ancement from '../components/Ancement.vue'
+import Search from '../components/Search.vue'
 Vue.use(Router)
 
 export default new Router({
@@ -29,6 +31,14 @@ export default new Router({
       path:'/Essay/:userid',
       name: 'wrae',
       component: WriteEssay
-    }
+    },{
+			path:'/Ancement/:anid',
+			name: 'ance',
+			component: Ancement
+		},{
+			path:'/Search/:keyword',
+			name: 'sear',
+			component: Search
+		}
   ]
 })

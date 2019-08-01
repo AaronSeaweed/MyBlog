@@ -364,32 +364,37 @@ body{background-color: #f4f5f5;}
 .el-tag + .el-tag {margin-left: 10px;}
 .button-new-tag {margin-left: 10px;height: 32px;line-height: 30px;padding-top: 0;padding-bottom: 0;}
 .input-new-tag {width: 90px!important;margin-left: 10px;vertical-align: bottom;}
-.avatar-uploader .el-upload {
-    border: 1px dashed #d9d9d9;
-    border-radius: 6px;
-    cursor: pointer;
-    position: relative;
-    overflow: hidden;
-}
-.avatar-uploader .el-upload:hover {
-    border-color: #007fff;
-}
+.avatar-uploader .el-upload {border: 1px dashed #d9d9d9;border-radius: 6px;cursor: pointer;position: relative;overflow: hidden;}
+.avatar-uploader .el-upload:hover {border-color: #007fff;}
 .avatar-uploader .el-upload__input{display:none}
-.avatar-uploader-icon {
-    font-size: 28px;
-    color: #8c939d;
-    width: 100px;
-    height: 100px;
-    line-height: 100px!important;
-    text-align: center;
-}
-.avatar {
-    width: 100px;
-    height: 100px;
-    display: block;
-}
+.avatar-uploader-icon {font-size: 28px;color: #8c939d;width: 100px;height: 100px;line-height: 100px!important;text-align: center;}
+.avatar {width: 100px;height: 100px;display: block;}
+
+/*网站通告*/
+.anceMain{background-color: #ffffff;position: relative;}
+.anceMain img{transform: rotate(30deg);}
+.anceMain h2{display: inline-block;margin: 80px 0 0 120px;position: absolute;}
+.anceContent{margin: 30px 20px;}
+.anceContent span{display: block;text-indent: 30px;}
+.anceTime{font-size: 12px;color: #999999;text-align: right;right: 30px;position: absolute;bottom: 20px;}
 
 
-
-
-
+/*网站搜索*/
+.SeaMain{background-color: #ffffff;position: relative;}
+.SeaMain .conlist{width:100%;height:150px;border-bottom:1px #EAEAEA solid;background-color: #ffffff;display: flex;}
+.SeaMain .conlist .conbg{float: left;height: 100%;margin-left:15px;position: relative;overflow: hidden;margin-right: 15px;}
+.SeaMain .conlist .conbg .contitle-box{text-overflow: ellipsis;white-space: nowrap;overflow: hidden;}
+.SeaMain .conlist .conbg .contitle-box span{display: block;margin: 5px 0;text-overflow: ellipsis;white-space: nowrap;overflow: hidden;}
+.SeaMain .conlist .conbg .contitle{margin:10px 0px;font-weight: bold;font-size: 18px;cursor:pointer; color: black;text-decoration:none}
+.SeaMain .conlist .conbg .contitle-box em{color:red;font-style:inherit}
+.SeaMain .conlist .conbg .coninfo{margin-top: 5px;font-size:12px;text-decoration:none}
+.SeaMain .conlist .conbg .condatetime{color:#999999;background: url(../img/clock.png) -3px -4px no-repeat;text-indent: 20px;display: inline-block;background-size: 24px 24px;}
+.SeaMain .conlist .conbg .condatetime::after{content: "·";color: #999999;margin: 0px 0.4em;}
+.SeaMain .conlist .conbg .conviews{display: inline-block;color:#999999;background: url(../img/yan.jpg) 0px -2px no-repeat;text-indent: 22px;}
+.SeaMain .conlist .conbg header a:first-child{width:90px;height:20px;color:#007fff;font-size: 10px;}
+.SeaMain .conlist .conbg header a::after{content: "·";color: #999999;margin: 0px 0.4em;}
+.SeaMain .conlist .conbg header{margin:17px 0 5px;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;}
+.SeaMain .conlist .conbg header a:hover{text-decoration:none}
+.SeaMain .conlist .conbg .artinfo{display:flex;position: absolute;bottom: 10px;}
+.SeaMain .conlist .conbg .concommentnum{color:#999999;background: url(../img/zan.png) -4px -4px no-repeat;text-indent: 22px;background-size: 24px 24px;}
+.SeaMain .conlist .conbg .concommentnum2{color:#409EFF;background: url(../img/zan2.png) -4px -4px no-repeat;text-indent: 22px;background-size: 24px 24px;}
