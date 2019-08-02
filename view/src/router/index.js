@@ -28,7 +28,7 @@ export default new Router({
       name: 'usct',
       component: PersonalCenter
     },{
-      path:'/Essay/:userid',
+      path:'/Essay/:conid',
       name: 'wrae',
       component: WriteEssay
     },{

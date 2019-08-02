@@ -65,7 +65,8 @@ h2 {font-size:18px}
 .body_left {border:0px black solid;}/*width:785px;width:65%;*/
 .body_left .recarti{width:100%;height:auto;margin-top:15px}/*width:786px;*/
 .body_left .recarti div h2{font-family:"Microsoft YaHei";font-size:18px;margin-left: 10px;    margin-top: 10px;}
-
+.mainbox{position:relative}
+.pagetop{position: fixed;top: 850px;right: 10px;cursor: pointer;}
 
 @media screen and (max-width: 665px) {
     .contenttypemenu{font-size:12px}
@@ -115,6 +116,10 @@ h2 {font-size:18px}
 .body_left .recarti .bloglist .conlist .conbg header li{display: inline-block;vertical-align: middle;border-left: 5px solid #3399CC;border-top: 5px solid transparent;border-bottom: 4px solid transparent;margin-top: -3.5px;margin-left: -4px;}
 .body_left .recarti .bloglist .conlist .conbg .artinfo{display:flex;position: absolute;bottom: 10px;}
 .body_left .recarti .bloglist .conlist .conbg .contitle{margin:10px 0px;font-weight: bold;font-size: 18px;cursor:pointer; color: black;text-decoration:none}
+.body_left .recarti .bloglist .conlist .conbg .contitle:hover{text-decoration: underline;}
+.body_left .recarti .bloglist .conlist .conbg .modifyart{display:flex;position: absolute;bottom: 10px;left: 55px;}
+.body_left .recarti .bloglist .conlist .conbg .modifyart a{color: #999999;background: url(../img/modifyart.png) 0px -2px no-repeat;text-indent: 22px;}
+.body_left .recarti .bloglist .conlist .conbg .modifyart a:hover{color:#007fff;background: url(../img/modifyart2.png) 0px -2px no-repeat;text-indent: 22px;}
 .body_left .recarti .bloglist .loadmore{width:100%;text-align: center;height:60px;margin-top: 20px;}
 .body_left .recarti .bloglist .loadmore img{width: 50px;height:50px;
 

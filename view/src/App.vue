@@ -1,9 +1,12 @@
 <template>
-<div>
+<div class="mainbox">
   <IndexHead :fixd="fixd"></IndexHead>
   <div id="app">
       <router-view @update="fixEle" />
   </div>
+	<div :class="{displaynone:top,pagetop:true}" @click="pagetop">
+			<img :src="require('@/assets/img/top.png')" />
+	</div>
   <IndexFoot></IndexFoot>
 </div>
 </template>
@@ -13,7 +16,8 @@ import IndexFoot from './components/IndexFoot.vue'
 export default {
   data:function(){
 	  return{
-		  fixd:false
+		  fixd:false,
+			top:true
 	  }
   },
   name: 'App',
@@ -23,18 +27,20 @@ export default {
   methods: {//接受子组件修改的新值
   	fixEle(val) {
   		this.fixd=val;
-  	}
+  	},
+		loadmoredata(){
+			if ($(document).scrollTop() >  $(window).height()) {
+					this.top=false;
+			}else{
+					this.top=true;
+			}
+		},
+		pagetop(){
+			window.scrollTo(0,0);
+		}
   },
+	mounted:function(){
+		$(document).scroll(this.loadmoredata);
+	}
 }
 </script>
-
-<style>
-/* #app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-} */
-</style>

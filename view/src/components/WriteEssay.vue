@@ -5,7 +5,7 @@
 		</div>
     <div id="layout">
       <div id="blog_editormd">
-        <textarea style="display: none;"></textarea>
+        <textarea style="display: none;" name="test-editormd-markdown-doc" id="content" v-model="AriDetail.content"></textarea>
       </div>
     </div>
 		<div class="release">
@@ -77,7 +77,9 @@
         inputValue: '',
 		imageUrl: '',
 		coverimage:'',
-		postaction:'http://localhost:3000/dataInpute?guid='+(new Date()).getTime()
+		postaction:'http://localhost:3000/dataInpute?guid='+(new Date()).getTime(),
+		conid:this.$route.params.conid,
+		AriDetail:''
       }
     },
     methods: {
@@ -92,7 +94,7 @@
 				response.data.data.splice(response.data.data.length-1, 1)
 				that.options=response.data.data
 			}).catch(function (error) {
-			that.$message.error(error);
+				that.$message.error(error);
 			});
 		},
 		/**
@@ -161,6 +163,16 @@
 		},
 		showlogin:function () {//与兄弟（IndexHead）组件通讯，通过eventbus.js文件让IndexHead组件执行函数
 			bus.$emit("login","")
+		},
+		getartcontent(conid){
+			var that = this;
+			that.$axios.post("/article/getarticlelist",{contentid: conid})
+			.then(function (response) {
+				that.AriDetail=response.data.data[0];
+				that.conTitle=that.AriDetail.article_title;
+			}).catch(function (error) {
+				that.$message.error(error);
+			});
 		},
 		handleClose(tag,e) {
 			this.dynamicTags.splice(this.dynamicTags.indexOf(tag), 1);
@@ -238,6 +250,9 @@
     },
 		mounted:function(){
 			this.ArticleType();
+			if(this.conid!=0){
+				this.getartcontent(this.conid)
+			}
 		}
   }
 </script>

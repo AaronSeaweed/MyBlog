@@ -22,7 +22,7 @@
 							</ul>
 						</div>
 						<template v-for="(blcont,index) in this.nblists">
-							<div class="conlist" :key="blcont.id">
+							<div class="conlist" :key="blcont.id" @mouseover="selectcon(index)"  @mouseout="outcon(index)">
 								<div class="conbg">
 									<header>
 										<a href="javascript:void(0)">{{blcont.typename}}</a>
@@ -37,6 +37,9 @@
 										 @click="aGood(blcont.article_id,blcont.commentnum,index,blcont.likeuserid)" @mouseover="changecolor1(index)"
 										 @mouseout="changecolor2(index)">{{blcont.commentnum}}赞</a>
 									</div>
+									<div class="modifyart" v-if="userid==8&&wantmodify===index">
+										<router-link :to="{ name: 'wrae', params:{conid:blcont.article_id}}" class="coninfo">编辑</router-link>
+									</div>
 									<br /><br />
 								</div>
 								<div class="imgbg" v-if="imgSrcFun(blcont.coverimage)">
@@ -44,7 +47,6 @@
 								</div>
 							</div>
 						</template>
-
 						<div class="loadmore">
 						</div>
 					</div>
@@ -126,6 +128,7 @@
 					src: "banner_3.jpg"
 				}],
 				wantlike: "",
+				wantmodify:"",
 				userid: localStorage.getItem("userid"),
 				scro_fixed: false,
 				foldmenu: false,
@@ -236,13 +239,25 @@
 				}
 			},
 			changecolor1: function(index) {
-				if (this.like === "" || this.like !== index) {
+				if (this.wantlike === "" || this.wantlike !== index) {
 					this.wantlike = index;
 				}
 			},
 			changecolor2: function(index) {
-				if (this.like === "" || this.like !== index) {
+				if (this.wantlike === "" || this.wantlike !== index) {
 					this.wantlike = "";
+				}
+			},
+			selectcon:function(index){
+				document.getElementsByClassName("conlist")[index].style.background="#fcfcfc"
+				if (this.wantmodify === "" || this.wantmodify !== index) {
+					this.wantmodify = index;
+				}
+			},
+			outcon:function(index){
+				document.getElementsByClassName("conlist")[index].style.background="#ffffff"
+				if (this.wantmodify === "" || this.wantmodify !== index) {
+					this.wantmodify = "";
 				}
 			},
 			changecontent: function(index) {
