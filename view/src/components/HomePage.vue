@@ -239,26 +239,26 @@
 				}
 			},
 			changecolor1: function(index) {
-				if (this.wantlike === "" || this.wantlike !== index) {
+				//if (this.like === "" || this.like !== index) {
 					this.wantlike = index;
-				}
+				//}
 			},
 			changecolor2: function(index) {
-				if (this.wantlike === "" || this.wantlike !== index) {
+				//if (this.like === "" || this.like !== index) {
 					this.wantlike = "";
-				}
+				//}
 			},
 			selectcon:function(index){
 				document.getElementsByClassName("conlist")[index].style.background="#fcfcfc"
-				if (this.wantmodify === "" || this.wantmodify !== index) {
+				//if (this.wantmodify === "" || this.wantmodify !== index) {
 					this.wantmodify = index;
-				}
+				//}
 			},
 			outcon:function(index){
 				document.getElementsByClassName("conlist")[index].style.background="#ffffff"
-				if (this.wantmodify === "" || this.wantmodify !== index) {
+				//if (this.wantmodify === "" || this.wantmodify !== index) {
 					this.wantmodify = "";
-				}
+				//}
 			},
 			changecontent: function(index) {
 				this.contenttypeid = index;
@@ -393,14 +393,10 @@
 			},
 			changemenu: function() {
 				if ($(".blogtypemenu div").hasClass("menulist")) {
-					$(".blogtypemenu").animate({
-						height: "250px"
-					}, 300);
+					$(".blogtypemenu").animate({height: "250px"}, 300);
 					this.foldmenu = true;
 				} else {
-					$(".blogtypemenu").animate({
-						height: "50px"
-					}, 300);
+					$(".blogtypemenu").animate({height: "50px"}, 300);
 					this.foldmenu = false;
 				}
 			}

@@ -174,7 +174,7 @@ router.post("/getreplylist",function(req,res,next){
     });
 });
 /**
-*新增文章
+*新增/修改文章
 */
 router.post("/addArticle",function(req,res){
     var title=req.body.title;
@@ -184,7 +184,14 @@ router.post("/addArticle",function(req,res){
     var userid=req.body.userid;
 	var coverimage=req.body.coverimage;
 	var arttag=req.body.arttag;
-    db.query("INSERT into articlelist (article_title,content,datetime,views,commentnum,hot,contenttype,recommend,userid,coverimage,arttag) values ('"+title+"','"+content+"','"+datetime+"',0,0,0,"+contenttype+",0,"+userid+",'"+coverimage+"','"+arttag+"')",function(error,rows){
+	var optype=req.body.optype;
+	var conid=req.body.conid;
+	var opsql="INSERT into articlelist (article_title,content,datetime,views,commentnum,hot,contenttype,recommend,userid,coverimage,arttag) values ('"+title+"','"+content+"','"+datetime+"',0,0,0,"+contenttype+",0,"+userid+",'"+coverimage+"','"+arttag+"')"
+	if(optype==1){
+		opsql="update articlelist set article_title='"+title+"',content='"+content+"',contenttype="+contenttype+",coverimage='"+coverimage+"',arttag='"+arttag+"' where article_id="+conid+""
+	}
+	console.log(opsql)
+    db.query(opsql,function(error,rows){
         if (error) {
             var result = {
                 "status": "500",
@@ -202,6 +209,8 @@ router.post("/addArticle",function(req,res){
         }
     });
 });
+
+
 /**
  * 文章点赞次数修改
  */
@@ -333,7 +342,6 @@ router.post("/thumb-CommUp",function(req,res,next){
 			sql = "update replyart set replyup = "+Number(commentnum+1)+" where replyid="+id;
 		}
 	}
-	console.log(sql)
     db.query(sql,function(error,rows){
         if (error) {
             var result = {

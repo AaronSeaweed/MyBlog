@@ -68,18 +68,18 @@ h2 {font-size:18px}
 .mainbox{position:relative}
 .pagetop{position: fixed;top: 850px;right: 10px;cursor: pointer;}
 
-@media screen and (max-width: 665px) {
+@media screen and (max-width: 690px) {
     .contenttypemenu{font-size:12px}
 }
-@media screen and (min-width: 665px) and (max-width: 725px) {
+/* @media screen and (max-width: 690px) {
     .contenttypemenu{font-size:14px}
 }
-
+ */
 @media screen and (max-width: 640px) {
     .body_left .recarti div h2{font-size:16px}
 }
 
-@media screen and (max-width: 620px) {
+@media screen and (max-width: 635px) {
     .contenttypemenu{display:none}
     .bloglist .menulist{display:block}
     .bloglist .menulist2{display:block}

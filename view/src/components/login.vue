@@ -25,7 +25,8 @@
 				    <input type='password' name='password' v-model="reg_password2" placeholder='请确认密码' class='reg_password2'/>
 				</div>
             </div>
-            <button class="load-btn" @click="login();">{{button}}</button>
+            <!-- <button class="load-btn" @click="login();">{{button}}</button> -->
+			<el-button type="primary" class="load-btn" :loading="loading" @click="login">{{button}}</el-button>
             <div class="prompt-box" :class="{displaynone:isreg}">没有帐号？
                 <span @click="registeredmode();">注册</span>
                 <a href="javascript:void(0)">忘记密码</a>
@@ -62,7 +63,8 @@ export default {
                 reg_password:null,
 				reg_password2:null,
 				tiptext:"用户名或密码错误",
-				style_border:false
+				style_border:false,
+				loading:false
             }
         },
         methods:{
@@ -96,8 +98,7 @@ export default {
 						return this.showtop("请输入密码",'load_password');
 					}
 					var submitdata={name:this.load_username,password:this.load_password}
-					var tip="登录中...";
-					var top2="登录";
+					this.button="登录中...";
 					var url="/users/login";
 				}else{
 					if(this.reg_username==""||this.reg_username==null){
@@ -122,40 +123,47 @@ export default {
 							return this.showtop("两次密码不一致",'reg_password2');
 						}
 					}
-					 this.logintip=false;
-					 tip = "注册中...";
-					 top2 = "注册";
-					 submitdata={name:this.reg_username,password:this.reg_password,phonenoemail:this.reg_phoneemail}
-					 url="/users/add"
+					this.logintip=false;
+					this.button = "注册中...";
+					submitdata={name:this.reg_username,password:this.reg_password,phonenoemail:this.reg_phoneemail}
+					url="/users/add"
 				 }
              loginandreg(url,submitdata,this);
              function loginandreg(url,submitdata,that)
              {
-                    that.$axios.post(url,submitdata).then(res=>{
-                        if(res.data.status==200&&res.data.message=="success"){
-                            if(that.isreg&&regsec==0){
-								this.logintip=true;
-								this.tiptext="注册成功，自动登录中...";
-                                $(".logintip").css("color","black");
-                                regsec=1;
-                                setTimeout(function(){loginandreg("/users/login",{name:res.data.data.name,password:res.data.data.password},that)},2000)
-                            }else{
-                                localStorage.setItem("userstatus",1);
-                                localStorage.setItem("username",res.data.data.username);
-                                localStorage.setItem("userid",res.data.data.id);
-                                localStorage.setItem("photo",res.data.data.photo);
-                                localStorage.setItem("token",res.data.token);
-                                location.reload();
-                            }
-                        }else if(res.data.status==500){
-							$(".load-btn").text(top2).attr('disabled',false);
-							return that.showtop("服务异常，请稍后重试！");
+				that.loading=true;
+                that.$axios.post(url,submitdata).then(res=>{
+                    if(res.data.status==200&&res.data.message=="success"){
+                        if(that.isreg&&regsec==0){
+							that.button="注册成功，自动登录中...";
+                            regsec=1;
+                            setTimeout(function(){loginandreg("/users/login",{name:res.data.data.name,password:res.data.data.password},that)},2000)
                         }else{
-							return that.showtop(res.data.message);
+                            localStorage.setItem("userstatus",1);
+                            localStorage.setItem("username",res.data.data.username);
+                            localStorage.setItem("userid",res.data.data.id);
+                            localStorage.setItem("photo",res.data.data.photo);
+                            localStorage.setItem("token",res.data.token);
+                            location.reload();
+							setTimeout(()=>{that.loading=false},2000)
                         }
-                    }).catch(err=>{
-                        alert(err)
-                    })
+                    }else if(res.data.status==500){
+						that.loading=false;
+						that.button=that.isreg?"注册":"登录"
+						return that.showtop("服务器异常，请稍后重试！");
+                    }else{
+						return that.showtop(res.data.message);
+                    }
+                }).catch(err=>{
+					that.loading=false;
+					that.button=that.isreg?"注册":"登录"
+                    that.$message({
+						showClose: true,
+                        message: err,
+                        type: 'error',
+                        duration:0
+                    });
+                })
              }
           },
 		  showtop:function(text,classname){
@@ -164,13 +172,6 @@ export default {
 			  classname&&document.getElementsByClassName(classname)[0].focus();
 			  return false;
 		  }
-        },
-        mounted:function(){
-            // $(".load_password").on("focus",function () {
-            //     $(".load_password").css("border","1px #e9e9e9 solid");
-            // }).on("blur",function () {
-            //     $(".load_password").css("border","1px #e9e9e9 solid");
-            // });
         }
 }
 </script>

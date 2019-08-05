@@ -5,7 +5,7 @@
 		</div>
     <div id="layout">
       <div id="blog_editormd">
-        <textarea style="display: none;" name="test-editormd-markdown-doc" id="content" v-model="AriDetail.content"></textarea>
+        <textarea style="display: none;" name="test-editormd-markdown-doc" id="content" v-model="content"></textarea>
       </div>
     </div>
 		<div class="release">
@@ -58,7 +58,8 @@
 			</el-upload>
 		</div>
 		<div class="release">
-			<el-button type="primary" @click="releaseArticle()">文章发布</el-button>
+			<el-button type="primary" v-if="this.$route.params.conid==0" @click="releaseArticle(0)">文章发布</el-button>
+			<el-button type="primary" v-if="this.$route.params.conid!=0" @click="releaseArticle(1)">保存修改</el-button>
 		</div>
 	</div>
 </template>
@@ -79,6 +80,7 @@
 		coverimage:'',
 		postaction:'http://localhost:3000/dataInpute?guid='+(new Date()).getTime(),
 		conid:this.$route.params.conid,
+		content:'',
 		AriDetail:''
       }
     },
@@ -100,7 +102,7 @@
 		/**
 		* 发布文章
 		**/
-		releaseArticle:function(){
+		releaseArticle(optype){
 			var that = this;
 			let userstatus = localStorage.getItem("userstatus");
 			if(userstatus!=1){
@@ -112,7 +114,7 @@
 				let userId = localStorage.getItem("userid");
 				let coverimage = that.coverimage;
 				let arttag = that.dynamicTags.join()
-				let submitdata = {title:conTitle,content:htmlContent,contenttype:typeid,userid:userId,coverimage:coverimage,arttag:arttag};
+				let submitdata = {title:conTitle,content:htmlContent,contenttype:typeid,userid:userId,coverimage:coverimage,arttag:arttag,optype:optype,conid:this.conid};
 				if(conTitle==""){
 					that.$message({
 							message: '标题不能为空！',
@@ -121,6 +123,7 @@
 					});
 					return false;
 				}else if(htmlContent==""){
+					
 					that.$message({
 							message: '内容不能为空！',
 							type: 'warning',
@@ -139,7 +142,7 @@
 					.then(function (response) {
 						if(response.data.status==200){
 							that.$message({
-									message: '发布成功！',
+									message:optype?'保存成功！':'发布成功！',
 									type: 'success',
 									duration:1000
 							});
@@ -170,6 +173,10 @@
 			.then(function (response) {
 				that.AriDetail=response.data.data[0];
 				that.conTitle=that.AriDetail.article_title;
+				that.dynamicTags=that.AriDetail.arttag?that.AriDetail.arttag.split(","):[];
+				that.typeid=that.AriDetail.contenttype;
+				that.imageUrl=that.AriDetail.coverimage&&require('@/assets/img/' + that.AriDetail.coverimage);
+				that.content=that.AriDetail.content;
 			}).catch(function (error) {
 				that.$message.error(error);
 			});

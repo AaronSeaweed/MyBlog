@@ -60,7 +60,7 @@
 		},
 		computed: {
 			reversedDatetime: function () {
-			  return new Date(new Date(this.budata.datetime).getTime()+8*60*60*1000).toISOString().replace(/T/g, ' ').replace(/\.[\d]{3}Z/, '');
+			  return this.budata.datetime && new Date(new Date(this.budata.datetime).getTime()+8*60*60*1000).toISOString().replace(/T/g, ' ').replace(/\.[\d]{3}Z/, '');
 			}
 		},
 		updated:function(){

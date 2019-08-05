@@ -36,8 +36,7 @@ export default {
             budata:'',
             activeName: 'first',
 			input2:'',
-			scro_:'',
-			//[{ title: "欢迎访问豆豆豆博客", date: "2016-12-16" }, { title: "在这里可以看到前端技术，后端程序，网站内容", date: "2016-12-21" }, { title: "在这个小工具中最多可以调用五条", date: "2016-12-22" }, { title: "曾经他是一个王者", date: "2017-01-11" }]
+			scro_:''
         }
     },
 	methods: {
@@ -49,9 +48,10 @@ export default {
 			})
 			.catch(function (error) {
 			    that.$message({
+					showClose: true,
 			        message: error,
 			        type: 'error',
-			        duration:1000
+			        duration:0
 			    });
 			});
 		},
