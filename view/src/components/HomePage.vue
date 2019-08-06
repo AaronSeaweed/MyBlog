@@ -18,7 +18,7 @@
 							<div :class="{'menulist':!foldmenu,'menulist2':foldmenu}" @click="changemenu()">
 							</div>
 							<ul :class="{'contenttypemenu':!foldmenu,'contenttypemenu2':foldmenu}">
-								<li v-for="(contype,index) in contenttype" :key="contype.typeid" @click="changecontent(index)">{{contype.typename}}</li>
+								<li v-for="(contype,index) in contenttype" :key="contype.typeid" @click="changecontent(index)" :class="{mosover:index==contenttype.length-1}">{{contype.typename}}</li>
 							</ul>
 						</div>
 						<template v-for="(blcont,index) in this.nblists">
@@ -27,7 +27,7 @@
 									<header>
 										<a href="javascript:void(0)">{{blcont.typename}}</a>
 										<span class="condatetime coninfo">{{reversedMessage(blcont.datetime)}}</span>
-										<span class="conviews coninfo">{{blcont.views}}次</span>
+										<span class="conviews coninfo">{{blcont.artviewcount}}次</span>
 									</header>
 									<div class="contitle-box">
 										<router-link target="_blank" :to="{ name: 'atct', params:{conid:blcont.article_id}}" class="contitle">{{blcont.article_title}}</router-link>
@@ -92,6 +92,7 @@
 		</el-col>
 	</el-row>
 </template>
+<script src="http://pv.sohu.com/cityjson?ie=utf-8"></script>
 <script>
 	import WebBulletin from './WebBulletin.vue';
 	import {Gb} from '../assets/js/global.js'
@@ -423,7 +424,7 @@
 			this.blcontlist();
 		},
 		updated: function() {
-			$(".contenttypemenu li").eq(5).css("color", "#3399CC");
+			//$(".contenttypemenu li").eq(5).css("color", "#3399CC");
 			// PageMb.Skinning();
 			// alert(document.getElementsByClassName("hotcont")[0].offsetTop)
 		}

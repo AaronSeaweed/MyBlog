@@ -67,7 +67,7 @@ h2 {font-size:18px}
 .body_left .recarti div h2{font-family:"Microsoft YaHei";font-size:18px;margin-left: 10px;    margin-top: 10px;}
 .mainbox{position:relative}
 .pagetop{position: fixed;top: 850px;right: 10px;cursor: pointer;}
-
+.mosover{color:#3399CC}
 @media screen and (max-width: 690px) {
     .contenttypemenu{font-size:12px}
 }

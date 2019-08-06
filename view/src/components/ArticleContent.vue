@@ -3,10 +3,10 @@
 		<el-col :span="16" class="art_style">
 			<div class="body_left">
 				<template v-for="(aridetail) in this.AriDetail">
-					<div>
-						<article id="artContent" :key="aridetail.article_id">
+					<div :key="aridetail.article_id">
+						<article id="artContent">
 							<h3>{{aridetail.article_title}}</h3>
-							<p>{{reversedMessage(aridetail.datetime)}}发布，{{aridetail.views}}次阅读，归类于<a href="javascript:void(0)">
+							<p>{{reversedMessage(aridetail.datetime)}}发布，{{aridetail.artviewcount}}次阅读，归类于<a href="javascript:void(0)">
 									{{aridetail.typename}}</a></p>
 							<p>本文可全文转载，但需要同时保留原作者和出处。</p><br />
 							<p class="aricon" id="aridetailCon"><img :src="imgSrcFun(aridetail.coverimage)"><br><br><br><textarea style="display:none;"
@@ -302,7 +302,6 @@
 						.catch(function(error) {
 							alert(error);
 						});
-
 				}
 			},
 			getReplysList: function(id) {
@@ -397,27 +396,54 @@
 					}
 
 					this.$axios.post("/article/thumb-CommUp", {
-							"id": id,
-							"commentnum": num,
-							"likedown": likedown,
-							"replytype": replytype
-						})
-						.then((response) => {
+						"id": id,
+						"commentnum": num,
+						"likedown": likedown,
+						"replytype": replytype
+					})
+					.then((response) => {
 
-						}).catch(function(error) {
-							alert(error);
-						});
+					}).catch(function(error) {
+						alert(error);
+					});
 					this.$axios.post(poturl, {
-							"id": id,
-							"likeuserid": this.userid,
-							"replytype": replytype
-						})
-						.then((response) => {
-							that.getcomment();
-						}).catch(function(error) {
-							alert(error);
-						});
+						"id": id,
+						"likeuserid": this.userid,
+						"replytype": replytype
+					})
+					.then((response) => {
+						that.getcomment();
+					}).catch(function(error) {
+						alert(error);
+					});
 				}
+			},
+			getviewrecord:function(){
+				var userip=localStorage.getItem("userip")||"0.0.0.0";
+				this.$axios.post("/article/getviewrecord", {userip:userip,artid:this.$route.params.conid})
+					.then((response)=>{
+						if(response.data.status==200){
+							if(response.data.data[0].count==0){
+								this.addviewrecord()
+							}
+						}
+						//that.getcomment();
+					})
+					.catch(function(error) {
+						//alert(error);
+					});
+			},
+			addviewrecord:function(){
+				var userip=localStorage.getItem("userip")||"0.0.0.0";
+				this.$axios.post("/article/addviewrecord", {userip:userip,artid:this.$route.params.conid})
+					.then(function(response) {
+						//if(response.data.status==200){
+							//that.getcomment();
+						//}
+					})
+					.catch(function(error) {
+						//alert(error);
+					});
 			}
 		},
 		mounted: function() {
@@ -444,8 +470,7 @@
 						that.replysubmit = []
 						that.replysubmit.replytype = child[this.index].getAttribute("replytype");
 						that.replysubmit.artid = child[this.index].getAttribute("artid");
-						that.ReplyArt(this.index, child[this.index].parentNode.parentNode.parentNode.children[0].children[0].children[
-							0].innerText)
+						that.ReplyArt(this.index, child[this.index].parentNode.parentNode.parentNode.children[0].children[0].children[0].innerText)
 					}
 					childcomment[i + 1].children[1].onblur = function() {
 						timer = setTimeout(function() {
@@ -455,6 +480,7 @@
 				}
 				that.toHtml();
 			})
+			this.getviewrecord();
 		}
 	}
 </script>

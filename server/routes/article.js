@@ -10,9 +10,9 @@ const chinaTime = require('china-time');
  */
 router.post("/getarticlelist",function(req,res,next){
     var contentid=req.body.contentid;
-    var sqlyj="select A.*,B.typename,GROUP_CONCAT(C.likeuserid) as likeuserid from articlelist A LEFT OUTER JOIN contenttype B ON A.contenttype=B.typeid LEFT OUTER JOIN art_likes C ON A.article_id=C.articleid GROUP BY article_id"
+    var sqlyj="select A.*,B.typename,GROUP_CONCAT(C.likeuserid) as likeuserid,(select count(*) from artviewcount where artid=A.article_id) as artviewcount from articlelist A LEFT OUTER JOIN contenttype B ON A.contenttype=B.typeid LEFT OUTER JOIN art_likes C ON A.article_id=C.articleid GROUP BY article_id"
     if(contentid!=undefined){
-        sqlyj="select A.*,B.typename,GROUP_CONCAT(C.likeuserid) as likeuserid from articlelist A LEFT OUTER JOIN contenttype B ON A.contenttype=B.typeid LEFT OUTER JOIN art_likes C ON A.article_id=C.articleid where A.article_id = "+contentid+" GROUP BY article_id";
+        sqlyj="select A.*,B.typename,GROUP_CONCAT(C.likeuserid) as likeuserid,(select count(*) from artviewcount where artid=A.article_id) as artviewcount from articlelist A LEFT OUTER JOIN contenttype B ON A.contenttype=B.typeid LEFT OUTER JOIN art_likes C ON A.article_id=C.articleid where A.article_id = "+contentid+" GROUP BY article_id";
     }
     var week = "日一二三四五六".charAt(new Date().getDay());
     db.query(sqlyj,function(error,rows){
@@ -428,6 +428,56 @@ router.post("/cancel_CommLikeRecording",function(req,res){
 router.post("/getsearchContent",function(req,res,next){
 	var keyword=req.body.keyword; 
     db.query("select A.*,B.typename,GROUP_CONCAT(C.likeuserid) as likeuserid from articlelist A LEFT OUTER JOIN contenttype B ON A.contenttype=B.typeid LEFT OUTER JOIN art_likes C ON A.article_id=C.articleid  where article_title like '%"+keyword+"%' or content like '%"+keyword+"%' GROUP BY article_id",function(error,rows){
+        if (error) {
+            var result = {
+                "status": "500",
+                "message": "服务器错误"
+            }
+            return res.jsonp(result);
+        }
+        else{
+            var result = {
+                "status": "200",
+                "message": "success",
+                data:rows
+            }
+            return res.jsonp(result);
+        }
+    });
+});
+
+/**
+ * 查询浏览记录
+ */
+router.post("/getviewrecord",function(req,res,next){
+	var userip=req.body.userip; 
+	var artid=req.body.artid; 
+    db.query("select count(*) as count from artviewcount where userip = '"+userip+"' and artid="+artid+"",function(error,rows){
+        if (error) {
+            var result = {
+                "status": "500",
+                "message": "服务器错误"
+            }
+            return res.jsonp(result);
+        }
+        else{
+            var result = {
+                "status": "200",
+                "message": "success",
+                data:rows
+            }
+            return res.jsonp(result);
+        }
+    });
+});
+
+/**
+ * 新增浏览记录
+ */
+router.post("/addviewrecord",function(req,res,next){
+	var userip=req.body.userip;
+	var artid=req.body.artid;
+    db.query("insert into artviewcount (userip,artid) values ('"+userip+"',"+artid+")",function(error,rows){
         if (error) {
             var result = {
                 "status": "500",
