@@ -63,6 +63,9 @@ export default {
 		scro_fixed:{
 			type:Boolean
 		},
+		keyword:{
+			type:String
+		}
 	},
 	watch:{
 		scro_fixed: {//监听父组件数据变化更新子组件数据

@@ -23,7 +23,7 @@
 							</div>
 						</div>
 					</template>
-					<img v-if="budata==''" :src="require('@/assets/img/wxQRcode.png')"/>
+					<img v-if="budata==''" :src="require('@/assets/img/nodata.jpg')"/>
 				</div>
 			</div>
 		</el-col>
