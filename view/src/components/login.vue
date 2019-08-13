@@ -148,8 +148,6 @@ export default {
 							setTimeout(()=>{that.loading=false},2000)
                         }
                     }else if(res.data.status==500){
-						that.loading=false;
-						that.button=that.isreg?"注册":"登录"
 						return that.showtop("服务器异常，请稍后重试！");
                     }else{
 						return that.showtop(res.data.message);
@@ -169,6 +167,8 @@ export default {
 		  showtop:function(text,classname){
 			  this.logintip=true;
 			  this.tiptext=text;
+			  this.loading=false;
+			  this.button=this.isreg?"注册":"登录"
 			  classname&&document.getElementsByClassName(classname)[0].focus();
 			  return false;
 		  }

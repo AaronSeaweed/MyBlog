@@ -2,6 +2,7 @@
 	<el-row :gutter="20" class="body_content container">
 		<el-col :span="16" class="art_style">
 			<div class="body_left">
+				<loading v-if="loadinggif"></loading>
 				<template v-for="(aridetail) in this.AriDetail">
 					<div :key="aridetail.article_id">
 						<article id="artContent">
@@ -40,7 +41,7 @@
 								<div class="comment">
 									<div class="userAvatar">
 										<a>
-											<div class="lazy avatar avatar loaded" :style="{background: 'url('+require(`../../../view/src/assets/img/${comlist.photo||'user.png'}`)+')'}"></div>
+											<div class="lazy avatar avatar loaded" :style="imgUrlFun(comlist.photo)"></div>
 										</a>
 									</div>
 									<div class="content-box">
@@ -78,7 +79,7 @@
 														<div class="comment">
 															<div class="userAvatar">
 																<a>
-																	<div class="lazy avatar avatar loaded" :style="{background: 'url('+require(`../../../view/src/assets/img/${replylist.photo||'user.png'}`)+')'}"></div>
+																	<div class="lazy avatar avatar loaded" :style="imgUrlFun(replylist.photo)"></div>
 																</a>
 															</div>
 															<div class="content-box">
@@ -138,11 +139,10 @@
 	</el-row>
 </template>
 <script>
-	import {
-		Gb
-	} from '../assets/js/global.js';
+	import {Gb} from '../assets/js/global.js';
 	import bus from '../assets/js/eventbus.js';
 	import CommentPanel from './CommentPanel.vue';
+	import Loading from './loading.vue';
 	export default {
 		data: function() {
 			return {
@@ -155,7 +155,8 @@
 				aridetailContent: "",
 				userstatus: localStorage.getItem("userstatus"),
 				userid: localStorage.getItem("userid"),
-				wantlike: ""
+				wantlike: "",
+				loadinggif:true
 			}
 		},
 		wacth: {
@@ -164,7 +165,8 @@
 			}
 		},
 		components: {
-			CommentPanel
+			CommentPanel,
+			Loading
 		},
 		methods: {
 			imgSrcFun: function(value) {
@@ -172,6 +174,13 @@
 					return require('@/assets/img/' + value);
 				} else {
 					return ""
+				}
+			},
+			imgUrlFun:function(value){
+				if (value) {
+					return {'background': 'url("'+require('@/assets/img/' + value)+'")'};
+				} else {
+					return {'background': 'url("'+require('@/assets/img/user.png')+'")'}
 				}
 			},
 			classObj: function(name, op) {
@@ -251,6 +260,8 @@
 						that.AriDetail.push(articlelist.data.data[0]);
 						that.comments.push(commentlist.data.data);
 						that.replys.push(replylist.data.data);
+						document.getElementsByTagName("title")[0].text=that.AriDetail[0].article_title;
+						that.loadinggif=false;
 					})).catch(function(error) {
 						console.log(error);
 					});;

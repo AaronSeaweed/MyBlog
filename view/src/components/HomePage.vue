@@ -13,6 +13,7 @@
 						<a href="javascript:void(0)" @click="sorting(1)">热度</a>
 						<a href="javascript:void(0)" @click="sorting(3)">新鲜度</a>
 					</div>
+					<loading v-if="loadinggif"></loading>
 					<div class="bloglist">
 						<div class="blogtypemenu">
 							<div :class="{'menulist':!foldmenu,'menulist2':foldmenu}" @click="changemenu()">
@@ -22,7 +23,7 @@
 							</ul>
 						</div>
 						<template v-for="(blcont,index) in this.nblists">
-							<div class="conlist" :key="blcont.id" @mouseover="selectcon(index)"  @mouseout="outcon(index)">
+							<div class="conlist" :key="blcont.id" @mouseenter="selectcon(index)"  @mouseleave="outcon(index)">
 								<div class="conbg">
 									<header>
 										<a href="javascript:void(0)">{{blcont.typename}}</a>
@@ -30,7 +31,7 @@
 										<span class="conviews coninfo">{{blcont.artviewcount}}次</span>
 									</header>
 									<div class="contitle-box">
-										<router-link target="_blank" :to="{ name: 'atct', params:{conid:blcont.article_id}}" class="contitle">{{blcont.article_title}}</router-link>
+										<router-link target="_blank" :title="blcont.article_title" :to="{ name: 'atct', params:{conid:blcont.article_id}}" class="contitle">{{blcont.article_title}}</router-link>
 									</div>
 									<div class="artinfo">
 										<a href="javascript:void(0)" class="coninfo concommentnum" :class="{'like-up':blcont.likeuserid&&blcont.likeuserid.split(',').indexOf(userid)>-1,'concommentnum2':wantlike===index}"
@@ -78,7 +79,7 @@
 						<div v-if="hotcont.hot==true" :key="hotcont.article_id">
 							<div class="hc_cont">
 								<div class="hc_concont">
-									<router-link target="_blank" :to="{ name: 'atct2', params:{conid:hotcont.article_id}}" class="contitle">{{hotcont.article_title}}</router-link>
+									<router-link :title="hotcont.article_title" target="_blank" :to="{ name: 'atct2', params:{conid:hotcont.article_id}}" class="contitle">{{hotcont.article_title}}</router-link>
 									<span>{{hotcont.datetime}}</span>
 									<span class="views">{{hotcont.views}}</span>
 								</div>
@@ -95,6 +96,7 @@
 <script src="http://pv.sohu.com/cityjson?ie=utf-8"></script>
 <script>
 	import WebBulletin from './WebBulletin.vue';
+	import Loading from './loading.vue';
 	import {Gb} from '../assets/js/global.js'
 	import bus from '../assets/js/eventbus.js';
 	export default {
@@ -133,11 +135,13 @@
 				userid: localStorage.getItem("userid"),
 				scro_fixed: false,
 				foldmenu: false,
-				anumentList: ''
+				anumentList: '',
+				loadinggif:true
 			}
 		},
 		components: {
-			WebBulletin
+			WebBulletin,
+			Loading
 		},
 		methods: {
 			imgSrcFun: function(value) {
@@ -240,26 +244,18 @@
 				}
 			},
 			changecolor1: function(index) {
-				//if (this.like === "" || this.like !== index) {
-					this.wantlike = index;
-				//}
+				this.wantlike = index;
 			},
 			changecolor2: function(index) {
-				//if (this.like === "" || this.like !== index) {
-					this.wantlike = "";
-				//}
+				this.wantlike = "";
 			},
 			selectcon:function(index){
 				document.getElementsByClassName("conlist")[index].style.background="#fcfcfc"
-				//if (this.wantmodify === "" || this.wantmodify !== index) {
-					this.wantmodify = index;
-				//}
+				this.wantmodify = index;
 			},
 			outcon:function(index){
 				document.getElementsByClassName("conlist")[index].style.background="#ffffff"
-				//if (this.wantmodify === "" || this.wantmodify !== index) {
-					this.wantmodify = "";
-				//}
+				this.wantmodify = "";
 			},
 			changecontent: function(index) {
 				this.contenttypeid = index;
@@ -300,14 +296,15 @@
 					return that.$axios.post('/article/getarticletype');
 				}
 				that.$axios.all([getArticleList(), getArticleType()])
-					.then(that.$axios.spread(function(articlelist, articletype) {
-						that.newblcontlist = [];
-						that.newblcontlist.push(articlelist.data.data);
-						$(".ds_cont div p").text(articlelist.data.time);
-						//that.contenttype.push(articletype.data.data);
-						that.contenttype = articletype.data.data;
-						Pagingsort();
-					}));
+				.then(that.$axios.spread(function(articlelist, articletype) {
+					that.newblcontlist = [];
+					that.newblcontlist.push(articlelist.data.data);
+					$(".ds_cont div p").text(articlelist.data.time);
+					//that.contenttype.push(articletype.data.data);
+					that.contenttype = articletype.data.data;
+					Pagingsort();
+					that.loadinggif=false;
+				}));
 
 				function Pagingsort() {
 					if (that.newblcontlist[0].length < 10) { //不够10条显示全部

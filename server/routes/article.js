@@ -10,7 +10,7 @@ const chinaTime = require('china-time');
  */
 router.post("/getarticlelist",function(req,res,next){
     var contentid=req.body.contentid;
-    var sqlyj="select A.*,B.typename,GROUP_CONCAT(C.likeuserid) as likeuserid,(select count(*) from artviewcount where artid=A.article_id) as artviewcount from articlelist A LEFT OUTER JOIN contenttype B ON A.contenttype=B.typeid LEFT OUTER JOIN art_likes C ON A.article_id=C.articleid GROUP BY article_id"
+    var sqlyj="select A.*,B.typename,GROUP_CONCAT(C.likeuserid) as likeuserid,(select count(*) from artviewcount where artid=A.article_id) as artviewcount from articlelist A LEFT OUTER JOIN contenttype B ON A.contenttype=B.typeid LEFT OUTER JOIN art_likes C ON A.article_id=C.articleid GROUP BY article_id order by datetime desc"
     if(contentid!=undefined){
         sqlyj="select A.*,B.typename,GROUP_CONCAT(C.likeuserid) as likeuserid,(select count(*) from artviewcount where artid=A.article_id) as artviewcount from articlelist A LEFT OUTER JOIN contenttype B ON A.contenttype=B.typeid LEFT OUTER JOIN art_likes C ON A.article_id=C.articleid where A.article_id = "+contentid+" GROUP BY article_id";
     }
@@ -186,6 +186,7 @@ router.post("/addArticle",function(req,res){
 	var arttag=req.body.arttag;
 	var optype=req.body.optype;
 	var conid=req.body.conid;
+	content.replace(/'/g,"\\'");
 	var opsql="INSERT into articlelist (article_title,content,datetime,views,commentnum,hot,contenttype,recommend,userid,coverimage,arttag) values ('"+title+"','"+content+"','"+datetime+"',0,0,0,"+contenttype+",0,"+userid+",'"+coverimage+"','"+arttag+"')"
 	if(optype==1){
 		opsql="update articlelist set article_title='"+title+"',content='"+content+"',contenttype="+contenttype+",coverimage='"+coverimage+"',arttag='"+arttag+"' where article_id="+conid+""
@@ -195,7 +196,8 @@ router.post("/addArticle",function(req,res){
         if (error) {
             var result = {
                 "status": "500",
-                "message": "服务器错误"
+                "message": "服务器错误",
+				"sql":opsql
             }
             return res.jsonp(result);
         }

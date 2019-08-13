@@ -55,6 +55,7 @@
 			  :before-upload="beforeAvatarUpload">
 			  <img v-if="imageUrl" :src="imageUrl" class="avatar">
 			  <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+			  <input type="hidden" v-model="coverimage"/>
 			</el-upload>
 		</div>
 		<div class="release">
@@ -113,7 +114,7 @@
 				let typeid=that.typeid;
 				let userId = localStorage.getItem("userid");
 				let coverimage = that.coverimage;
-				let arttag = that.dynamicTags.join()
+				let arttag = that.dynamicTags.join();
 				let submitdata = {title:conTitle,content:htmlContent,contenttype:typeid,userid:userId,coverimage:coverimage,arttag:arttag,optype:optype,conid:this.conid};
 				if(conTitle==""){
 					that.$message({
@@ -175,6 +176,7 @@
 				that.conTitle=that.AriDetail.article_title;
 				that.dynamicTags=that.AriDetail.arttag?that.AriDetail.arttag.split(","):[];
 				that.typeid=that.AriDetail.contenttype;
+				that.coverimage=that.AriDetail.coverimage;
 				that.imageUrl=that.AriDetail.coverimage&&require('@/assets/img/' + that.AriDetail.coverimage);
 				that.content=that.AriDetail.content;
 			}).catch(function (error) {
