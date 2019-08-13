@@ -5,6 +5,7 @@ var express = require('express');
 var router = express.Router();
 var db = require("../config/db");
 const chinaTime = require('china-time');
+var token = require("./set_token");
 /**
  * 获取全部文章
  */
@@ -68,23 +69,32 @@ router.post("/commitcontent",function(req,res,next){
     var up=req.body.up;
     var date=req.body.date;
     var contentid=req.body.contentid;
-    db.query("insert into commentlist values (null,'"+username+"','"+content+"',"+up+",'"+date+"',"+contentid+")",function(error,rows){
-        if (error) {
-            var result = {
-                "status": "500",
-                "message": "服务器错误"
-            }
-            return res.jsonp(result);
-        }
-        else{
-            var result = {
-                "status": "200",
-                "message": "success",
-                data:rows
-            }
-            return res.jsonp(result);
-        }
-    });
+	var tokenstr=req.body.token;
+	if(tokenstr==token){
+		db.query("insert into commentlist values (null,'"+username+"','"+content+"',"+up+",'"+date+"',"+contentid+")",function(error,rows){
+			if (error) {
+				var result = {
+					"status": "500",
+					"message": "服务器错误"
+				}
+				return res.jsonp(result);
+			}
+			else{
+				var result = {
+					"status": "200",
+					"message": "success",
+					data:rows
+				}
+				return res.jsonp(result);
+			}
+		});
+	}else{
+		var result = {
+			"status": "522",
+			"message": "登录信息过期"
+		}
+		return res.jsonp(result);
+	}
 });
 /**
  * 提交评论回复
@@ -96,23 +106,32 @@ router.post("/commitreply",function(req,res){
     var replyup=req.body.replyup;
     var replydate=req.body.replydate;
     var replytype=req.body.replytype;
-    db.query("insert into replyart(artid,replyusername,replycontent,replyup,replydate,replytype) values ("+artid+",'"+replyusername+"','"+replycontent+"',"+replyup+",'"+replydate+"',"+replytype+")",function(error,rows){
-        if (error) {
-            var result = {
-                "status": "500",
-                "message": "服务器错误"
-            }
-            return res.jsonp(result);
-        }
-        else{
-            var result = {
-                "status": "200",
-                "message": "success",
-                data:rows
-            }
-            return res.jsonp(result);
-        }
-    });
+	var tokenstr=req.body.token;
+	if(tokenstr==token){
+		db.query("insert into replyart(artid,replyusername,replycontent,replyup,replydate,replytype) values ("+artid+",'"+replyusername+"','"+replycontent+"',"+replyup+",'"+replydate+"',"+replytype+")",function(error,rows){
+			if (error) {
+				var result = {
+					"status": "500",
+					"message": "服务器错误"
+				}
+				return res.jsonp(result);
+			}
+			else{
+				var result = {
+					"status": "200",
+					"message": "success",
+					data:rows
+				}
+				return res.jsonp(result);
+			}
+		});
+	}else{
+		var result = {
+			"status": "522",
+			"message": "登录信息过期"
+		}
+		return res.jsonp(result);
+	}
 });
 
 /**
@@ -186,31 +205,40 @@ router.post("/addArticle",function(req,res){
 	var arttag=req.body.arttag;
 	var optype=req.body.optype;
 	var conid=req.body.conid;
+	var tokenstr=req.body.token;
 	content.replace(/'/g,"\\'");
 	var opsql="INSERT into articlelist (article_title,content,datetime,views,commentnum,hot,contenttype,recommend,userid,coverimage,arttag) values ('"+title+"','"+content+"','"+datetime+"',0,0,0,"+contenttype+",0,"+userid+",'"+coverimage+"','"+arttag+"')"
 	if(optype==1){
 		opsql="update articlelist set article_title='"+title+"',content='"+content+"',contenttype="+contenttype+",coverimage='"+coverimage+"',arttag='"+arttag+"' where article_id="+conid+""
 	}
-	console.log(opsql)
-    db.query(opsql,function(error,rows){
-        if (error) {
-            var result = {
-                "status": "500",
-                "message": "服务器错误",
-				"sql":opsql
-            }
-            return res.jsonp(result);
-        }
-        else{
-            var result = {
-                "status": "200",
-                "message": "success",
-                data:rows
-            }
-            return res.jsonp(result);
-        }
-    });
+	if(tokenstr==token){
+		db.query(opsql,function(error,rows){
+			if (error) {
+				var result = {
+					"status": "500",
+					"message": "服务器错误",
+					"sql":opsql
+				}
+				return res.jsonp(result);
+			}
+			else{
+				var result = {
+					"status": "200",
+					"message": "success",
+					data:rows
+				}
+				return res.jsonp(result);
+			}
+		});
+	}else{
+		var result = {
+			"status": "522",
+			"message": "登录信息过期"
+		}
+		return res.jsonp(result);
+	}
 });
+
 
 
 /**
@@ -220,29 +248,38 @@ router.post("/thumb-Up",function(req,res,next){
     var article_id = req.body.article_id;
     var commentnum = req.body.commentnum;
 	var likedown = req.body.likedown;
+	var tokenstr=req.body.token;
 	var sql = "";
 	if(likedown){
 		sql = "update articlelist set commentnum = "+Number(commentnum-1)+" where article_id="+article_id;
 	}else{
 		sql = "update articlelist set commentnum = "+Number(commentnum+1)+" where article_id="+article_id;
 	}
-    db.query(sql,function(error,rows){
-        if (error) {
-            var result = {
-                "status": "500",
-                "message": "服务器错误"
-            }
-            return res.jsonp(result);
-        }
-        else{
-            var result = {
-                "status": "200",
-                "message": "success",
-                data:rows[0]
-            }
-            return res.jsonp(result);
-        }
-    });
+	if(tokenstr==token){
+		db.query(sql,function(error,rows){
+			if (error) {
+				var result = {
+					"status": "500",
+					"message": "服务器错误"
+				}
+				return res.jsonp(result);
+			}
+			else{
+				var result = {
+					"status": "200",
+					"message": "success",
+					data:rows[0]
+				}
+				return res.jsonp(result);
+			}
+		});
+	}else{
+		var result = {
+			"status": "522",
+			"message": "登录信息过期"
+		}
+		return res.jsonp(result);
+	}
 });
 /**
 *记录用户点赞的文章
@@ -250,23 +287,32 @@ router.post("/thumb-Up",function(req,res,next){
 router.post("/likeRecording",function(req,res){
     var articleid=req.body.articleid;
     var likeuserid=req.body.likeuserid;
-    db.query("INSERT into art_likes (articleid,likeuserid) values ("+articleid+","+likeuserid+")",function(error,rows){
-        if (error) {
-            var result = {
-                "status": "500",
-                "message": "服务器错误"
-            }
-            return res.jsonp(result);
-        }
-        else{
-            var result = {
-                "status": "200",
-                "message": "success",
-                data:rows
-            }
-            return res.jsonp(result);
-        }
-    });
+	var tokenstr=req.body.token;
+	if(tokenstr==token){
+		db.query("INSERT into art_likes (articleid,likeuserid) values ("+articleid+","+likeuserid+")",function(error,rows){
+		    if (error) {
+		        var result = {
+		            "status": "500",
+		            "message": "服务器错误"
+		        }
+		        return res.jsonp(result);
+		    }
+		    else{
+		        var result = {
+		            "status": "200",
+		            "message": "success",
+		            data:rows
+		        }
+		        return res.jsonp(result);
+		    }
+		});
+	}else{
+		var result = {
+			"status": "522",
+			"message": "登录信息过期"
+		}
+		return res.jsonp(result);
+	}
 });
 /**
 *用户取消点赞的文章
@@ -274,23 +320,32 @@ router.post("/likeRecording",function(req,res){
 router.post("/cancelLikeRecording",function(req,res){
     var articleid=req.body.articleid;
     var likeuserid=req.body.likeuserid;
-    db.query("delete from art_likes where articleid="+articleid+" and likeuserid="+likeuserid+"",function(error,rows){
-        if (error) {
-            var result = {
-                "status": "500",
-                "message": "服务器错误"
-            }
-            return res.jsonp(result);
-        }
-        else{
-            var result = {
-                "status": "200",
-                "message": "success",
-                data:rows
-            }
-            return res.jsonp(result);
-        }
-    });
+	var tokenstr=req.body.token;
+	if(tokenstr==token){
+		db.query("delete from art_likes where articleid="+articleid+" and likeuserid="+likeuserid+"",function(error,rows){
+			if (error) {
+				var result = {
+					"status": "500",
+					"message": "服务器错误"
+				}
+				return res.jsonp(result);
+			}
+			else{
+				var result = {
+					"status": "200",
+					"message": "success",
+					data:rows
+				}
+				return res.jsonp(result);
+			}
+		});
+	}else{
+		var result = {
+			"status": "522",
+			"message": "登录信息过期"
+		}
+		return res.jsonp(result);
+	}
 });
 /**
 *删除评论
@@ -298,28 +353,37 @@ router.post("/cancelLikeRecording",function(req,res){
 router.post("/delDiscuss",function(req,res){
     var id=req.body.id;
     var replytype=req.body.replytype;
+	var tokenstr=req.body.token;
 	if(replytype==0){
 		sql = "delete from commentlist where id = "+id;
 	}else{
 		sql = "delete from replyart where replyid = "+id;
 	}
-    db.query(sql,function(error,rows){
-        if (error) {
-            var result = {
-                "status": "500",
-                "message": "服务器错误"
-            }
-            return res.jsonp(result);
-        }
-        else{
-            var result = {
-                "status": "200",
-                "message": "success",
-                data:rows
-            }
-            return res.jsonp(result);
-        }
-    });
+	if(tokenstr==token){
+		db.query(sql,function(error,rows){
+			if (error) {
+				var result = {
+					"status": "500",
+					"message": "服务器错误"
+				}
+				return res.jsonp(result);
+			}
+			else{
+				var result = {
+					"status": "200",
+					"message": "success",
+					data:rows
+				}
+				return res.jsonp(result);
+			}
+		});
+	}else{
+		var result = {
+			"status": "522",
+			"message": "登录信息过期"
+		}
+		return res.jsonp(result);
+	}
 });
 
 /**
@@ -330,6 +394,7 @@ router.post("/thumb-CommUp",function(req,res,next){
     var commentnum = req.body.commentnum;
 	var likedown = req.body.likedown;
 	var replytype = req.body.replytype;
+	var tokenstr=req.body.token;
 	var sql = "";
 	if(likedown){
 		if(replytype==0){
@@ -369,29 +434,39 @@ router.post("/like_CommRecording",function(req,res){
     var id=req.body.id;
     var likeuserid=req.body.likeuserid;
 	var replytype = req.body.replytype;
+	var tokenstr=req.body.token;
 	var sql = "";
 	if(replytype==0){
 		sql = "INSERT into comm_likes (commentid,likeuserid) values ("+id+","+likeuserid+")"
 	}else{
 		sql = "INSERT into rep_likes (replyid,likeuserid) values ("+id+","+likeuserid+")"
 	}
-    db.query(sql,function(error,rows){
-        if (error) {
-            var result = {
-                "status": "500",
-                "message": "服务器错误"
-            }
-            return res.jsonp(result);
-        }
-        else{
-            var result = {
-                "status": "200",
-                "message": "success",
-                data:rows
-            }
-            return res.jsonp(result);
-        }
-    });
+	if(tokenstr==token){
+		db.query(sql,function(error,rows){
+			if (error) {
+				var result = {
+					"status": "500",
+					"message": "服务器错误"
+				}
+				return res.jsonp(result);
+			}
+			else{
+				var result = {
+					"status": "200",
+					"message": "success",
+					data:rows
+				}
+				return res.jsonp(result);
+			}
+		});
+	}else{
+		var result = {
+		    "status": "200",
+		    "message": "success",
+		    data:rows[0]
+		}
+		return res.jsonp(result);
+	}
 });
 /**
 *用户取消点赞的评论/回复
@@ -400,29 +475,39 @@ router.post("/cancel_CommLikeRecording",function(req,res){
     var id=req.body.id;
     var likeuserid=req.body.likeuserid;
 	var replytype = req.body.replytype;
+	var tokenstr=req.body.token;
 	var sql = "";
 	if(replytype==0){
 		sql = "delete from comm_likes where commentid="+id+" and likeuserid="+likeuserid+""
 	}else{
 		sql = "delete from rep_likes where replyid="+id+" and likeuserid="+likeuserid+""
 	}
-    db.query(sql,function(error,rows){
-        if (error) {
-            var result = {
-                "status": "500",
-                "message": "服务器错误"
-            }
-            return res.jsonp(result);
-        }
-        else{
-            var result = {
-                "status": "200",
-                "message": "success",
-                data:rows
-            }
-            return res.jsonp(result);
-        }
-    });
+	if(tokenstr==token){
+		db.query(sql,function(error,rows){
+			if (error) {
+				var result = {
+					"status": "500",
+					"message": "服务器错误"
+				}
+				return res.jsonp(result);
+			}
+			else{
+				var result = {
+					"status": "200",
+					"message": "success",
+					data:rows
+				}
+				return res.jsonp(result);
+			}
+		});
+	}else{
+		var result = {
+		    "status": "200",
+		    "message": "success",
+		    data:rows[0]
+		}
+		return res.jsonp(result);
+	}
 });
 /**
  * 搜索文章

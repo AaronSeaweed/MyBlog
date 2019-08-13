@@ -40,41 +40,56 @@
     </div>
 </template>
 <script>
+import bus from '../assets/js/eventbus.js';
 import {Gb} from '../assets/js/global.js';
 export default {
     data:function(){
         return{
             photo:"",
             showinfo:[],
-            infoindex:""
+            infoindex:"",
+			token: localStorage.getItem("token")
         }
-    },
-    components:{
-                
     },
     methods: {
         getUserInfo:function(){
             var that = this;
-            return that.$axios.post("/users/getuserinfo",{id:Gb.b64DecodeUnicode(that.$route.params.userid)})
+            return that.$axios.post("/users/getuserinfo",{id:Gb.b64DecodeUnicode(that.$route.params.userid),token:that.token})
             .then(function (response) {
-                that.photo=response.data.data.photo?require('../../../view/src/assets/img/'+response.data.data.photo):require('../../../view/src/assets/img/user.png');
-                that.showinfo=[];
-                localStorage.setItem("username",response.data.data.username);
-                localStorage.setItem("photo",response.data.data.photo);
-                $("#username").show().text(response.data.data.username);
-                that.showinfo.push({
-                    "title":"用户名","name":response.data.data.username,"placeholder":"填写你的用户名","u":1,"s":0,"c":0
-                },{
-                    "title":"头衔","name":response.data.data.callname,"placeholder":"填写你的头衔","u":1,"s":0,"c":0
-                },{
-                    "title":"职位","name":response.data.data.profes,"placeholder":"填写你的职位","u":1,"s":0,"c":0
-                },{
-                    "title":"公司","name":response.data.data.company,"placeholder":"填写你的公司","u":1,"s":0,"c":0
-                },{
-                    "title":"个人介绍","name":response.data.data.selfintroduction,"placeholder":"填写职业技能、擅长的事情、喜欢的事情等","u":1,"s":0,"c":0
-                },{
-                    "title":"个人主页","name":response.data.data.homepage,"placeholder":"填写你的个人主页","u":1,"s":0,"c":0
-                });
+				if(response.data.status==200){
+					that.photo=response.data.data.photo?require('../../../view/src/assets/img/'+response.data.data.photo):require('../../../view/src/assets/img/user.png');
+					that.showinfo=[];
+					localStorage.setItem("username",response.data.data.username);
+					localStorage.setItem("photo",response.data.data.photo);
+					$("#username").show().text(response.data.data.username);
+					that.showinfo.push({
+						"title":"用户名","name":response.data.data.username,"placeholder":"填写你的用户名","u":1,"s":0,"c":0
+					},{
+						"title":"头衔","name":response.data.data.callname,"placeholder":"填写你的头衔","u":1,"s":0,"c":0
+					},{
+						"title":"职位","name":response.data.data.profes,"placeholder":"填写你的职位","u":1,"s":0,"c":0
+					},{
+						"title":"公司","name":response.data.data.company,"placeholder":"填写你的公司","u":1,"s":0,"c":0
+					},{
+						"title":"个人介绍","name":response.data.data.selfintroduction,"placeholder":"填写职业技能、擅长的事情、喜欢的事情等","u":1,"s":0,"c":0
+					},{
+						"title":"个人主页","name":response.data.data.homepage,"placeholder":"填写你的个人主页","u":1,"s":0,"c":0
+					});
+				}else if(response.data.status==522){
+					that.$confirm(response.data.message+',是否重新登录?', '提示', {
+						confirmButtonText: '确定',
+						cancelButtonText: '取消',
+						type: 'warning'
+					}).then(() => {
+						bus.$emit("login", "");
+					});
+				}else{
+					that.$message({
+						message: response.data.message,
+						type: 'error',
+						duration:1000
+					});
+				}
             })
             .catch(function (error) {
                 alert(error);
@@ -82,15 +97,31 @@ export default {
         },
         toUpdateInfo:function(){
             var that = this;
-            var updateinfo={username:$(".infotext").eq(0).val(),callname:$(".infotext").eq(1).val(),company:$(".infotext").eq(3).val(),selfintroduction:$(".infotext").eq(4).val(),profes:$(".infotext").eq(2).val(),homepage:$(".infotext").eq(5).val(),id:Gb.b64DecodeUnicode(that.$route.params.userid)}
+            var updateinfo={username:$(".infotext").eq(0).val(),callname:$(".infotext").eq(1).val(),company:$(".infotext").eq(3).val(),selfintroduction:$(".infotext").eq(4).val(),profes:$(".infotext").eq(2).val(),homepage:$(".infotext").eq(5).val(),id:Gb.b64DecodeUnicode(that.$route.params.userid),token:that.token}
             that.$axios.post("/users/toUpdate",updateinfo)
             .then(function (response) {
-                that.$message({
-                    message: '修改成功！',
-                    type: 'success',
-                    duration:1000
-                });
-                that.getUserInfo();
+				if(response.data.status==200){
+					that.$message({
+					    message: '修改成功！',
+					    type: 'success',
+					    duration:1000
+					});
+					that.getUserInfo();
+				}else if(response.data.status==522){
+					that.$confirm(response.data.message+',是否重新登录?', '提示', {
+						confirmButtonText: '确定',
+						cancelButtonText: '取消',
+						type: 'warning'
+					}).then(() => {
+						bus.$emit("login", "");
+					});
+				}else{
+					that.$message({
+						message: response.data.message,
+						type: 'error',
+						duration:1000
+					});
+				}
             })
             .catch(function (error) {
                 that.$message({
@@ -141,10 +172,25 @@ export default {
             let data = new FormData();
             data.append("file", file, file.name);//很重要 data.append("file", file);不成功
             data.append('userid',Gb.b64DecodeUnicode(that.$route.params.userid))
+			data.append('token',that.token)
             that.$axios.post("/dataInpute", data, {
                     headers: { "content-type": "multipart/form-data" }
             }).then(function (response) {
-                console.log(response)
+				if(response.data.status==522){
+					that.$confirm(response.data.message+',是否重新登录?', '提示', {
+						confirmButtonText: '确定',
+						cancelButtonText: '取消',
+						type: 'warning'
+					}).then(() => {
+						bus.$emit("login", "");
+					});
+				}else{
+					that.$message({
+						message: response.data.message,
+						type: 'error',
+						duration:1000
+					});
+				}
             })
         }
 

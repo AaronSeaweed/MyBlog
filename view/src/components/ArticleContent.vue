@@ -33,7 +33,7 @@
 							<span>你有什么想说的吗？</span>
 							<button class="comment-login" @click="showlogin()">登录</button>
 						</div>
-						<CommentPanel ref="child"></CommentPanel>
+						<CommentPanel ref="child" v-on:commitcomment="commitcomment"></CommentPanel>
 					</div>
 					<ul class="comment-list">
 						<template v-for="(comlist,index) in this.comments[0]">
@@ -71,7 +71,7 @@
 											<span class="replydate">{{reversedMessage(comlist.date)}}</span>
 										</div>
 										</div>
-										<CommentPanel ref="child"></CommentPanel>
+										<CommentPanel ref="child" v-on:commitcomment="commitcomment"></CommentPanel>
 										<div class="replylist">
 											<template v-for="(replylist,index2) in getReplysList(comlist.id)">
 												<div :key="index2">
@@ -109,7 +109,7 @@
 																	<span class="replydate">{{reversedMessage(replylist.replydate)}}</span>
 																</div>
 																</div>
-																<CommentPanel ref="child"></CommentPanel>
+																<CommentPanel ref="child" v-on:commitcomment="commitcomment"></CommentPanel>
 															</div>
 														</div>
 													</div>
@@ -156,7 +156,8 @@
 				userstatus: localStorage.getItem("userstatus"),
 				userid: localStorage.getItem("userid"),
 				wantlike: "",
-				loadinggif:true
+				loadinggif:true,
+				token: localStorage.getItem("token")
 			}
 		},
 		wacth: {
@@ -199,7 +200,8 @@
 				}).then(() => {
 					that.$axios.post("/article/delDiscuss", {
 							"id": id,
-							"replytype": replytype
+							"replytype": replytype,
+							"token":that.token
 						})
 						.then((response) => {
 							if (response.data.status == 200) {
@@ -208,7 +210,15 @@
 									message: '删除成功!'
 								});
 								that.getcomment();
-							} else {
+							}else if(response.data.status==522){
+								that.$confirm(response.data.message+',是否重新登录?', '提示', {
+									confirmButtonText: '确定',
+									cancelButtonText: '取消',
+									type: 'warning'
+								}).then(() => {
+									bus.$emit("login", "");
+								});
+							}else {
 								that.$message({
 									type: 'error',
 									message: response.data.message
@@ -263,7 +273,10 @@
 						document.getElementsByTagName("title")[0].text=that.AriDetail[0].article_title;
 						that.loadinggif=false;
 					})).catch(function(error) {
-						console.log(error);
+						that.$message({
+							type: 'error',
+							message: error
+						});
 					});;
 			},
 			showlogin: function() { //与兄弟（IndexHead）组件通讯，通过eventbus.js文件让IndexHead组件执行函数
@@ -272,11 +285,14 @@
 			reversedMessage: function(datetime) {
 				return Gb.changetime(datetime);
 			},
-			CommitComment: function(index) { //新增评论
+			commitcomment: function(index) { //新增评论
 				var that = this;
 				var commentcontent = $(".usercomment").eq(index).val() || $(".usercomment").eq(0).val();
 				if (commentcontent.trim() == "") {
-					alert("你输入评论！")
+					that.$message({
+						type: 'error',
+						message: '内容不能为空'
+					});
 				} else {
 					var nowdate = Gb.getDate(); //获取当前时间
 					var userid = localStorage.getItem("userid");
@@ -286,7 +302,8 @@
 						replycontent: commentcontent,
 						replyup: 0,
 						replydate: nowdate,
-						replytype: that.replysubmit.replytype
+						replytype: that.replysubmit.replytype,
+						token:that.token
 					}
 					var posturl = '/article/commitreply';
 					if (index == undefined) {
@@ -296,22 +313,40 @@
 							content: commentcontent,
 							up: 0,
 							date: nowdate,
-							contentid: that.$route.params.conid
+							contentid: that.$route.params.conid,
+							token:that.token
 						}
 						posturl = '/article/commitcontent';
 					}
 					that.$axios.post(posturl, submitdata)
 						.then(function(response) {
-							if (index == undefined) {
-								$(".usercomment").eq(0).val("");
-							} else {
-								$(".usercomment").eq(index).val("");
+							if(response.data.status=200){
+								if (index == undefined) {
+									$(".usercomment").eq(0).val("");
+								} else {
+									$(".usercomment").eq(index).val("");
+								}
+								that.getcomment();
+							}else if(response.data.status==522){
+								that.$confirm(response.data.message+',是否重新登录?', '提示', {
+									confirmButtonText: '确定',
+									cancelButtonText: '取消',
+									type: 'warning'
+								}).then(() => {
+									bus.$emit("login", "");
+								});
+							}else{
+								that.$message({
+									type: 'error',
+									message: response.data.message
+								});
 							}
-							that.getcomment();
-							//that.toHtml();
 						})
 						.catch(function(error) {
-							alert(error);
+							that.$message({
+								type: 'error',
+								message: error
+							});
 						});
 				}
 			},
@@ -410,22 +445,58 @@
 						"id": id,
 						"commentnum": num,
 						"likedown": likedown,
-						"replytype": replytype
+						"replytype": replytype,
+						"token":that.token
 					})
 					.then((response) => {
-
+						if(response.data.status==522){
+							that.$confirm(response.data.message+',是否重新登录?', '提示', {
+								confirmButtonText: '确定',
+								cancelButtonText: '取消',
+								type: 'warning'
+							}).then(() => {
+								that.showlogin();
+							});
+						}else{
+							that.$message({
+								type: 'error',
+								message: response.data.message
+							});
+						}
 					}).catch(function(error) {
-						alert(error);
+						that.$message({
+							type: 'error',
+							message: error
+						});
 					});
 					this.$axios.post(poturl, {
 						"id": id,
-						"likeuserid": this.userid,
-						"replytype": replytype
+						"likeuserid": that.userid,
+						"replytype": replytype,
+						"token":that.token
 					})
 					.then((response) => {
-						that.getcomment();
+						if(response.data.status=200){
+							that.getcomment();
+						}else if(response.data.status==522){
+							that.$confirm(response.data.message+',是否重新登录?', '提示', {
+								confirmButtonText: '确定',
+								cancelButtonText: '取消',
+								type: 'warning'
+							}).then(() => {
+								that.showlogin();
+							});
+						}else{
+							that.$message({
+								type: 'error',
+								message: response.data.message
+							});
+						}
 					}).catch(function(error) {
-						alert(error);
+						that.$message({
+							type: 'error',
+							message: error
+						});
 					});
 				}
 			},

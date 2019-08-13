@@ -3,11 +3,11 @@
 		<div class="artucle_title">
 			<el-input v-model="conTitle" placeholder="请输入标题"></el-input>
 		</div>
-    <div id="layout">
-      <div id="blog_editormd">
-        <textarea style="display: none;" name="test-editormd-markdown-doc" id="content" v-model="content"></textarea>
-      </div>
-    </div>
+		<div id="layout">
+		<div id="blog_editormd">
+			<textarea style="display: none;" name="test-editormd-markdown-doc" id="content" v-model="content"></textarea>
+		  </div>
+		</div>
 		<div class="release">
 			<label>
 				文章标签:
@@ -64,9 +64,9 @@
 		</div>
 	</div>
 </template>
-
 <script>
-	import bus from '../assets/js/eventbus.js';
+import bus from '../assets/js/eventbus.js';
+import { Loading } from 'element-ui';
   export default {
     data() {
       return {
@@ -82,7 +82,8 @@
 		postaction:'http://localhost:3000/dataInpute?guid='+(new Date()).getTime(),
 		conid:this.$route.params.conid,
 		content:'',
-		AriDetail:''
+		AriDetail:'',
+		token: localStorage.getItem("token")
       }
     },
     methods: {
@@ -115,7 +116,8 @@
 				let userId = localStorage.getItem("userid");
 				let coverimage = that.coverimage;
 				let arttag = that.dynamicTags.join();
-				let submitdata = {title:conTitle,content:htmlContent,contenttype:typeid,userid:userId,coverimage:coverimage,arttag:arttag,optype:optype,conid:this.conid};
+				let token=that.token;
+				let submitdata = {title:conTitle,content:htmlContent,contenttype:typeid,userid:userId,coverimage:coverimage,arttag:arttag,optype:optype,conid:this.conid,token:token};
 				if(conTitle==""){
 					that.$message({
 							message: '标题不能为空！',
@@ -139,6 +141,11 @@
 					});
 					return false;
 				}else{
+					let loadingInstance = Loading.service({ 
+						fullscreen: true,
+						target: document.querySelector('#app'),
+						text: '请稍等'
+					});
 					that.$axios.post("/article/addArticle", submitdata)
 					.then(function (response) {
 						if(response.data.status==200){
@@ -147,11 +154,21 @@
 									type: 'success',
 									duration:1000
 							});
+							loadingInstance.close();
+						}else if(response.data.status==522){
+							that.$confirm(response.data.message+',是否重新登录?', '提示', {
+								confirmButtonText: '确定',
+								cancelButtonText: '取消',
+								type: 'warning'
+							}).then(() => {
+								loadingInstance.close();
+								that.showlogin();
+							});
 						}else{
 							that.$message({
-									message: response.data.message,
-									type: 'error',
-									duration:1000
+								message: response.data.message,
+								type: 'error',
+								duration:1000
 							});
 						}
 					})

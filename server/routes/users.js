@@ -66,23 +66,32 @@ router.post("/add",function(req,res,next){
 */
 router.post("/getuserinfo",function(req,res,next){
     var id=req.body.id;
-    db.query("select *from user where id='"+id+"'",function(error,rows){
-        if (error) {
-            var result = {
-                "status": "500",
-                "message": "服务器错误"
-            }
-            return res.jsonp(result);
-        }
-        else{
-            var result = {
-                "status": "200",
-                "message": "success",
-                data:rows[0]
-            }
-            return res.jsonp(result);
-        }
-    });
+	var tokenstr=req.body.token;
+	if(tokenstr==token){
+		db.query("select *from user where id='"+id+"'",function(error,rows){
+		    if (error) {
+		        var result = {
+		            "status": "500",
+		            "message": "服务器错误"
+		        }
+		        return res.jsonp(result);
+		    }
+		    else{
+		        var result = {
+		            "status": "200",
+		            "message": "success",
+		            data:rows[0]
+		        }
+		        return res.jsonp(result);
+		    }
+		});
+	}else{
+		var result = {
+			"status": "522",
+			"message": "登录信息过期"
+		}
+		return res.jsonp(result);
+	}
 });
 
 /**
@@ -110,24 +119,33 @@ router.post("/toUpdate",function(req,res,next){
     var selfintroduction = req.body.selfintroduction;
     var profes = req.body.profes;
     var homepage = req.body.homepage;
+	var tokenstr=req.body.token;
     var sql = "UPDATE user set username ='"+username+"',callname='"+callname+"',company='"+company+"',selfintroduction='"+selfintroduction+"',profes='"+profes+"',homepage='"+homepage+"' where id = "+id+"";
-    db.query(sql,function(error,rows){
-        if (error) {
-            var result = {
-                "status": "500",
-                "message": "服务器错误"
-            }
-            return res.jsonp(result);
-        }
-        else{
-            var result = {
-                "status": "200",
-                "message": "success",
-                data:rows[0]
-            }
-            return res.jsonp(result);
-        }
-    });
+    if(tokenstr==token){
+		db.query(sql,function(error,rows){
+			if (error) {
+				var result = {
+					"status": "500",
+					"message": "服务器错误"
+				}
+				return res.jsonp(result);
+			}
+			else{
+				var result = {
+					"status": "200",
+					"message": "success",
+					data:rows[0]
+				}
+				return res.jsonp(result);
+			}
+		});
+	}else{
+		var result = {
+			"status": "522",
+			"message": "登录信息过期"
+		}
+		return res.jsonp(result);
+	}
 });
 
 
@@ -156,11 +174,6 @@ router.post("/search",function(req,res,next){
     if(name){
         sql += " where name = '"+ name +"'";
     }
-    //if(age){
-    //    sql += " and age = '" + age + "'";
-    //}
-
-    sql.replace("and","where");
     db.query(sql,function(err,rows){
         if(err){
             res.send("查询失败: "+err);

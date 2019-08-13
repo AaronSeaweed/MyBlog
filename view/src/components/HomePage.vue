@@ -136,7 +136,8 @@
 				scro_fixed: false,
 				foldmenu: false,
 				anumentList: '',
-				loadinggif:true
+				loadinggif:true,
+				token: localStorage.getItem("token")
 			}
 		},
 		components: {
@@ -224,23 +225,43 @@
 					this.$axios.post("/article/thumb-Up", {
 							"article_id": id,
 							"commentnum": num,
-							"likedown": likedown
-						})
-						.then((response) => {
-
-						}).catch(function(error) {
-							alert(error);
-						});
-					this.$axios.post(poturl, {
-							"articleid": id,
-							"likeuserid": this.userid
-						})
-						.then((response) => {
-							that.blcontlist();
-
-						}).catch(function(error) {
-							alert(error);
-						});
+							"likedown": likedown,
+							"token":that.token
+					})
+					.then((response) => {
+						if(response.data.status==522){
+							that.$confirm(response.data.message+',是否重新登录?', '提示', {
+								confirmButtonText: '确定',
+								cancelButtonText: '取消',
+								type: 'warning'
+							}).then(() => {
+								bus.$emit("login", "");
+							});
+						}else if(response.data.status==200){
+							that.$axios.post(poturl, {
+								"articleid": id,
+								"likeuserid": that.userid,
+								"token":that.token
+							})
+							.then((response) => {
+								if(response.data.status==522){
+									that.$confirm(response.data.message+',是否重新登录?', '提示', {
+										confirmButtonText: '确定',
+										cancelButtonText: '取消',
+										type: 'warning'
+									}).then(() => {
+										bus.$emit("login", "");
+									});
+								}else{
+									that.blcontlist();
+								}
+							}).catch(function(error) {
+								alert(error);
+							});
+						}
+					}).catch(function(error) {
+						alert(error);
+					});
 				}
 			},
 			changecolor1: function(index) {

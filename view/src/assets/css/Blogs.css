@@ -8,6 +8,7 @@ h2 {font-size:18px}
 .menu ul {width:100%;display:none}
 .menu ul li{width:100%;height:40px;margin-top:40px;cursor:pointer;}
 .menu ul li a {text-decoration:none;width:100%;height:40px;display:block;color:#FFF}
+.logo{background: url(../img/logo.png) no-repeat;margin: 20px 0 0 20px;width:265px;height:60px;display: inline-block;}
 .backimg{background-color:#38393B}
 #cometop {width: 30px;height: 60px;position: fixed;bottom: 70px;right: 20px;font-size: 12px;text-align: center;  background-color: #38393B;opacity: 0.7;cursor:pointer;color:#FFF}
 .panel{opacity: 0.7;background-size: cover!important;}
@@ -34,7 +35,7 @@ h2 {font-size:18px}
 .bor_bot_f{border-bottom:0px #EAEAEA solid!important}
 .bodybackground{width:100%;height:100%;border:1px red solid;background-image: url("../img/backimg_1.jpg")}
 /*********************博客页*********************/
-.header{height:100px}
+.header{height:125px}
 .head_menu {width:100%;border-bottom:0px gray solid;background-color:#ffffff;box-shadow: 0 0 5px 0 #ccc;z-index: 100;
     top: 0px;position:fixed}
 .head_menu div .menulist{position: absolute;background-color: #ffffff;  top: 60px; right:0}
@@ -42,7 +43,7 @@ h2 {font-size:18px}
 .head_menu div ul li{float: left; width: 90px;  text-align: center;  cursor: pointer;}
 .head_menu div ul li a{color:black}
 .head_menu div ul li a:hover{color:#3399CC}
-.head_menu span:nth-of-type(1) {font-size:32px;color:#38393B;margin: 20px 0 0 20px;display: inline-block;}
+/* .head_menu span:nth-of-type(1) {font-size:32px;color:#38393B;;display: inline-block;} */
 .head_menu .loginbtn{position:absolute;right: 53px;top: 6px;color:black;cursor: pointer}
 .head_menu .regbtn{position:absolute;right: 20px;top: 6px;color:black;cursor: pointer}
 .head_menu #username{position:absolute;right: 45px;top: 16px;display: block;color:black;display: none;cursor: pointer}
