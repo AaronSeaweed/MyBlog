@@ -6,9 +6,9 @@ var token = require("./set_token");
  * 登录
  */
 router.post("/login",function(req,res,next){
-    var name=req.body.name;
+    var phonenoemail=req.body.phonenoemail;
     var password=req.body.password;
-    db.query("select * from user where username='"+name+"' and password="+password+"",function(error,rows){
+    db.query("select * from user where phonenoemail='"+phonenoemail+"' and password="+password+"",function(error,rows){
         if (error) {
             var result = {
                 "status": "500",
@@ -40,9 +40,9 @@ router.post("/login",function(req,res,next){
  */
 router.post("/add",function(req,res,next){
     var name=req.body.name;
-    var age=req.body.phonenoemail;
+    var phonenoemail=req.body.phonenoemail;
     var password=req.body.password;
-    db.query("insert into user(username,password) values('"+name+"','"+ password +"')",function(error,rows){
+    db.query("insert into user(username,password,phonenoemail) values('"+name+"','"+ password +"','"+phonenoemail+"')",function(error,rows){
         if (error) {
             var result = {
                 "status": "500",
@@ -54,7 +54,7 @@ router.post("/add",function(req,res,next){
             var result = {
                 "status": "200",
                 "message": "success",
-                data:{name:name,password:password}
+                data:{name:name,password:password,phonenoemail:phonenoemail}
             }
             return res.jsonp(result);
         }
@@ -93,7 +93,29 @@ router.post("/getuserinfo",function(req,res,next){
 		return res.jsonp(result);
 	}
 });
-
+/**
+*验证用户名是否存在
+*/
+router.post("/checkname",function(req,res,next){
+	var username=req.body.username;
+	db.query("select count(*) count from user where username='"+username+"'",function(error,rows){
+	    if (error) {
+	        var result = {
+	            "status": "500",
+	            "message": "服务器错误"
+	        }
+	        return res.jsonp(result);
+	    }
+	    else{
+	        var result = {
+	            "status": "200",
+	            "message": "success",
+	            data:rows[0]
+	        }
+	        return res.jsonp(result);
+	    }
+	});
+});
 /**
  * 删除用户
  */

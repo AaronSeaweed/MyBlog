@@ -113,7 +113,7 @@
 		},
 		updated:function(){
 			var windowHeight=window.innerHeight-180-20;//180是页眉和页脚的高度;20是边距
-			document.getElementsByClassName("SeaMain")[0].style.height=windowHeight+"px"
+			document.getElementsByClassName("SeaMain")[0].style.minheight=windowHeight+"px"
 		}
 	}
 </script>

@@ -15,7 +15,7 @@
                             </div>
                         </div>
                     </li>
-                    <template v-for="(Uinfo) in this.showinfo">
+                    <template v-for="(Uinfo,index) in this.showinfo">
                         <li>
                             <span class="psct_title">{{Uinfo.title}}</span>
                             <div class="psct_info">
@@ -24,7 +24,7 @@
                                     <button v-if="Uinfo.u">
                                         <span class="glyphicon glyphicon-pencil">修改</span>
                                     </button>
-                                    <button class="savaupdate" v-if="Uinfo.s">
+                                    <button class="savaupdate" v-if="Uinfo.s" :index="index">
                                         保存
                                     </button>
                                     <button class="cancelupdate" v-if="Uinfo.c">
@@ -48,7 +48,9 @@ export default {
             photo:"",
             showinfo:[],
             infoindex:"",
-			token: localStorage.getItem("token")
+			token: localStorage.getItem("token"),
+			userstatus: localStorage.getItem("userstatus"),
+			updatename:false
         }
     },
     methods: {
@@ -95,6 +97,21 @@ export default {
                 alert(error);
             });
         },
+		checkupdate:function(index){
+			var that = this;
+			if(index){
+				async function gck(){
+					await that.checkname();
+				}
+				gck().then(function(){
+					if(that.updatename){
+						that.toUpdateInfo()
+					}
+				})
+			}else{
+				that.toUpdateInfo()
+			}
+		},
         toUpdateInfo:function(){
             var that = this;
             var updateinfo={username:$(".infotext").eq(0).val(),callname:$(".infotext").eq(1).val(),company:$(".infotext").eq(3).val(),selfintroduction:$(".infotext").eq(4).val(),profes:$(".infotext").eq(2).val(),homepage:$(".infotext").eq(5).val(),id:Gb.b64DecodeUnicode(that.$route.params.userid),token:that.token}
@@ -131,6 +148,42 @@ export default {
                 });
             });
         },
+		checkname:function(){
+			var that = this;
+			if(that.reg_username!=""){
+				return that.$axios.post('/users/checkname',{username:$(".infotext").eq(0).val()}).then(res=>{
+				    if(res.data.status==200&&res.data.message=="success"){
+				       if(res.data.data.count>0){
+							that.$message({
+							    message: "该用户名已存在,请修改",
+							    type: 'error',
+							});
+							that.updatename=false;
+					   }else{
+						  that.updatename=true;
+					   }
+				    }else if(res.data.status==500){
+						that.updatename=false;
+						that.$message({
+						    message: "服务器异常，请刷新页面！",
+						    type: 'error',
+						});
+				    }else{
+						that.updatename=false;
+						that.$message({
+						    message: res.data.message,
+						    type: 'error',
+						});
+				    }
+				}).catch(err=>{
+					that.updatename=false;
+				    that.$message({
+				        message: err,
+				        type: 'error',
+				    });
+				})
+			}
+		},
         settext:function(glyphicon){
             var that =this;
             var infotext = document.getElementsByClassName("infotext");
@@ -141,7 +194,8 @@ export default {
                 a.index = b.index =i;//给每个className为child的元素添加index属性;
                 document.onclick=function(e){
                     if(e.target.className=="savaupdate"){
-                        that.toUpdateInfo()
+                       // that.toUpdateInfo(e.target.attributes.index.value==0)
+					   that.checkupdate(e.target.attributes.index.value==0)
                     }
                 }
                 b.onfocus = a.onclick= function () {
@@ -196,14 +250,19 @@ export default {
 
     },
     mounted:function(){
-        var that =this;
-        async function gcent(){
-            await that.getUserInfo();
-        }
-        gcent().then(function(){
-            var glyphicon = document.getElementsByClassName("glyphicon")
-            that.settext(glyphicon);
-        })
+		if (this.userstatus != 1) {
+			bus.$emit("login", "");
+		}else{
+			var that =this;
+			async function gcent(){
+				await that.getUserInfo();
+			}
+			gcent().then(function(){
+				var glyphicon = document.getElementsByClassName("glyphicon")
+				that.settext(glyphicon);
+			})
+		}
+		
     }
 }
 </script>

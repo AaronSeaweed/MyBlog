@@ -13,7 +13,7 @@
                     <input type="password" name="password" v-model="load_password" placeholder="请输入密码" class="load_password"/>
                 </div>
                 <div class='load-input-box' :class="{displaynone:islogin}">
-                    <input type='text' name='username' v-model="reg_username" placeholder='请输入用户名' class='reg_username'/>
+                    <input type='text' name='username' v-model="reg_username" @blur="checkname" placeholder='请输入用户名' class='reg_username'/>
                 </div>
                 <div class='load-input-box' :class="{displaynone:islogin}">
                     <input type='text' name='phonenoemail' v-model="reg_phoneemail" placeholder='请输入邮箱或手机号码' class='reg_phoneemail'/>
@@ -26,7 +26,7 @@
 				</div>
             </div>
             <!-- <button class="load-btn" @click="login();">{{button}}</button> -->
-			<el-button type="primary" class="load-btn" :loading="loading" @click="login">{{button}}</el-button>
+			<el-button type="primary" class="load-btn" :disabled="disabled" :loading="loading" @click="login">{{button}}</el-button>
             <div class="prompt-box" :class="{displaynone:isreg}">没有帐号？
                 <span @click="registeredmode();">注册</span>
                 <a href="javascript:void(0)">忘记密码</a>
@@ -64,10 +64,38 @@ export default {
 				reg_password2:null,
 				tiptext:"用户名或密码错误",
 				style_border:false,
-				loading:false
+				loading:false,
+				disabled:false
             }
         },
         methods:{
+			checkname:function(){
+				var that = this;
+				if(that.reg_username!=""){
+					that.$axios.post('/users/checkname',{username:that.reg_username}).then(res=>{
+					    if(res.data.status==200&&res.data.message=="success"){
+					       if(res.data.data.count>0){
+								that.disabled=true;
+							    that.showtop('该用户名已存在,请修改','reg_username');
+						   }else{
+							   that.disabled=false;
+							   that.logintip=false;
+						   }
+					    }else if(res.data.status==500){
+							that.disabled=true;
+							that.showtop("服务器异常，请刷新页面！");
+					    }else{
+							that.disabled=true;
+							that.showtop(res.data.message);
+					    }
+					}).catch(err=>{
+					    that.$message({
+					        message: err,
+					        type: 'error',
+					    });
+					})
+				}
+			},
 			closelogin:function() {
 				this.logintip=this.clicklogin=false;
 				this.load_password=this.load_username=this.reg_username=this.reg_phoneemail=this.reg_password="";
@@ -76,9 +104,10 @@ export default {
 				this.title=this.button="登录";
 			},
 			loginmode:function(){
+				this.logintip=false;
+				this.disabled=false;
 				this.isreg=false;
 				this.islogin=true;
-				this.logintip=false;
 				this.title=this.button="登录";
 			},
 			registeredmode:function(){
@@ -97,7 +126,7 @@ export default {
 					if(this.load_password==""||this.load_password==null){
 						return this.showtop("请输入密码",'load_password');
 					}
-					var submitdata={name:this.load_username,password:this.load_password}
+					var submitdata={phonenoemail:this.load_username,password:this.load_password}
 					this.button="登录中...";
 					var url="/users/login";
 				}else{
@@ -127,7 +156,7 @@ export default {
 					this.button = "注册中...";
 					submitdata={name:this.reg_username,password:this.reg_password,phonenoemail:this.reg_phoneemail}
 					url="/users/add"
-				 }
+				}
              loginandreg(url,submitdata,this);
              function loginandreg(url,submitdata,that)
              {
@@ -137,7 +166,7 @@ export default {
                         if(that.isreg&&regsec==0){
 							that.button="注册成功，自动登录中...";
                             regsec=1;
-                            setTimeout(function(){loginandreg("/users/login",{name:res.data.data.name,password:res.data.data.password},that)},2000)
+                            setTimeout(function(){loginandreg("/users/login",{phonenoemail:res.data.data.phonenoemail,password:res.data.data.password},that)},2000)
                         }else{
                             localStorage.setItem("userstatus",1);
                             localStorage.setItem("username",res.data.data.username);
