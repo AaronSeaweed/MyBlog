@@ -9,7 +9,7 @@
 								<header>
 									<a href="javascript:void(0)">{{todo.typename}}</a>
 									<span class="condatetime coninfo">{{reversedMessage(todo.datetime)}}</span>
-									<span class="conviews coninfo">{{todo.views}}次</span>
+									<span class="conviews coninfo">{{todo.artviewcount}}次</span>
 								</header>
 								<div class="contitle-box">
 									<router-link v-html="makekeyword(todo.article_title)" target="_blank" :to="{ name: 'atct', params:{conid:todo.article_id}}" class="contitle">{{makekeyword(todo.article_title)}}</router-link>

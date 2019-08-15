@@ -100,6 +100,7 @@ export default {
 		checkupdate:function(index){
 			var that = this;
 			if(index){
+				//异步函数，验证用户名称合法后执行设置操作
 				async function gck(){
 					await that.checkname();
 				}
@@ -254,6 +255,7 @@ export default {
 			bus.$emit("login", "");
 		}else{
 			var that =this;
+			//异步函数，获取用户信息后绑定事件
 			async function gcent(){
 				await that.getUserInfo();
 			}

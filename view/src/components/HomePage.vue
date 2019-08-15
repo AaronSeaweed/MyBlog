@@ -271,11 +271,11 @@
 				this.wantlike = "";
 			},
 			selectcon:function(index){
-				document.getElementsByClassName("conlist")[index].style.background="#fcfcfc"
+				document.getElementsByClassName("conlist")[index].style.background="rgb(230,230, 231,0.8)"
 				this.wantmodify = index;
 			},
 			outcon:function(index){
-				document.getElementsByClassName("conlist")[index].style.background="#ffffff"
+				document.getElementsByClassName("conlist")[index].style.background="rgb(230,230, 231,0.6)"
 				this.wantmodify = "";
 			},
 			changecontent: function(index) {

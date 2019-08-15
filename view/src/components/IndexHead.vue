@@ -4,28 +4,33 @@
 		</div>
 		<div :class="{head_menu:1,fixd:head_menu}">
 			<a href="../" class="logo" alt="老鼠会上树"></a>
-			<span @click="showlogin()" :class="{'displaynone':ustatus==1}" class="loginbtn" id="loginbtn">登录 |</span>
-			<span @click="showreg()" :class="{'displaynone':ustatus==1}" class="regbtn" id="regbtn">注册</span>
-			<div :style='styleObject' :class="{'displaynone':ustatus==0||ustatus==null}" @click="show1 = true" id="user"></div>
-			<el-collapse-transition>
-				<ul class="personalset" v-show="show1">
-					<div>
-						<li>
-							<router-link :to="{name:'usct',params:{userid:this.userid}}" class="contitle">个人中心</router-link>
-						</li>
-						<li><a href="javascript:void(0)" @click="loginout()">退出</a></li>
-					</div>
-				</ul>
-			</el-collapse-transition>
 			<div class="menulist">
 				<ul>
 					<li><a href="../">首页</a></li>
+					<li><a href="../">博客文章</a></li>
 					<li v-if="userid=='OA=='">
 						<router-link :to="{ name: 'wrae', params:{conid:0}}">写文章</router-link>
 					</li>
-					<!-- <li><a href="../page/HomePage.html">联系我</a></li>
-                <li><a href="../page/HomePage.html">关于</a></li> -->
+					<li><a href="../">斗图宝典</a></li>
+					<li><a href="../">美图分享</a></li>
 				</ul>
+			</div>
+			<div class="loginmod">
+				<span @click="showlogin()" v-if="ustatus!=1" :class="{'displaynone':ustatus==1}" class="loginbtn" id="loginbtn">登录</span>
+				<span @click="showreg()" v-if="ustatus!=1" :class="{'displaynone':ustatus==1}" class="regbtn" id="regbtn">注册</span>
+				<div :style='styleObject' :class="{'displaynone':ustatus==0||ustatus==null}" @click="show1 = true" id="user"></div>
+				<el-collapse-transition>
+					<ul class="personalset" v-show="show1">
+						<div>
+							<li>
+								<router-link :to="{name:'usct',params:{userid:this.userid}}" class="setuserinfo" alt="编辑资料" title="编辑资料"></router-link>
+							</li>
+							<li><a href="javascript:void(0)" class="mymessage" alt="我的消息" title="我的消息"></a></li>
+							<li><a href="javascript:void(0)" class="loginout" alt="退出" title="退出" @click="loginout()"></a></li>
+							
+						</div>
+					</ul>
+				</el-collapse-transition>
 			</div>
 		</div>
 		<login ref="child" :clicklogin="clicklogin"></login>
@@ -57,9 +62,10 @@
 					'width': '3rem',
 					'height': '3rem',
 					'border-radius': '50%',
-					'right': '25px',
-					'top': '8px',
+					'right': '10px',
+					'top': '0px',
 					'cursor': 'pointer',
+					'z-index':'1000'
 				},
 				show1: false
 			}
