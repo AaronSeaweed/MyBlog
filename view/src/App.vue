@@ -3,6 +3,7 @@
   <IndexHead :fixd="fixd"></IndexHead>
   <div id="app">
       <router-view @update="fixEle" />
+	  <lg-preview></lg-preview>
   </div>
 	<div :class="{displaynone:top,pagetop:true}" @click="pagetop">
 			<img :src="require('@/assets/img/top.png')" />

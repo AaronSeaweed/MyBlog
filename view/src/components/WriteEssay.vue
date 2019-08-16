@@ -247,8 +247,8 @@ import { Loading } from 'element-ui';
       _this.$nextTick(() =>{
         const blogEditor = editormd("blog_editormd",{
           placeholder : '既然来了就写点什么吧！',
-          width : "80%",
-          height : "700",
+          width : "970",
+          height : "640",
           syncScrolling : "single",
           emoji :true,
           /* path : '../../../static/editor.md-master/lib/' ,*/

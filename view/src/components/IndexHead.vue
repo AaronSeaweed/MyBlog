@@ -11,7 +11,9 @@
 					<li v-if="userid=='OA=='">
 						<router-link :to="{ name: 'wrae', params:{conid:0}}">写文章</router-link>
 					</li>
-					<li><a href="../">斗图宝典</a></li>
+					<li>
+						<router-link :to="{ name: 'fjmj', params:{}}">斗图宝典</router-link>
+					</li>
 					<li><a href="../">美图分享</a></li>
 				</ul>
 			</div>
@@ -39,9 +41,7 @@
 <script>
 	import login from '../components/login.vue'
 	import bus from '../assets/js/eventbus.js';
-	import {
-		Gb
-	} from '../assets/js/global.js';
+	import {Gb} from '../assets/js/global.js';
 	export default {
 		data: function() {
 			return {
@@ -100,6 +100,15 @@
 				} else {
 					location.reload();
 				}
+			},
+			changecontent: function(index) {
+				this.contenttypeid = index;
+				this.fristload = 0;
+				if (index == 5) {
+					this.isnsorting = 5;
+				}
+				$(".contenttypemenu li").eq(index).css("color", "#3399CC").siblings().css("color", "black");
+				this.blcontlist();
 			}
 		},
 		mounted: function() {

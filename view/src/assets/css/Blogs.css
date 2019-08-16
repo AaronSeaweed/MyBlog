@@ -48,6 +48,7 @@ h2 {font-size:18px}
 .head_menu #username{position:absolute;right: 45px;top: 16px;display: block;color:black;display: none;cursor: pointer}
 .head_menu a:hover {text-decoration:none}
 .head_menu .personalset{width: 3rem;right: 10px;position: absolute;top: 10px;background:rgb(230,230, 231,0.6);border-radius: 10%;z-index: 999;}
+.head_menu .menulist{position: absolute;top: 24px;right: 10px;}
 .head_menu .personalset div{margin-top: 30px;}
 .head_menu .personalset div li{font-size: 1.3rem;cursor: pointer;width: 100%;height: 30px;margin-top:5px}
 .head_menu .personalset div li:hover{background-color: hsla(0,0%,95%,.5);}
@@ -63,7 +64,7 @@ h2 {font-size:18px}
 .bloglist .contenttypemenu2 li:hover{color:#3399CC}
 .bloglist .menulist{background-image: url("../img/list.png");width: 30px;height: 30px;float: right;margin:8px 20px;cursor: pointer;display:none}
 .bloglist .menulist2{background-image: url("../img/list2.png");width: 30px;height: 30px;float: right;margin:10px 20px 27px 0;cursor: pointer;display:none}
-.menulist{position: absolute;top: 24px;right: 10px;}
+
 .loginmod{position: absolute;right: -25px;top: 70px;}
 .fixd{top: 0px;z-index: 100;}
 .mbbody {background-color:#F4F5F5;}/*min-width:1200px*/
@@ -367,11 +368,11 @@ body{background-color: #f4f5f5;background: url(../img/bodybakcground.png)}
 #artContent{display: inline-block;width:100%}
 #pane-third{text-align: center;}
 /*文章编写页面*/
-.release{width: 80%;margin: 0 auto;display:flex;line-height:2.5}
+.release{width: 970px;margin: 0 auto;display:flex;line-height:2.5}
 .release p{color:#999999;font-size:12px}
 .release label{margin-right:10px}
 .release .sel-aritype{margin-top:2px}
-.artucle_title{width: 80%;margin: 10px auto;text-align: right;}
+.artucle_title{margin: 10px auto;text-align: right;max-width: 970px;}
 .el-tag + .el-tag {margin-left: 10px;}
 .button-new-tag {margin-left: 10px;height: 32px;line-height: 30px;padding-top: 0;padding-bottom: 0;}
 .input-new-tag {width: 90px!important;margin-left: 10px;vertical-align: bottom;}
@@ -410,3 +411,9 @@ body{background-color: #f4f5f5;background: url(../img/bodybakcground.png)}
 .SeaMain .conlist .conbg .artinfo{display:flex;position: absolute;bottom: 10px;}
 .SeaMain .conlist .conbg .concommentnum{color:#999999;background: url(../img/zan.png) -4px -4px no-repeat;text-indent: 22px;background-size: 24px 24px;}
 .SeaMain .conlist .conbg .concommentnum2{color:#409EFF;background: url(../img/zan2.png) -4px -4px no-repeat;text-indent: 22px;background-size: 24px 24px;}
+
+/*表情包*/
+.emj .emjpkag{max-width:970px;margin:0 auto;display: flex;flex-wrap: wrap;align-content: flex-start;}
+.emj .emjpkag img{max-width:150px;max-height:150px}
+.emj .el-pagination{text-align:center;}
+.emj .tip{text-align: center;color: #409EFF;font-size: 16px;margin-bottom: 20px;}

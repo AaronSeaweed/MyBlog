@@ -13,6 +13,8 @@ var articleRouter = require('./routes/article');
 var weixinRouter = require('./routes/weixin');
 var testController=require('./routes/testController');
 var anumentRouter=require('./routes/anument');
+var PicEmjRouter=require('./routes/picemj');
+
 
 var app = express();
 
@@ -39,6 +41,7 @@ app.use('/article', articleRouter);
 app.use('/weixin', weixinRouter);
 app.post('/dataInpute',testController.dataInput);
 app.use('/anument', anumentRouter);
+app.use('/picemj', PicEmjRouter);
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));

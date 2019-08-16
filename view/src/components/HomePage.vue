@@ -348,11 +348,11 @@
 					if (that.isnsorting != 0) {
 						if (that.sortingtype == 1) {
 							that.nblists.sort(function(a, b) {
-								return (a.commentnum < b.commentnum) ? 1 : -1 //降序
+								return (a.artviewcount < b.artviewcount) ? 1 : -1 //降序
 							});
 						} else if (that.sortingtype == 2) {
 							that.nblists.sort(function(a, b) {
-								return (a.commentnum > b.commentnum) ? 1 : -1 //升序
+								return (a.artviewcount > b.artviewcount) ? 1 : -1 //升序
 							});
 						} else if (that.sortingtype == 3) {
 							that.nblists.sort(function(a, b) {

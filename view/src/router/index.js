@@ -6,8 +6,8 @@ import PersonalCenter from '../components/PersonalCenter.vue'
 import WriteEssay from '../components/WriteEssay.vue'
 import Ancement from '../components/Ancement.vue'
 import Search from '../components/Search.vue'
+import FightEmj from '../components/FightEmoji.vue'
 Vue.use(Router)
-
 export default new Router({
   mode: 'history',
   routes: [
@@ -39,6 +39,10 @@ export default new Router({
 			path:'/Search/:keyword',
 			name: 'sear',
 			component: Search
+		},{
+			path:'/FightEmj',
+			name: 'fjmj',
+			component: FightEmj
 		}
   ]
 })
