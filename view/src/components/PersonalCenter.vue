@@ -6,17 +6,29 @@
                 <ul>
                     <li>
                         <span class="psct_title">头像</span>
-                        <div class="psct_photobox">
+                        <!-- <div class="psct_photobox">
                             <input type="file" class="input" style="display: none">
                             <div class="photo_show" :style="{background:'url('+`${this.photo}`+')'}"></div>
                             <div class="action-box">
                                 <div class="tips">支持 jpg、png 格式大小 5M 以内的图片</div>
                                 <input type="file" name="file" accept=".jpg, .jpeg, .png" @change=uploadAvatar />
                             </div>
-                        </div>
+                        </div> -->
+						<el-upload
+							class="avatar-uploader"
+							name="user-image-file"
+							:action="postaction"
+							:data="uploaddata"
+							:show-file-list="false"
+							:on-success="handleAvatarSuccess"
+							:before-upload="beforeAvatarUpload">
+							<img v-if="imageUrl" :src="imageUrl" class="avatar">
+							<i v-else class="el-icon-plus avatar-uploader-icon"></i>
+						</el-upload>
+						<span class="psct_tip">上传头像图片只能是 JPG/PNG 格式!<br>上传头像图片大小不能超过 2MB!</span>
                     </li>
                     <template v-for="(Uinfo,index) in this.showinfo">
-                        <li>
+                        <li :key="index">
                             <span class="psct_title">{{Uinfo.title}}</span>
                             <div class="psct_info">
                                 <input class="infotext" type="text" :placeholder="Uinfo.placeholder" v-model="Uinfo.name">
@@ -42,6 +54,7 @@
 <script>
 import bus from '../assets/js/eventbus.js';
 import {Gb} from '../assets/js/global.js';
+import { Loading } from 'element-ui';
 export default {
     data:function(){
         return{
@@ -50,7 +63,11 @@ export default {
             infoindex:"",
 			token: localStorage.getItem("token"),
 			userstatus: localStorage.getItem("userstatus"),
-			updatename:false
+			updatename:false,
+			postaction:'http://localhost:3000/dataInpute',
+			imageUrl:"",
+			uploaddata:{token:localStorage.getItem("token"),userid:Gb.b64DecodeUnicode(this.$route.params.userid)},
+			loadingInstance:""
         }
     },
     methods: {
@@ -59,7 +76,8 @@ export default {
             return that.$axios.post("/users/getuserinfo",{id:Gb.b64DecodeUnicode(that.$route.params.userid),token:that.token})
             .then(function (response) {
 				if(response.data.status==200){
-					that.photo=response.data.data.photo?require('../../../view/src/assets/img/'+response.data.data.photo):require('../../../view/src/assets/img/user.png');
+					//that.photo=response.data.data.photo?require('../../../view/src/assets/img/'+response.data.data.photo):require('../../../view/src/assets/img/user.png');
+					that.imageUrl=response.data.data.photo?require('../../../view/src/assets/img/'+response.data.data.photo):require('../../../view/src/assets/img/user.png');
 					that.showinfo=[];
 					localStorage.setItem("username",response.data.data.username);
 					localStorage.setItem("photo",response.data.data.photo);
@@ -94,7 +112,11 @@ export default {
 				}
             })
             .catch(function (error) {
-                alert(error);
+				that.$message({
+					message: error,
+					type: 'error',
+					duration:1000
+				});
             });
         },
 		checkupdate:function(index){
@@ -247,8 +269,50 @@ export default {
 					});
 				}
             })
-        }
-
+        },
+		handleAvatarSuccess(res, file) {
+			if(res.status==522){
+				this.loadingInstance.close();
+				this.$confirm(res.message+',是否重新登录?', '提示', {
+					confirmButtonText: '确定',
+					cancelButtonText: '取消',
+					type: 'warning'
+				}).then(() => {
+					bus.$emit("login", "");
+				});
+			}else if(res.status==200){
+				this.loadingInstance.close();
+				this.$message({
+				    message: '修改成功！',
+				    type: 'success',
+				    duration:1000
+				});
+				localStorage.setItem("photo",res.filename);
+			}else{
+				this.loadingInstance.close();
+				this.$message({
+					message: res.err,
+					type: 'error',
+					duration:1000
+				});
+			}
+		},
+		beforeAvatarUpload(file) {
+			this.loadingInstance = Loading.service({ 
+				fullscreen: true,
+				target: document.querySelector('#app'),
+				text: '上传中...'
+			});
+			const isJPG = file.type === 'image/jpeg'||'image/png'
+			const isLt2M = file.size / 1024 / 1024 < 2;
+			if (!isJPG) {
+			  this.$message.error('上传头像图片只能是 JPG/PNG 格式!');
+			}
+			if (!isLt2M) {
+			  this.$message.error('上传头像图片大小不能超过 2MB!');
+			}
+			return isJPG && isLt2M;
+		}
     },
     mounted:function(){
 		if (this.userstatus != 1) {

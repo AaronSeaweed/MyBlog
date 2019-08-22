@@ -223,7 +223,6 @@ import { Loading } from 'element-ui';
 				this.inputVisible = true;
 				e.currentTarget.style.display="none";
 			}
-			
 		},
 		handleAvatarSuccess(res, file) {
 			this.imageUrl = URL.createObjectURL(file.raw);

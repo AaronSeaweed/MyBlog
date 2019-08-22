@@ -1,5 +1,5 @@
 <template>
-	<div class="header">
+	<div class="header container">
 		<div class="menu">
 		</div>
 		<div :class="{head_menu:1,fixd:head_menu}">
@@ -20,7 +20,10 @@
 			<div class="loginmod">
 				<span @click="showlogin()" v-if="ustatus!=1" :class="{'displaynone':ustatus==1}" class="loginbtn" id="loginbtn">登录</span>
 				<span @click="showreg()" v-if="ustatus!=1" :class="{'displaynone':ustatus==1}" class="regbtn" id="regbtn">注册</span>
-				<div :style='styleObject' :class="{'displaynone':ustatus==0||ustatus==null}" @click="show1 = true" id="user"></div>
+				<div class="uermment">
+					<div :style='styleObject' :class="{'displaynone':ustatus==0||ustatus==null}" @click="show1 = true" id="user">
+					</div>
+				</div>
 				<el-collapse-transition>
 					<ul class="personalset" v-show="show1">
 						<div>
@@ -58,14 +61,9 @@
 					'background-size': '3rem 3rem',
 					'background-repeat': 'no-repeat',
 					'background-position': '50%',
-					'position': 'absolute',
 					'width': '3rem',
 					'height': '3rem',
-					'border-radius': '50%',
-					'right': '10px',
-					'top': '0px',
-					'cursor': 'pointer',
-					'z-index':'1000'
+					'cursor': 'pointer'
 				},
 				show1: false
 			}
@@ -100,15 +98,6 @@
 				} else {
 					location.reload();
 				}
-			},
-			changecontent: function(index) {
-				this.contenttypeid = index;
-				this.fristload = 0;
-				if (index == 5) {
-					this.isnsorting = 5;
-				}
-				$(".contenttypemenu li").eq(index).css("color", "#3399CC").siblings().css("color", "black");
-				this.blcontlist();
 			}
 		},
 		mounted: function() {
