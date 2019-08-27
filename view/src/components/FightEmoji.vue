@@ -1,21 +1,28 @@
 <template>
 	<div class="emj">
 		<div class="emjpkag">
-			<img v-for="(img,index) in imgs"
-				 v-preview="replaceemj(img.picturename)"
-				 :src="replaceemj(img.picturename)"
-				 :onerror="require('@/assets/img/emj/emj404.png')"
-				 :alt="img.id"
-				 :key="index"
-				 preview-title-enable="true"
-				 preview-nav-enable="true"
-				 element-loading-text="多图预警"
-				 @load="loademj(index)"
-				 >
+			<div v-for="(img,index) in imgs" :key="index" class="emjbox" @mouseover="showcz(index)" @mouseout="showcz2()">
+				<img
+					 v-preview="replaceemj(img.picturename)"
+					 :src="replaceemj(img.picturename)"
+					 :onerror="require('@/assets/img/emj/emj404.png')"
+					 :alt="img.id"
+					 preview-title-enable="true"
+					 preview-nav-enable="true"
+					 element-loading-text="多图预警"
+					 @load="loademj()"
+					 >
+				<transition name="el-zoom-in-bottom">
+					<div v-show="index==i" class="emjsqz">
+						<span :class="{'upsao2':img.likeuserid&&img.likeuserid.split(',').indexOf(userid)>-1,'upsao':1}" title="够秀" @click="showup(img.id,img.showvalue,img.likeuserid)"></span>
+						<span class="saovalue">秀气值：<em>{{img.showvalue}}</em></span>
+					</div>
+				</transition>
+			</div>
 		</div>
 		<div class="tip">
 			<span>如有需要可随时拿去装逼，Giao！(不定时更新新图)</span>
-			<el-button  v-if="userid=='OA=='" @click="openMessageBox">上传表情</el-button>
+			<el-button v-if="userid==8" @click="openMessageBox">上传表情</el-button>
 		</div>
 		<div class="block">
 			<el-pagination
@@ -64,11 +71,14 @@
 				pageSize:20,//每页30条数据
 				total:0,
 				show:false,
+				show2:false,
 				parseData:{},
 				postaction:'http://localhost:3000/dataInpute?imgtype=emj&token='+localStorage.getItem("token"),
 				fileList:[],
 				winwidth:{'left':document.body.clientWidth&&document.documentElement.clientWidth/2-150+'px'},
-				userid: Gb.b64EncodeUnicode(localStorage.getItem('userid'))
+				userid: localStorage.getItem('userid'),
+				loadcount:0,
+				i:-1
 			}
 		},
 		components: {
@@ -114,10 +124,80 @@
 			openMessageBox:function(){
 				this.show=!this.show;
 			},
-			loademj:function(index){
-				if(index==this.pageSize-1){
-					this.loadingInstance.close()
+			loademj:function(){
+				this.loadcount++;
+				if(this.total<=this.pageSize){
+					if(this.loadcount==this.total){
+						this.loadingInstance.close();
+						this.loadcount=0;
+					}
+				}else{
+					if(this.loadcount==this.pageSize){
+						this.loadingInstance.close();
+						this.loadcount=0;
+					}
 				}
+			},
+			showup(emjid,showvalue,likeuserid){
+				var Haslike = likeuserid && likeuserid.split(',').indexOf(this.userid) > -1
+				var that = this;
+				var settype;
+				if(Haslike==null||!Haslike){
+					settype=0;
+				}else{
+					settype=1;
+				}
+				that.$axios.post("/picemj/setEmjshow",{emjid:emjid,settype:settype,showvalue:showvalue,token:localStorage.getItem("token")})
+				.then(function (response) {
+					if(response.data.status==522){
+						that.$confirm(response.data.message+',是否重新登录?', '提示', {
+							confirmButtonText: '确定',
+							cancelButtonText: '取消',
+							type: 'warning'
+						}).then(() => {
+							bus.$emit("login", "");
+						});
+					}else if(response.data.status==200){
+						that.$axios.post('/picemj/likeEmj', {
+							"emjid": emjid,
+							"likeuserid": that.userid,
+							"settype":settype,
+							"token":localStorage.getItem("token")
+						})
+						.then((response) => {
+							if(response.data.status==522){
+								that.$confirm(response.data.message+',是否重新登录?', '提示', {
+									confirmButtonText: '确定',
+									cancelButtonText: '取消',
+									type: 'warning'
+								}).then(() => {
+									bus.$emit("login", "");
+								});
+							}else{
+								//that.blcontlist();
+							}
+						}).catch(function(error) {
+							alert(error);
+						});
+					}else{
+						that.$message({
+						    message: response.data.message,
+						    type: 'error'
+						});
+					}
+				})
+				.catch(function (error) {
+				    that.$message({
+				        message: error,
+				        type: 'error'
+				    });
+				});
+			},
+			showcz(index){
+				this.i=index;
+			},
+			showcz2(){
+				this.i=-1;
 			},
 			submitUpload(res) {
 				this.$refs.upload.submit();

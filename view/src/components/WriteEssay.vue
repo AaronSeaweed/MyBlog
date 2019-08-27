@@ -273,12 +273,26 @@ import { Loading } from 'element-ui';
         _this.blogEditor = blogEditor;
       });
     },
-		mounted:function(){
-			this.ArticleType();
-			if(this.conid!=0){
-				this.getartcontent(this.conid)
-			}
+	mounted:function(){
+		this.ArticleType();
+		if(this.conid!=0){
+			this.getartcontent(this.conid)
+		}else{
+			
 		}
+	},
+	watch: {
+	　　// 利用watch方法检测路由变化：
+	　　'$route': function (to, from) {
+	　　　　if(to.params.conid==0){
+				this.conTitle='';
+				this.dynamicTags=[];
+				this.imageUrl='';
+				this.typeid='';
+				this.content="...";
+			}
+	　　}
+	}
   }
 </script>
 <style>

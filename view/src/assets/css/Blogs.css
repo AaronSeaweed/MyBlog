@@ -413,8 +413,15 @@ body{background-color: #f4f5f5;background: url(../img/bodybakcground.png)}
 
 /*表情包*/
 .emj .emjpkag{max-width:970px;margin:0 auto;display: flex;flex-wrap: wrap;align-content: flex-start;}
-.emj .emjpkag img{max-width:193px;max-height:170px}
+.emj .emjpkag img{width:193px;height:170px}
 .emj .el-pagination{text-align:center;}
 .emj .tip{text-align: center;color: #409EFF;font-size: 16px;margin-bottom: 5px;}
 .emj .transition-box{position: absolute;width: 300px;height: 300px;background: rgb(241,241,250,0.9);top:180px;}
 .emj .transition-box .upload-demo{margin:10px}
+.emj .emjbox{position:relative}
+.emj .emjbox .emjsqz{position: absolute;bottom: 0px;background: rgb(102,102,102,0.8);color: #ffffff;width: 100%;height: 30px;line-height:30px}
+.emj .emjbox .emjsqz .upsao2{background: url(../img/sao2.png) 0px 5px no-repeat!important;}
+.emj .emjbox .emjsqz .upsao{cursor: pointer;margin-left: 5px;background: url(../img/sao.png) 0px 5px no-repeat;padding-left: 25px;height: 100%;display: inline-block;background-size: 20px 20px;}
+.emj .emjbox .emjsqz .upsao:hover{background: url(../img/sao2.png) 0px 5px no-repeat;}
+.emj .emjbox .emjsqz .saovalue{float: right;margin-right: 5px;}
+

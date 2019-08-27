@@ -514,7 +514,7 @@ router.post("/cancel_CommLikeRecording",function(req,res){
  */
 router.post("/getsearchContent",function(req,res,next){
 	var keyword=req.body.keyword; 
-    db.query("select A.*,B.typename,GROUP_CONCAT(C.likeuserid) as likeuserid from articlelist A LEFT OUTER JOIN contenttype B ON A.contenttype=B.typeid LEFT OUTER JOIN art_likes C ON A.article_id=C.articleid  where article_title like '%"+keyword+"%' or content like '%"+keyword+"%' GROUP BY article_id",function(error,rows){
+    db.query("select A.*,B.typename,GROUP_CONCAT(C.likeuserid) as likeuserid ,(select count(*) from artviewcount where artid=A.article_id) as artviewcount from articlelist A LEFT OUTER JOIN contenttype B ON A.contenttype=B.typeid LEFT OUTER JOIN art_likes C ON A.article_id=C.articleid  where article_title like '%"+keyword+"%' or content like '%"+keyword+"%' GROUP BY article_id",function(error,rows){
         if (error) {
             var result = {
                 "status": "500",
