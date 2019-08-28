@@ -14,7 +14,7 @@
 					 >
 				<transition name="el-zoom-in-bottom">
 					<div v-show="index==i" class="emjsqz">
-						<span :class="{'upsao2':img.likeuserid&&img.likeuserid.split(',').indexOf(userid)>-1,'upsao':1}" title="够秀" @click="showup(img.id,img.showvalue,img.likeuserid)"></span>
+						<span :class="{'upsao2':img.likeuserid&&img.likeuserid.split(',').indexOf(userid)>-1,'upsao':1}" title="够秀" @click="showup(img.id,img.showvalue,img.likeuserid,index)"></span>
 						<span class="saovalue">秀气值：<em>{{img.showvalue}}</em></span>
 					</div>
 				</transition>
@@ -138,7 +138,7 @@
 					}
 				}
 			},
-			showup(emjid,showvalue,likeuserid){
+			showup(emjid,showvalue,likeuserid,index){
 				var Haslike = likeuserid && likeuserid.split(',').indexOf(this.userid) > -1
 				var that = this;
 				var settype;
@@ -146,6 +146,22 @@
 					settype=0;
 				}else{
 					settype=1;
+				}
+				for(var o=0;o<that.imgs.length;o++){
+					if(o==index){
+						if(settype==0){
+							that.imgs[index].showvalue=that.imgs[index].showvalue+1;
+							that.imgs[index].likeuserid=that.imgs[index].likeuserid+","+Number(that.userid)+""
+						}else{
+							that.imgs[index].showvalue=that.imgs[index].showvalue-1;
+							that.imgs[index].likeuserid=that.imgs[index].likeuserid.replace("null,","")
+							if(that.imgs[index].likeuserid.indexOf(""+Number(that.userid)+",")>-1){
+								that.imgs[index].likeuserid=that.imgs[index].likeuserid.replace(""+Number(that.userid)+",","")
+							}else{
+								that.imgs[index].likeuserid=that.imgs[index].likeuserid.replace(""+Number(that.userid)+"","")
+							}
+						}
+					}
 				}
 				that.$axios.post("/picemj/setEmjshow",{emjid:emjid,settype:settype,showvalue:showvalue,token:localStorage.getItem("token")})
 				.then(function (response) {

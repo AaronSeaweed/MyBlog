@@ -6,7 +6,7 @@
 		<div id="layout">
 		<div id="blog_editormd">
 			<textarea style="display: none;" name="test-editormd-markdown-doc" id="content" v-model="content"></textarea>
-		  </div>
+		</div>
 		</div>
 		<div class="release">
 			<label>
