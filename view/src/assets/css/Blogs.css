@@ -47,11 +47,12 @@ h2 {font-size:18px}
 .head_menu .regbtn{display:block;cursor: pointer; background:rgb(64,158,255,0.7);width: 40px;height: 40px;text-align: center;line-height: 40px;color: #ffffff; margin-top: 10px;}
 .head_menu #username{position:absolute;right: 45px;top: 16px;display: block;color:black;display: none;cursor: pointer}
 .head_menu a:hover {text-decoration:none}
-.head_menu .personalset{width: 3rem;background:rgb(230,230, 231,0.6)}
+.head_menu .personalset{width: 3rem;background:rgb(230,230, 231,0.6);position: relative;}
 .head_menu .menulist{position: absolute;top: 24px;right: 10px;}
 .head_menu .personalset div li{font-size: 1.3rem;cursor: pointer;width: 100%;height: 30px;margin:5px 0 3px 0}
 .head_menu .personalset div li:hover{background-color: hsla(0,0%,95%,.5);}
 .head_menu .personalset div li a{ margin: 0 auto;display: -webkit-box;display: -ms-flexbox;display: flex;-webkit-box-align: center;-ms-flex-align: center;align-items: center;padding: .5rem 1rem;width:30px;height:30px}
+.head_menu .personalset div li em{position: absolute;top: 40px;width: 15px;height: 15px;display: inline-block;background: red;color: #ffffff;line-height: 15px;text-align: center;font-style: inherit;border-radius: 50%;font-size: 1rem;}
 .head_menu .personalset div li .setuserinfo{background: url(../img/setuserinfo.png) no-repeat}
 .head_menu .personalset div li .mymessage{background: url(../img/message.png) no-repeat}
 .head_menu .personalset div li .loginout{background: url(../img/loginout.png) no-repeat}
@@ -64,6 +65,7 @@ h2 {font-size:18px}
 .bloglist .menulist{background-image: url("../img/list.png");width: 30px;height: 30px;float: right;margin:8px 20px;cursor: pointer;display:none}
 .bloglist .menulist2{background-image: url("../img/list2.png");width: 30px;height: 30px;float: right;margin:10px 20px 27px 0;cursor: pointer;display:none}
 .loginmod{position: absolute;right: -25px;top: 70px;width: 40px;height: 150px;border-left: 3px solid #409EFF;}
+.loginmod .uermment em{width: 8px;height: 8px;background: red;display: inline-block;border-radius: 50%;position: absolute;top: -3px;right: -3px;}
 .fixd{top: 0px;z-index: 100;}
 .mbbody {background-color:#F4F5F5;}/*min-width:1200px*/
 .body_content {margin:10px auto;min-height:500px;position: relative;zoom:1;max-width: 1020px}/*width:1200px;*/
@@ -73,6 +75,7 @@ h2 {font-size:18px}
 .mainbox{position:relative}
 .pagetop{position: fixed;top: 850px;right: 10px;cursor: pointer;}
 .mosover{color:#3399CC}
+
 @media screen and (max-width: 690px) {
     .contenttypemenu{font-size:12px}
 }
@@ -293,12 +296,13 @@ body{background-color: #f4f5f5;background: url(../img/bodybakcground.png)}
 .comment-form .comment-form-area .subcomment{margin-top: 1rem;text-align: right;}
 .comment-form .comment-form-area .subcomment button{color:#ffffff}
 .comment-box .comment-list li{position: relative;padding-top: 1rem; padding-bottom: 1.5rem;}
-.comment-box .comment-list li:after{content: "";position: absolute;left: 3.5rem;bottom: 0;right: 0;border-bottom: 1px #f1f1f1 solid}
+.comment-box .comment-list li:after{content: "";position: absolute;left: 0;bottom: 0;right: 0;border-bottom: 1px #ffffff solid}
 .comment-box .comment-list li .comment{position: relative;overflow: hidden;}
 .comment-box .comment-list li .comment .content-box{margin: .5rem 0 0 3.5rem;}
 .comment-box .comment-list li .comment .userAvatar .avatar{position: absolute;top: 0;left: 0;width: 3rem;height: 3rem;cursor: pointer;border-radius: 50%;display: inline-block;background-position: 50%;background-size: cover;background-repeat: no-repeat;background-color: #eee; background-size: 3rem 3rem !important;}
 .content-box .comment-form-area{margin-top: 10px;}
 .content-box .comment-form-area .usercomment{width: 100%;text-indent: 5px;border: 1px solid #ddd;border-radius: 4px;}
+.content-box .comment-form-area #subcomment{overflow:hidden}
 .content-box .comment-form-area #subcomment button{float:right}
 .content-box .replylist .fetch-more{text-align: center;margin-top: 10px;}
 .content-box .replylist .fetch-more a{text-decoration: none}

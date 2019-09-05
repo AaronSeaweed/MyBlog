@@ -23,6 +23,7 @@
 				<div class="uermment">
 					<div :style='styleObject' :class="{'displaynone':ustatus==0||ustatus==null}" @click="show1 = true" id="user">
 					</div>
+					<em v-if="msgcount>0"></em>
 				</div>
 				<el-collapse-transition>
 					<ul class="personalset" v-show="show1">
@@ -30,9 +31,8 @@
 							<li>
 								<router-link :to="{name:'usct',params:{userid:this.userid}}" class="setuserinfo" alt="编辑资料" title="编辑资料"></router-link>
 							</li>
-							<li><a href="javascript:void(0)" class="mymessage" alt="我的消息" title="我的消息"></a></li>
+							<li><a href="javascript:void(0)" class="mymessage" alt="我的消息" title="我的消息"></a><em v-if="msgcount>0" class="msgcount">{{msgcount}}</em></li>
 							<li><a href="javascript:void(0)" class="loginout" alt="退出" title="退出" @click="loginout()"></a></li>
-							
 						</div>
 					</ul>
 				</el-collapse-transition>
@@ -53,6 +53,8 @@
 				ustatus: localStorage.getItem("userstatus"),
 				persset: true,
 				clicklogin: false,
+				token: localStorage.getItem("token"),
+				msgcount:0,
 				head_menu: true,
 				styleObject: {
 					'background-image': (localStorage.getItem("userstatus") == 1 && localStorage.getItem("photo") != "null") ? 'url(' +
@@ -98,6 +100,37 @@
 				} else {
 					location.reload();
 				}
+			},
+			getmsg:function(){
+				var that = this;
+				that.$axios.post("/article/getusernotify", {user_id:localStorage.getItem('userid'),token:that.token})
+					.then((response)=>{
+						if(response.data.status==200){
+							if(response.data.data.length>0){
+								that.msgcount=response.data.data[0].count;
+							}
+						}else if(response.data.status==522){
+							that.$confirm(response.data.message+',是否重新登录?', '提示', {
+								confirmButtonText: '确定',
+								cancelButtonText: '取消',
+								type: 'warning'
+							}).then(() => {
+								bus.$emit("login", "")
+							});
+						}else{
+							that.$message({
+								type: 'error',
+								message: response.data.message
+							});
+						}
+						
+					})
+					.catch(function(error) {
+						that.$message({
+							type: 'error',
+							message: error.message
+						});
+					});
 			}
 		},
 		mounted: function() {
@@ -110,6 +143,9 @@
 				this.$refs.child.clicklogin = true
 				this.$refs.child.loginmode(); //调用子组件的方法
 			})
+			if (this.ustatus == 1) {
+				this.getmsg();
+			}
 		},
 		props: {
 			fixd: {

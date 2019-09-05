@@ -30,7 +30,7 @@ exports.dataInput = function (req, res) {
 			if(querytoken==token){
 				upload(req, res, function (err) {
 					//文件信息在req.file或者req.files中显示。
-					db.query("insert into picandemj (picturename,picturetype,datetime) value ('"+req.file.filename+"',0,'"+chinaTime('YYYY-MM-DD HH:mm:ss')+"')",function(error,rows){
+					db.query("insert into picandemj (picturename,picturetype,datetime,showvalue) value ('"+req.file.filename+"',0,'"+chinaTime('YYYY-MM-DD HH:mm:ss')+"',0)",function(error,rows){
 						if (error) {
 							var result = {
 								"status": "500",
@@ -58,8 +58,6 @@ exports.dataInput = function (req, res) {
 			upload3(req, res, function (err) {
 				var tokenstr = req.body.token||req.token;
 				var userid = req.body.userid||req.userid;
-				console.log("tokenstr:"+tokenstr)
-				console.log("userid:"+userid)
 				//文件信息在req.file或者req.files中显示。
 				if(tokenstr==token){//上传用户头像
 					//var result="";

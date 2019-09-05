@@ -56,14 +56,14 @@
 												<span class="content-html">{{comlist.content}}</span>
 											</div>
 											<div class="content-foot">
-											<div class="like-btn" @click="aGood(0,comlist.id,comlist.up,comlist.likeuserid)">
+											<div class="like-btn" @click="aGood(0,comlist.id,comlist.up,comlist.likeuserid,comlist.username)">
 												<span :class="{'like-up':comlist.likeuserid&&comlist.likeuserid.split(',').indexOf(userid)>-1,'rephover':wantlike===index+'f'}"
 												 @mouseover="changecolor1(index+'f')" @mouseout="changecolor2(index+'f')">
 													{{comlist.up}}
 												</span>
 											</div>
 											<div :class='classObj(comlist.Uname)'>
-												<span class="title" :replytype="0" :artid="comlist.id">回复</span>
+												<span class="title" :replytype="0" :artid="comlist.id" :authorid="comlist.username">回复</span>
 											</div>
 											<div :class='classObj(comlist.Uname,"del")'>
 												<span class="del-title" @click="delcom(comlist.id,0)" :replytype="0" :artid="comlist.id">删除</span>
@@ -94,14 +94,14 @@
 																		<span class="content-html">回复&nbsp;<a class="content-user" href="javascript:void(0)">{{getname(replylist.artid)}}</a>：{{replylist.replycontent}}</span>
 																	</div>
 																	<div class="content-foot">
-																	<div class="like-btn" @click="aGood(1,replylist.replyid,replylist.replyup,replylist.likeuserid)">
+																	<div class="like-btn" @click="aGood(1,replylist.replyid,replylist.replyup,replylist.likeuserid,replylist.replyusername)">
 																		<span :class="{'like-up':replylist.likeuserid&&replylist.likeuserid.split(',').indexOf(userid)>-1,'rephover':wantlike===index+index2+1}"
 																		 @mouseover="changecolor1(index+index2+1)" @mouseout="changecolor2(index+index2+1)">
 																			{{replylist.replyup}}
 																		</span>
 																	</div>
 																	<div :class='classObj(replylist.username)'>
-																		<span class="title" :replytype="1" :artid="replylist.replyid">回复</span>
+																		<span class="title" :replytype="1" :artid="replylist.replyid" :authorid="replylist.username">回复</span>
 																	</div>
 																	<div :class='classObj(replylist.username,"del")'>
 																		<span class="del-title" @click="delcom(replylist.replyid,1)" :replytype="1" :artid="replylist.replyid">删除</span>
@@ -157,6 +157,8 @@
 				userid: localStorage.getItem("userid"),
 				wantlike: "",
 				loadinggif:true,
+				authorid:0,
+				commuser:0,
 				token: localStorage.getItem("token")
 			}
 		},
@@ -270,6 +272,7 @@
 						that.AriDetail.push(articlelist.data.data[0]);
 						that.comments.push(commentlist.data.data);
 						that.replys.push(replylist.data.data);
+						that.authorid=that.AriDetail[0].userid;
 						document.getElementsByTagName("title")[0].text=that.AriDetail[0].article_title;
 						that.loadinggif=false;
 					})).catch(function(error) {
@@ -287,6 +290,7 @@
 			},
 			commitcomment: function(index) { //新增评论
 				var that = this;
+				var authorid;
 				var commentcontent = $(".usercomment").eq(index).val() || $(".usercomment").eq(0).val();
 				if (commentcontent.trim() == "") {
 					that.$message({
@@ -294,31 +298,34 @@
 						message: '内容不能为空'
 					});
 				} else {
+					authorid=that.commuser;
+					if (index == undefined) {
+						commentcontent = $(".usercomment").eq(0).val();
+						authorid=that.authorid
+					}
 					var nowdate = Gb.getDate(); //获取当前时间
 					var userid = localStorage.getItem("userid");
 					var submitdata = {
 						artid: that.replysubmit.artid,
-						replyusername: userid,
-						replycontent: commentcontent,
-						replyup: 0,
-						replydate: nowdate,
 						replytype: that.replysubmit.replytype,
-						token:that.token
+						username: userid,
+						content: commentcontent,
+						up: 0,
+						date: nowdate,
+						contentid: that.$route.params.conid,
+						"type": 2,//通知类型   1、公告 2、提醒 3、私信,
+						"action": 2,//1、点赞  2、评论 3、回复 
+						"user_id": authorid,
+						"is_read": 0,
+						"nickname": "",
+						"avatar_url": "",
+						"comment_id": 0,
+						"target_type":1,//目标类型  1、文章 2、评论 3、回复
+						"index":index,
+						"token":that.token
 					}
-					var posturl = '/article/commitreply';
-					if (index == undefined) {
-						commentcontent = $(".usercomment").eq(0).val();
-						submitdata = {
-							username: userid,
-							content: commentcontent,
-							up: 0,
-							date: nowdate,
-							contentid: that.$route.params.conid,
-							token:that.token
-						}
-						posturl = '/article/commitcontent';
-					}
-					that.$axios.post(posturl, submitdata)
+					
+					that.$axios.post('/article/commitcontent', submitdata)
 						.then(function(response) {
 							if(response.data.status=200){
 								if (index == undefined) {
@@ -425,54 +432,35 @@
 					this.wantlike = "";
 				}
 			},
-			aGood: function(replytype, id, num, likeuserid) {
+			aGood: function(replytype, id, num, likeuserid,authorid) {
 				var that = this;
 				var likedown;
-				var poturl;
 				var Haslike = likeuserid && likeuserid.split(',').indexOf(that.userid) > -1
 				if (this.userstatus != 1) {
 					this.showlogin();
 				} else {
 					if (Haslike) {
 						likedown = true;
-						poturl = "/article/cancel_CommLikeRecording"
 					} else {
 						likedown = false
-						poturl = "/article/like_CommRecording"
 					}
-
-					this.$axios.post("/article/thumb-CommUp", {
+					this.$axios.post("/article/ComRep_likes", {
 						"id": id,
 						"commentnum": num,
 						"likedown": likedown,
 						"replytype": replytype,
-						"token":that.token
-					})
-					.then((response) => {
-						if(response.data.status==522){
-							that.$confirm(response.data.message+',是否重新登录?', '提示', {
-								confirmButtonText: '确定',
-								cancelButtonText: '取消',
-								type: 'warning'
-							}).then(() => {
-								that.showlogin();
-							});
-						}else{
-							that.$message({
-								type: 'error',
-								message: response.data.message
-							});
-						}
-					}).catch(function(error) {
-						that.$message({
-							type: 'error',
-							message: error
-						});
-					});
-					this.$axios.post(poturl, {
-						"id": id,
 						"likeuserid": that.userid,
-						"replytype": replytype,
+						"content": "",
+						"type": 2,//通知类型   1、公告 2、提醒 3、私信,
+						"action": 1,//1、点赞  2、评论 3、回复 
+						"sender_id": that.userid,
+						"user_id": authorid,
+						"is_read": 0,
+						"nickname": "",
+						"avatar_url": "",
+						"comment_id": 0,
+						"target_type":2,//目标类型  1、文章 2、评论 3、回复
+						"target_id":id,//目标id  （文章id/评论id/回复id）
 						"token":that.token
 					})
 					.then((response) => {
@@ -495,7 +483,7 @@
 					}).catch(function(error) {
 						that.$message({
 							type: 'error',
-							message: error
+							message: error.message
 						});
 					});
 				}
@@ -552,7 +540,8 @@
 						that.replysubmit = []
 						that.replysubmit.replytype = child[this.index].getAttribute("replytype");
 						that.replysubmit.artid = child[this.index].getAttribute("artid");
-						that.ReplyArt(this.index, child[this.index].parentNode.parentNode.parentNode.children[0].children[0].children[0].innerText)
+						that.commuser=child[this.index].getAttribute("authorid");
+						that.ReplyArt(this.index, child[this.index].parentNode.parentNode.parentNode.children[0].children[0].children[0].innerText);
 					}
 					childcomment[i + 1].children[1].onblur = function() {
 						timer = setTimeout(function() {

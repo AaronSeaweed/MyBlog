@@ -289,7 +289,11 @@ import { Loading } from 'element-ui';
 				this.dynamicTags=[];
 				this.imageUrl='';
 				this.typeid='';
-				this.content="...";
+				this.$nextTick(() =>{
+					this.content="...";
+					document.getElementById("content").innerText="";
+				})
+				
 			}
 	　　}
 	}

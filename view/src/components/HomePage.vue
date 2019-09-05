@@ -35,8 +35,8 @@
 									</div>
 									<div class="artinfo">
 										<a href="javascript:void(0)" class="coninfo concommentnum" :class="{'like-up':blcont.likeuserid&&blcont.likeuserid.split(',').indexOf(userid)>-1,'concommentnum2':wantlike===index}"
-										 @click="aGood(blcont.article_id,blcont.commentnum,index,blcont.likeuserid)" @mouseover="changecolor1(index)"
-										 @mouseout="changecolor2(index)">{{blcont.commentnum}}赞</a>
+										 @click="aGood(blcont.article_id,blcont.commentnum,index,blcont.likeuserid,blcont.userid)" @mouseover="changecolor1(index)"
+										 @mouseout="changecolor2(index)" >{{blcont.commentnum}}赞</a>
 									</div>
 									<div class="modifyart" v-if="userid==8&&wantmodify===index">
 										<router-link :to="{ name: 'wrae', params:{conid:blcont.article_id}}" class="coninfo">编辑</router-link>
@@ -194,18 +194,16 @@
 					}
 				}
 			},
-			aGood: function(id, num, index, likeuserid) {
+			aGood: function(id, num, index, likeuserid,authorid) {
 				var that = this;
 				var userstatus = localStorage.getItem("userstatus");
 				var likedown;
-				var poturl;
 				var Haslike = likeuserid && likeuserid.split(',').indexOf(that.userid) > -1
 				if (userstatus != 1) {
 					bus.$emit("login", "");
 				} else {
 					if (Haslike) {
 						likedown = true;
-						poturl = "/article/cancelLikeRecording"
 						const h = this.$createElement;
 						this.$msgbox({
 							title: '消息',
@@ -220,15 +218,25 @@
 						});
 					} else {
 						likedown = false
-						poturl = "/article/likeRecording"
 					}
-					this.$axios.post("/article/thumb-Up", {
-							"article_id": id,
+					that.$axios.post("/article/Article_likes", {
+							"articleid": id,
 							"commentnum": num,
 							"likedown": likedown,
+							"likeuserid": that.userid,
+							"content": "",
+							"type": 2,//通知类型   1、公告 2、提醒 3、私信,
+							"action": 1,//1、点赞  2、评论 3、回复 
+							"sender_id": that.userid,
+							"user_id": authorid,
+							"is_read": 0,
+							"nickname": "",
+							"avatar_url": "",
+							"comment_id": 0,
+							"target_type":1,//目标类型  1、文章 2、评论 3、回复
+							"target_id":id,//目标id  （文章id/评论id/回复id）
 							"token":that.token
-					})
-					.then((response) => {
+					}).then((response) => {
 						if(response.data.status==522){
 							that.$confirm(response.data.message+',是否重新登录?', '提示', {
 								confirmButtonText: '确定',
@@ -238,29 +246,13 @@
 								bus.$emit("login", "");
 							});
 						}else if(response.data.status==200){
-							that.$axios.post(poturl, {
-								"articleid": id,
-								"likeuserid": that.userid,
-								"token":that.token
-							})
-							.then((response) => {
-								if(response.data.status==522){
-									that.$confirm(response.data.message+',是否重新登录?', '提示', {
-										confirmButtonText: '确定',
-										cancelButtonText: '取消',
-										type: 'warning'
-									}).then(() => {
-										bus.$emit("login", "");
-									});
-								}else{
-									that.blcontlist();
-								}
-							}).catch(function(error) {
-								alert(error);
-							});
+							that.blcontlist();
 						}
 					}).catch(function(error) {
-						alert(error);
+						that.$message({
+							type: 'error',
+							message: error.message
+						});
 					});
 				}
 			},
@@ -308,11 +300,9 @@
 			blcontlist: function() {
 				var nblist = ""; //分页显示最新发布文章（默认显示前10条）
 				var that = this;
-
 				function getArticleList() {
 					return that.$axios.post('/article/getarticlelist');
 				}
-
 				function getArticleType() {
 					return that.$axios.post('/article/getarticletype');
 				}
@@ -321,7 +311,6 @@
 					that.newblcontlist = [];
 					that.newblcontlist.push(articlelist.data.data);
 					$(".ds_cont div p").text(articlelist.data.time);
-					//that.contenttype.push(articletype.data.data);
 					that.contenttype = articletype.data.data;
 					Pagingsort();
 					that.loadinggif=false;
