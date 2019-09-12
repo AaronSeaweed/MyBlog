@@ -587,4 +587,53 @@ router.post("/getusernotify", function(req, res, next) {
 	}
 });
 
+/**
+ * 获取用户消息列表
+ */
+router.post("/getmsg", function(req, res, next) {
+	var type = req.body.type;
+	var action = req.body.action;
+	var userid = req.body.userid;
+	var tokenstr = req.body.token;
+	if (tokenstr == token) {
+		var sql=`SELECT mn.*,us.username,us.photo,us.callname,rp.replycontent,ct.content as ctcontent,ac.article_title FROM msg_notify mn 
+					left join user us on mn.sender_id=us.id
+					left join replyart rp on mn.target_id=rp.replyid and mn.target_type=3
+					left join commentlist ct on mn.target_id=ct.id and mn.target_type=2
+					left join articlelist ac on mn.target_id=ac.article_id and mn.target_type=1
+					where mn.type = `+type+` and mn.action = `+action+` and mn.is_read = 0 and user_id = `+userid+` ORDER BY mn.created_at desc`
+		if(action==2){
+			sql=`SELECT mn.*,us.username,us.photo,us.callname,rp.replycontent,ct.content as ctcontent,ac.article_title FROM msg_notify mn 
+						left join user us on mn.sender_id=us.id
+						left join replyart rp on mn.target_id=rp.replyid and mn.target_type=3
+						left join commentlist ct on mn.target_id=ct.id and mn.target_type=2
+						left join articlelist ac on mn.target_id=ac.article_id and mn.target_type=1
+						where mn.type = `+type+` and mn.action in (2,3) and mn.is_read = 0 and user_id = `+userid+` ORDER BY mn.created_at desc`
+		}
+		db.query(sql,
+			function(error, rows) {
+				if (error) {
+					var result = {
+						"status": "500",
+						"message": "服务器错误"
+					}
+					return res.jsonp(result);
+				} else {
+					var result = {
+						"status": "200",
+						"message": "success",
+						data: rows
+					}
+					return res.jsonp(result);
+				}
+			});
+	} else {
+		var result = {
+			"status": "522",
+			"message": "登录信息过期"
+		}
+		return res.jsonp(result);
+	}
+});
+
 module.exports = router

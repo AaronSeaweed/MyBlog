@@ -31,7 +31,10 @@
 							<li>
 								<router-link :to="{name:'usct',params:{userid:this.userid}}" class="setuserinfo" alt="编辑资料" title="编辑资料"></router-link>
 							</li>
-							<li><a href="javascript:void(0)" class="mymessage" alt="我的消息" title="我的消息"></a><em v-if="msgcount>0" class="msgcount">{{msgcount}}</em></li>
+							<li>
+								<router-link target="_blank" :to="{name:'usmsg',params:{userid:this.userid}}" class="mymessage" alt="我的消息" title="我的消息"></router-link>
+								<em v-if="msgcount>0" class="msgcount">{{msgcount}}</em>
+								</li>
 							<li><a href="javascript:void(0)" class="loginout" alt="退出" title="退出" @click="loginout()"></a></li>
 						</div>
 					</ul>
@@ -95,7 +98,7 @@
 				localStorage.removeItem("userid");
 				localStorage.removeItem("photo");
 				localStorage.removeItem("token");
-				if (location.href.indexOf("user") > -1) {
+				if (location.href.indexOf("user") > -1||location.href.indexOf("mymsg") > -1) {
 					window.location.href = "/"
 				} else {
 					location.reload();

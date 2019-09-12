@@ -38,7 +38,7 @@ h2 {font-size:18px}
 .header{max-width:1020px;margin:10px auto;padding: 0 25px;position: relative;}
 .head_menu {overflow: hidden;display: flex;}
 .head_menu div .menulist{position: absolute;background-color: #ffffff;  top: 60px; right:0}
-.head_menu div ul{border: 0px red solid;float: right;}
+.head_menu div ul{border: 0px red solid;float: left;}
 .head_menu div ul li{float: left; width: 90px;  text-align: center;  cursor: pointer;}
 .head_menu div ul li a{color:#6e6e6e}
 .head_menu div ul li a:hover{color:#3399CC}
@@ -287,7 +287,7 @@ body{background-color: #f4f5f5;background: url(../img/bodybakcground.png)}
 .comment-foot ul li:hover{color: #007fff;border-color: rgba(0,127,255,.15);background-color: rgba(0,127,255,.05);}
 .comment-foot ul li a{text-decoration: none;cursor: pointer;color: #909090;}
 .comment-foot ul li a:hover{color: #3399CC;}
-.comment-form{background-color: #f8f9fa;border: 1px solid #f1f1f1;}
+.comment-form{background-color: rgb(230,230, 231,0.6);border: 1px solid #f1f1f1;}
 .comment-form .comment-form-panel{text-align: center;padding: 2.5rem 1rem;}
 .comment-form .comment-form-panel .comment-login{padding: .4rem 1rem;font-size: 1rem;  color: #3399CC;  background-color: transparent;  border: 1px solid currentColor;  border-radius: 3px;}
 .comment-form .comment-form-area{display: none;padding: 1.3rem 1.3rem 1.3rem 6rem; position: relative;}
@@ -297,8 +297,9 @@ body{background-color: #f4f5f5;background: url(../img/bodybakcground.png)}
 .comment-form .comment-form-area .subcomment button{color:#ffffff}
 .comment-box .comment-list li{position: relative;padding-top: 1rem; padding-bottom: 1.5rem;}
 .comment-box .comment-list li:after{content: "";position: absolute;left: 0;bottom: 0;right: 0;border-bottom: 1px #ffffff solid}
-.comment-box .comment-list li .comment{position: relative;overflow: hidden;}
+.comment-box .comment-list li .comment{position: relative;overflow: hidden;margin-top: 10px;}
 .comment-box .comment-list li .comment .content-box{margin: .5rem 0 0 3.5rem;}
+.comment-box .comment-list li .comment .content-box .content-opt{overflow: hidden;}
 .comment-box .comment-list li .comment .userAvatar .avatar{position: absolute;top: 0;left: 0;width: 3rem;height: 3rem;cursor: pointer;border-radius: 50%;display: inline-block;background-position: 50%;background-size: cover;background-repeat: no-repeat;background-color: #eee; background-size: 3rem 3rem !important;}
 .content-box .comment-form-area{margin-top: 10px;}
 .content-box .comment-form-area .usercomment{width: 100%;text-indent: 5px;border: 1px solid #ddd;border-radius: 4px;}
@@ -306,8 +307,6 @@ body{background-color: #f4f5f5;background: url(../img/bodybakcground.png)}
 .content-box .comment-form-area #subcomment button{float:right}
 .content-box .replylist .fetch-more{text-align: center;margin-top: 10px;}
 .content-box .replylist .fetch-more a{text-decoration: none}
-.content-box .replylist .reply .comment{background-color: #fafbfc;margin-top: 10px;}
-.content-opt{overflow: hidden;}
 .user-info{display: flex;-webkit-box-align: baseline;align-items: baseline;flex-wrap: wrap;}
 .user-info .username{font-size: 1.3rem;  font-weight: 600;  color: #333;  margin-right: .6rem;text-decoration: none;  cursor: pointer;}
 .user-info .position{font-size: 1rem; color: #909090;  max-width: 220px;  white-space: nowrap;  overflow: hidden;  text-overflow: ellipsis;}
@@ -429,3 +428,24 @@ body{background-color: #f4f5f5;background: url(../img/bodybakcground.png)}
 .emj .emjbox .emjsqz .upsao:hover{background: url(../img/sao2.png) 0px 5px no-repeat;}
 .emj .emjbox .emjsqz .saovalue{float: right;margin-right: 5px;}
 
+/******消息中心******/
+.body_content .body_left .msgmenu{border:1px #EAEAEA solid;height:200px;border-right:0}
+.body_content .body_right .msglist{border: 1px #e3e3e3 solid;background: rgb(255,255,255,0.7);}
+.mymessage .el-col-4{padding-right:initial!important}
+.mymessage .el-col-20{padding-left:initial!important}
+.el-tabs__item.is-active{color:#409EFF!important}
+.el-tabs__active-bar{background-color:#409EFF!important}
+
+.body_content .body_right .msglist ul li{height:80px;margin-top:10px}
+.body_content .body_right .msglist ul li .likelist{margin:20px}
+.body_content .body_right .msglist ul li .likelist .el-tab-pane{margin-top:50px}
+.body_content .body_right .msglist ul li .likelist .userAvatar{display:flex}
+.body_content .body_right .msglist ul li .likelist .userAvatar img{width: 36px;height: 36px;border-radius: 50%;}
+.body_content .body_right .msglist ul li .likelist .userAvatar .userinfo{margin-left:10px}
+.body_content .body_right .msglist ul li .likelist .userAvatar .userinfo span,
+.body_content .body_right .msglist ul li .likelist .content-box span{float:none;margin-left:0px}
+.body_content .body_right .msglist ul li .likelist .userAvatar .userinfo .username{font-size: 15px;font-weight: bold;}
+.body_content .body_right .msglist ul li .likelist .userAvatar .userinfo div{display:inline-block}
+.body_content .body_right .msglist ul li .likelist .userAvatar .userinfo div span{color:#939393;}
+.body_content .body_right .msglist ul li .likelist .content-box{height: 30px;background-color: rgb(224,224,224,0.5);margin-left: 46px;}
+.body_content .body_right .msglist ul li .likelist .content-box span em{font-style: normal;font-size: 14px;color:#939393;margin-left:10px}

@@ -101,7 +101,7 @@
 																		</span>
 																	</div>
 																	<div :class='classObj(replylist.username)'>
-																		<span class="title" :replytype="1" :artid="replylist.replyid" :authorid="replylist.username">回复</span>
+																		<span class="title" :replytype="1" :artid="replylist.replyid" :authorid="replylist.replyusername">回复</span>
 																	</div>
 																	<div :class='classObj(replylist.username,"del")'>
 																		<span class="del-title" @click="delcom(replylist.replyid,1)" :replytype="1" :artid="replylist.replyid">删除</span>
@@ -290,7 +290,7 @@
 			},
 			commitcomment: function(index) { //新增评论
 				var that = this;
-				var authorid;
+				//var authorid;
 				var commentcontent = $(".usercomment").eq(index).val() || $(".usercomment").eq(0).val();
 				if (commentcontent.trim() == "") {
 					that.$message({
@@ -298,10 +298,10 @@
 						message: '内容不能为空'
 					});
 				} else {
-					authorid=that.commuser;
+					//authorid=that.commuser;
 					if (index == undefined) {
 						commentcontent = $(".usercomment").eq(0).val();
-						authorid=that.authorid
+						//authorid=that.authorid
 					}
 					var nowdate = Gb.getDate(); //获取当前时间
 					var userid = localStorage.getItem("userid");
@@ -314,13 +314,13 @@
 						date: nowdate,
 						contentid: that.$route.params.conid,
 						"type": 2,//通知类型   1、公告 2、提醒 3、私信,
-						"action": 2,//1、点赞  2、评论 3、回复 
-						"user_id": authorid,
+						"action": index == undefined?2:3,//1、点赞  2、评论 3、回复 
+						"user_id": index == undefined?that.authorid:that.commuser,
 						"is_read": 0,
 						"nickname": "",
-						"avatar_url": "",
+						"avatar_url": that.$route.params.conid,
 						"comment_id": 0,
-						"target_type":1,//目标类型  1、文章 2、评论 3、回复
+						"target_type":index == undefined?1:(that.replysubmit.replytype==0?2:3),//目标类型  1、文章 2、评论 3、回复
 						"index":index,
 						"token":that.token
 					}
@@ -457,9 +457,9 @@
 						"user_id": authorid,
 						"is_read": 0,
 						"nickname": "",
-						"avatar_url": "",
+						"avatar_url": that.$route.params.conid,
 						"comment_id": 0,
-						"target_type":2,//目标类型  1、文章 2、评论 3、回复
+						"target_type":replytype==0?2:3,//目标类型  1、文章 2、评论 3、回复
 						"target_id":id,//目标id  （文章id/评论id/回复id）
 						"token":that.token
 					})
