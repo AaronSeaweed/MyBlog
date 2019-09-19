@@ -231,7 +231,7 @@
 							"user_id": authorid,
 							"is_read": 0,
 							"nickname": "",
-							"avatar_url": "",
+							"avatar_url": id,
 							"comment_id": 0,
 							"target_type":1,//目标类型  1、文章 2、评论 3、回复
 							"target_id":id,//目标id  （文章id/评论id/回复id）
@@ -247,6 +247,11 @@
 							});
 						}else if(response.data.status==200){
 							that.blcontlist();
+						}else{
+							that.$message({
+								type: 'error',
+								message: response.data.message.sqlMessage
+							});
 						}
 					}).catch(function(error) {
 						that.$message({

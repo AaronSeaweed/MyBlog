@@ -29,7 +29,7 @@
 			<el-button type="primary" class="load-btn" :disabled="disabled" :loading="loading" @click="login">{{button}}</el-button>
             <div class="prompt-box" :class="{displaynone:isreg}">没有帐号？
                 <span @click="registeredmode();">注册</span>
-                <a href="javascript:void(0)">忘记密码</a>
+				<router-link :to="{name:'fgpw'}" alt="忘记密码">忘记密码</router-link>
             </div>
             <div class="prompt-box center" :class="{displaynone:islogin}">
                   <span class="closereg" @click="loginmode()">已有帐号登录</span>
@@ -201,6 +201,13 @@ export default {
 			  classname&&document.getElementsByClassName(classname)[0].focus();
 			  return false;
 		  }
-        }
+        },
+		watch: {
+			'$route'(to, from) {
+				if(to.name=="fgpw"){
+					this.closelogin()
+				}
+			}
+		}
 }
 </script>

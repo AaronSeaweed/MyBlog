@@ -8,6 +8,7 @@ import Ancement from '../components/Ancement.vue'
 import Search from '../components/Search.vue'
 import FightEmj from '../components/FightEmoji.vue'
 import MyMessages from '../components/MyMessages.vue'
+import ResetPw from '../components/ResetPw.vue'
 Vue.use(Router)
 export default new Router({
   mode: 'history',
@@ -48,6 +49,10 @@ export default new Router({
 		path:'/mymsg/:userid',
 		name: 'usmsg',
 		component: MyMessages
+	},{
+		path:'/resetpassword',
+		name: 'fgpw',
+		component: ResetPw
 	}
   ]
 })

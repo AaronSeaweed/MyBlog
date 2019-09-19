@@ -449,3 +449,15 @@ body{background-color: #f4f5f5;background: url(../img/bodybakcground.png)}
 .body_content .body_right .msglist ul li .likelist .userAvatar .userinfo div span{color:#939393;}
 .body_content .body_right .msglist ul li .likelist .content-box{height: 30px;background-color: rgb(224,224,224,0.5);margin-left: 46px;}
 .body_content .body_right .msglist ul li .likelist .content-box span em{font-style: normal;font-size: 14px;color:#939393;margin-left:10px}
+
+/**忘记密码**/
+.reset-password-form{margin:6rem auto;width:40rem;max-width:100%;background-color: rgb(224,224,224,0.5);padding:2rem}
+.reset_way h3{text-align:center}
+.reset_way .el-tabs__nav{width:100%}
+.reset_way .el-tabs__nav .el-tabs__active-bar{width:50%}
+.reset_way .el-tabs__nav .el-tabs__item{width:50%;text-align:center}
+.reset_way .emailway button.confirm,.reset_way .phoneway button.confirm{width:100%;margin-top:1rem}
+.reset_way .emailway a,.reset_way .phoneway a{margin-top: 1rem;text-align: center;display: block;}
+.reset_way .phoneway .check-code,.reset_way .emailway .check-code{width:70%}
+.reset_way .phoneway button.get-check-code,.reset_way .emailway button.send-email{width:25%;margin-left: 1.4rem;padding:12px 0px}
+.reset_way .phoneway .el-input,.reset_way .emailway .el-input{margin-top:1rem}

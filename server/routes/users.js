@@ -170,12 +170,13 @@ router.post("/toUpdate",function(req,res,next){
 	}
 });
 
-
-router.post("/update",function(req,res,next){
-    var id = req.body.id;
-    var name = req.body.name;
-    var age = req.body.age;
-    var sql = "update user set name = '"+ name +"',age = '"+ age +"' where id = " + id;
+/**
+ * 修改密码
+ * */
+router.post("/updatepw",function(req,res,next){
+    var password = req.body.password;
+    var phonenoemail = req.body.phonenoemail;
+    var sql = "update user set password = '"+ password +"',phonenoemail = '"+ phonenoemail +"'";
     db.query(sql,function(err,rows){
         if(err){
             res.send("修改失败 " + err);
